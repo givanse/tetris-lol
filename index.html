@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div id="tetrisGame">
+    <details id="gameInfo">
+    </details>
+    <div id="gameCanvas"></div>
+  </div>
+
+  <script>
+  </script>
+  <script type="text/javascript" src="js/GLOBALS.js"></script>
+  <script type="text/javascript" src="js/SquaresMatrix.js"></script>
+  <script type="text/javascript" src="js/Square.js"></script>
+  <script type="text/javascript" src="js/Board.js"></script>
+  <script type="text/javascript" src="js/GameLoopService.js"></script>
+  <script>
+    var canvas = document.getElementById("gameCanvas");                           
+    var widthInSquares = 10;
+    var heightInSquares = 10;
+    var board = new Board(canvas, widthInSquares, heightInSquares);
+    board.insertSquare(new Square(1, 1));
+    board.insertSquare(new Square(2, 2));
+    board.insertSquare(new Square(3, 3));
+    board.drawSquares();
+  </script>
+</body>
+</html>

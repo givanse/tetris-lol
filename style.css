@@ -1,0 +1,39 @@
+
+body {                                                                           
+  background: #d7d7d7;                                                           
+}                                                                                
+
+#tetrisGame {                                                                        
+  width: 800px;                                                                  
+  height: 600px;
+  border: 1px solid black;                                                       
+  padding: 20px;                                                                 
+  margin: auto;                                                                   
+}                                                                                
+
+#gameCanvas {
+  /**
+   *  Width and height will be adjusted at game start. 
+   */                                                         
+  width: 99px; height: 99px;
+  background-color: #000;
+  position: relative;
+  color: #fff;
+}
+
+#gameInfo {                                                                          
+  background-color: #000;                                                        
+  color: #fff;                                                                   
+  float: right;                                                                  
+  width: 150px;                                                                  
+  height: 500px;                                                                 
+  padding: 10px;
+}  
+
+.square {                                                                        
+  position: absolute;                                                            
+  width: 19px;                                                                   
+  height: 19px;                                                                  
+  border: 1px solid white;                                                       
+}                          
+
