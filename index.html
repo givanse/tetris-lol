@@ -23,9 +23,9 @@
     var widthInSquares = 10;
     var heightInSquares = 10;
     var board = new Board(canvas, widthInSquares, heightInSquares);
-    board.insertSquare(new Square(1, 1));
-    board.insertSquare(new Square(2, 2));
-    board.insertSquare(new Square(3, 3));
+    board.insertSquare(new Square(1, 1, LINESHP));
+    board.insertSquare(new Square(2, 2, SQUARESHP));
+    board.insertSquare(new Square(3, 3, TSHP));
     board.drawSquares();
   </script>
 </body>

@@ -37,3 +37,11 @@ body {
   border: 1px solid white;                                                       
 }                          
 
+.LINESHP {background-color: #A000F0;}                                            
+.SQUARESHP {background-color: #00F0F0;}                                             
+.TSHP {background-color: #F0A000;}                                                  
+.LSHP_R {background-color: #0000F0;}                                            
+.LSHP_L {background-color: #00F000;}                                             
+.SSHP_R {background-color: #F00000;}                                            
+.SSHP_L {background-color: #F0F000;} 
+
