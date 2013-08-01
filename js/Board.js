@@ -3,7 +3,7 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
 
     this.squaresMatrix = new SquaresMatrix(widthInSquares, heightInSquares);
     this.fallingSquares = new Array(4); /* Only 4 squares may fall at a time. */
-    this.insertFallingShape();
+    this.generateRandomFallingShape();
 
     this.canvasDiv = canvasDiv; 
     this.canvasDiv.setAttribute("style", 
@@ -47,7 +47,7 @@ Board.prototype.drawSquares = function() {
 Board.prototype.drawSquaresArray = function(squaresArray) { 
     if(!(squaresArray instanceof Array))
         return;
-
+    /*TODO: consider "for in"*/
     for(var i = 0; i < squaresArray.length; i++) {
         var square = squaresArray[i];
         if(square)
@@ -55,17 +55,35 @@ Board.prototype.drawSquaresArray = function(squaresArray) {
     }
 }
 
-Board.prototype.insertFallingShape = function() { 
+Board.prototype.generateRandomFallingShape = function() { 
     this.fallingSquares[0] = new Square(4, 0, LSHP_R);
     this.fallingSquares[1] = new Square(5, 0, LSHP_L);
     this.fallingSquares[2] = new Square(4, 1, SSHP_R);
     this.fallingSquares[3] = new Square(5, 1, SSHP_L);
 }
 
+Board.prototype.updateSquares = function() { 
+    this.moveFallingSquares();
+}
+
 Board.prototype.moveFallingSquares = function() { 
+    var nextPositions = Array(4);
     for(var i = 0; i < 4; i++) {
         var square = this.fallingSquares[i];
-        square.setY(square.getY() + 1);
+        var x = square.getX();
+        var nextY = square.getY() + 1;
+        nextPositions[i] = [x, nextY];
+    }
+
+    if(!this.squaresMatrix.arePositionsAvailable(nextPositions))
+        return;
+
+    for(var i = 0; i < 4; i++) {
+        var square = this.fallingSquares[i];
+        var coordinates = nextPositions[i];
+        var x = coordinates[0];
+        var y = coordinates[1];
+        square.setY(y);
     }
 }
 

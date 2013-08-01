@@ -9,7 +9,7 @@ GameLoopService.prototype.start = function() {
 }
 
 GameLoopService.prototype.run = function() {
-  this.board.moveFallingSquares();
+  this.board.updateSquares();
   this.board.drawSquares();
 }
 
