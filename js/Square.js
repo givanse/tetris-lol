@@ -5,16 +5,16 @@
  */
 function Square(x, y, tetrominoType = 'noType') {
 
-  this.div = document.createElement('div');
-
-  var SQUARE_CLASS_NAMES = 'square ' + tetrominoType;
-  this.div.className = SQUARE_CLASS_NAMES;
-
   x  = x  < 0 ? 0 : x;
   y = y < 0 ? 0 : y;
+
+  this.div = document.createElement('div');
+
   this.setX(x);
   this.setY(y);
 
+  var SQUARE_CLASS_NAMES = 'square ' + tetrominoType;
+  this.div.className = SQUARE_CLASS_NAMES;
 }
 
 /* Square functions */
