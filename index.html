@@ -21,12 +21,13 @@
   <script>
     var canvas = document.getElementById("gameCanvas");                           
     var widthInSquares = 10;
-    var heightInSquares = 10;
+    var heightInSquares = 50;
     var board = new Board(canvas, widthInSquares, heightInSquares);
     board.insertSquare(new Square(1, 1, LINESHP));
     board.insertSquare(new Square(2, 2, SQUARESHP));
     board.insertSquare(new Square(3, 3, TSHP));
-    board.drawSquares();
+    var gameLoopService = new GameLoopService(board);
+    gameLoopService.start();
   </script>
 </body>
 </html>
