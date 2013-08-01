@@ -19,6 +19,7 @@ SquaresMatrix.prototype.insertSquare = function(square) {
     var x = square.getX(); 
     var y = square.getY(); 
     this.squaresMatrix[x][y] = square;
+    return this;
 }
 
 SquaresMatrix.prototype.getSquares = function() {
