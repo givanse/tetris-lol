@@ -87,4 +87,9 @@ Board.prototype.moveFallingSquares = function() {
     }
 }
 
+
+Board.prototype.generateRandomInitialRows = function() { 
+
+}
+
 /* EOF */

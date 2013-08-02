@@ -4,10 +4,10 @@ body {
 }                                                                                
 
 #tetrisGame {                                                                        
-  width: 800px;                                                                  
+  width: 600px;                                                                  
   height: 600px;
   border: 1px solid black;                                                       
-  padding: 20px;                                                                 
+  padding: 0px 30px;                                                                 
   margin: auto;                                                                   
 }                                                                                
 
@@ -32,8 +32,8 @@ body {
 
 .square {                                                                        
   position: absolute;                                                            
-  width: 19px;                                                                   
-  height: 19px;                                                                  
+  width: 31px;                                                                   
+  height: 31px;                                                                  
   border: 1px solid white;                                                       
 }                          
 

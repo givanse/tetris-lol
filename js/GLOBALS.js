@@ -7,7 +7,7 @@
  * This must include every CSS value that affects its size,like: 
  * margin, border, etc. 
  */
-var SQUARE_SIZE = 19 + 1; /* Currently: Square width + Square border */
+var SQUARE_SIZE = 31 + 1; /* Currently: Square width + Square border */
 
 /**
  * http://en.wikipedia.org/wiki/Tetromino
