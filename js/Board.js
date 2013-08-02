@@ -65,30 +65,58 @@ Board.prototype.generateRandomFallingShape = function() {
 }
 
 Board.prototype.updateSquares = function() { 
-    this.moveFallingSquares();
+    this.move(DOWN);
 }
 
-Board.prototype.moveFallingSquares = function() { 
+Board.prototype.move = function(direction) { 
+    switch(direction) {
+        case UP: /* rotate */
+            return ;
+        case DOWN:
+            var xModifier = 0;
+            var yModifier = 1;
+            return this.shiftSquares(xModifier, yModifier);
+        case RIGHT:
+            var xModifier = 1;
+            var yModifier = 0;
+            return this.shiftSquares(xModifier, yModifier);
+        case LEFT:
+            var xModifier = -1;
+            var yModifier = 0;
+            return this.shiftSquares(xModifier, yModifier);
+    } 
+    return null;
+}
+
+Board.prototype.shiftSquares = function(xModifier, yModifier) { 
     var nextPositions = Array(4);
     for(var i = 0; i < 4; i++) {
         var square = this.fallingSquares[i];
+
         var x = square.getX();
-        var nextY = square.getY() + 1;
-        nextPositions[i] = [x, nextY];
+        var y = square.getY();
+
+        var nextX = square.getX() + xModifier;
+        var nextY = square.getY() + yModifier;
+
+        nextPositions[i] = [nextX, nextY];
     }
 
     if(!this.squaresMatrix.arePositionsAvailable(nextPositions))
-        return;
+        return false;
 
     for(var i = 0; i < 4; i++) {
         var square = this.fallingSquares[i];
         var coordinates = nextPositions[i];
+
         var x = coordinates[0];
         var y = coordinates[1];
+
+        square.setX(x);
         square.setY(y);
     }
+    return true;
 }
-
 
 Board.prototype.generateRandomInitialRows = function() { 
     var numFilledRows = 3;

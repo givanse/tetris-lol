@@ -32,4 +32,12 @@ var TETROMINOS = [
 ];
 Object.freeze(TETROMINOS);
 
+/**
+ * Movement directions.
+ */
+var UP = 'up';
+var DOWN = 'down';
+var LEFT = 'left';
+var RIGHT = 'right';
+
 /* EOF */
