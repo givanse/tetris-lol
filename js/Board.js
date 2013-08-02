@@ -60,10 +60,8 @@ Board.prototype.drawSquaresArray = function(squaresArray) {
 Board.prototype.generateRandomFallingShape = function() { 
     var tetrominoType = getRandonTetrominoType();
     var y = 0;
-    this.fallingSquares[0] = new Square(4, 0, tetrominoType);
-    this.fallingSquares[1] = new Square(5, 0, tetrominoType);
-    this.fallingSquares[2] = new Square(4, 1, tetrominoType);
-    this.fallingSquares[3] = new Square(5, 1, tetrominoType);
+    var x = Math.floor(this.squaresMatrix.getWidth() / 2) - 1;
+    this.fallingSquares = getTetrominoSquares(x, y, tetrominoType);
 }
 
 Board.prototype.updateSquares = function() { 
