@@ -28,6 +28,9 @@ test("Square.setX", function() {
     expected = 16 * (31 + 1); /* This corresponds to SQUARE_SIZE */
     actual = parseInt(square.getDiv().style.left);
     equal(actual, expected);
+    expected = 0; /* This corresponds to SQUARE_SIZE */
+    actual = parseInt(square.getDiv().style.top);
+    equal(actual, expected);
 });
 
 /* EOF */

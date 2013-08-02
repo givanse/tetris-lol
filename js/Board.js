@@ -58,10 +58,12 @@ Board.prototype.drawSquaresArray = function(squaresArray) {
 }
 
 Board.prototype.generateRandomFallingShape = function() { 
-    this.fallingSquares[0] = new Square(4, 0, LSHP_R);
-    this.fallingSquares[1] = new Square(5, 0, LSHP_L);
-    this.fallingSquares[2] = new Square(4, 1, SSHP_R);
-    this.fallingSquares[3] = new Square(5, 1, SSHP_L);
+    var tetrominoType = getRandonTetrominoType();
+    var y = 0;
+    this.fallingSquares[0] = new Square(4, 0, tetrominoType);
+    this.fallingSquares[1] = new Square(5, 0, tetrominoType);
+    this.fallingSquares[2] = new Square(4, 1, tetrominoType);
+    this.fallingSquares[3] = new Square(5, 1, tetrominoType);
 }
 
 Board.prototype.updateSquares = function() { 
