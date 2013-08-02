@@ -21,6 +21,15 @@ var SSHP_L = "SSHP_L";
 var LSHP_R = "LSHP_R";
 var LSHP_L = "LSHP_L";
 
-/* EOF */
+var TETROMINOS = [
+    LINESHP,
+    SQUARESHP,
+    TSHP,
+    SSHP_R,
+    SSHP_L,
+    LSHP_R,
+    LSHP_L
+];
+Object.freeze(TETROMINOS);
 
 /* EOF */

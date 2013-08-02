@@ -102,7 +102,7 @@ Board.prototype.generateRandomInitialRows = function() {
     for(var i = 0; i < totalSquaresNeeded; i++) {
         var xRnd = Math.floor(Math.random() * (xMax - xMin + 1)) + xMin;
         var yRnd = Math.floor(Math.random() * (yMax - yMin + 1)) + yMin;
-        var tetrominoType = SQUARESHP;
+        var tetrominoType = getRandonTetrominoType();
         var square = new Square(xRnd, yRnd, tetrominoType);
         this.squaresMatrix.insertSquare(square); 
     }
