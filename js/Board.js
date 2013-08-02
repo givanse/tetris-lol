@@ -3,7 +3,6 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
 
     this.squaresMatrix = new SquaresMatrix(widthInSquares, heightInSquares);
     this.fallingSquares = new Array(4); /* Only 4 squares may fall at a time. */
-    this.generateRandomFallingShape();
 
     this.canvasDiv = canvasDiv; 
     this.canvasDiv.setAttribute("style", 
@@ -14,6 +13,9 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
     /* set canvasDiv dimensions */
     this.canvasDiv.style.width  = width  + "px";
     this.canvasDiv.style.height = height + "px";
+
+    this.generateRandomInitialRows();
+    this.generateRandomFallingShape();
 }
 
 Board.prototype.insertSquare = function(square) {
@@ -89,7 +91,21 @@ Board.prototype.moveFallingSquares = function() {
 
 
 Board.prototype.generateRandomInitialRows = function() { 
-
+    var numFilledRows = 3;
+    var positionsLeftEmpty = this.squaresMatrix.getWidth() * 1;
+    var totalSquaresNeeded = (this.squaresMatrix.getWidth() * numFilledRows) -
+                        positionsLeftEmpty;
+    var xMin = 0;
+    var xMax = this.squaresMatrix.getWidth() - 1;
+    var yMin = this.squaresMatrix.getHeight() - numFilledRows;
+    var yMax = this.squaresMatrix.getHeight() - 1;
+    for(var i = 0; i < totalSquaresNeeded; i++) {
+        var xRnd = Math.floor(Math.random() * (xMax - xMin + 1)) + xMin;
+        var yRnd = Math.floor(Math.random() * (yMax - yMin + 1)) + yMin;
+        var tetrominoType = SQUARESHP;
+        var square = new Square(xRnd, yRnd, tetrominoType);
+        this.squaresMatrix.insertSquare(square); 
+    }
 }
 
 /* EOF */

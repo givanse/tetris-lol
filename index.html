@@ -23,9 +23,6 @@
     var widthInSquares = 12;
     var heightInSquares = 18;
     var board = new Board(canvas, widthInSquares, heightInSquares);
-    board.insertSquare(new Square(1, 1, LINESHP));
-    board.insertSquare(new Square(2, 2, SQUARESHP));
-    board.insertSquare(new Square(3, 3, TSHP));
     var gameLoopService = new GameLoopService(board);
     gameLoopService.start();
   </script>
