@@ -70,6 +70,7 @@ Tetromino.prototype._buildTetrominoSquares = function(tetrominoType) {
 }
 
 Tetromino.prototype.getSquares = function() {
+    var squaresCount = 0;
     var squares = new Array(0);
     for(var x = 0; x < 4; x++) {
         for(var y = 0; y < 4; y++) {
@@ -81,9 +82,29 @@ Tetromino.prototype.getSquares = function() {
             square.setX(x + this.realX);
             square.setY(y + this.realY);
             squares.push(square);
+            squaresCount++;
+            if(squaresCount == 4)
+                return squares;
         }
     }
     return squares;
+}
+
+Tetromino.prototype.move = function(direction) {
+    switch(direction) {
+        case UP:
+            this.rotateMatrix(); return;
+        case DOWN:
+            this.realY++; return; 
+        case LEFT:
+            this.realX--; return; 
+        case RIGHT:
+            this.realX++; return; 
+    }
+}
+
+Tetromino.prototype.rotateMatrix = function() {
+
 }
 
 /* EOF */
