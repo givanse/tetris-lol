@@ -75,3 +75,10 @@ function invertMatrixRows(matrix) {
     return matrix;
 }
 
+function rotateMatrix(matrix) {
+    matrix = transposeMatrix(matrix);              
+    matrix = invertMatrixRows(matrix);             
+    return matrix;
+}
+
+/* EOF */

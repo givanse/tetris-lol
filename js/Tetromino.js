@@ -70,11 +70,15 @@ Tetromino.prototype._buildTetrominoSquares = function(tetrominoType) {
 }
 
 Tetromino.prototype.getSquares = function() {
+    return this._getSquares(this.matrix);
+}
+
+Tetromino.prototype._getSquares = function(matrix) {
     var squaresCount = 0;
     var squares = new Array(0);
     for(var x = 0; x < 4; x++) {
         for(var y = 0; y < 4; y++) {
-            var square = this.matrix[x][y];
+            var square = matrix[x][y];
 
             if(! (square instanceof Square))
                 continue;
@@ -93,7 +97,7 @@ Tetromino.prototype.getSquares = function() {
 Tetromino.prototype.move = function(direction) {
     switch(direction) {
         case UP:
-            this.rotateMatrix(); return;
+            this.matrix = rotateMatrix(this.matrix); return;
         case DOWN:
             this.realY++; return; 
         case LEFT:
@@ -103,8 +107,33 @@ Tetromino.prototype.move = function(direction) {
     }
 }
 
-Tetromino.prototype.rotateMatrix = function() {
-
+Tetromino.prototype.getNewMovementPositions = function(xModifier, yModifier) {           
+    var squares = this.getSquares();
+    return this._getNewMovementPositions(squares, xModifier, yModifier);
 }
+
+Tetromino.prototype._getNewMovementPositions = function(squares, xModifier, 
+                                                                 yModifier) {           
+    var newPositions = Array(4);                                                 
+    for(var i = 0; i < 4; i++) {                                                 
+        var square = squares[i];                                                 
+                                                                                 
+        var x = square.getX();                                                   
+        var y = square.getY();                                                   
+                                                                                 
+        var nextX = square.getX() + xModifier;                                   
+        var nextY = square.getY() + yModifier;                                   
+                                                                                 
+        newPositions[i] = [nextX, nextY];                                        
+    }                                                                            
+    return newPositions;                                                         
+}                                                                                
+                                                                                 
+Tetromino.prototype.getRotatePositions = function() {                              
+    var matrixCopy = this.matrix.slice();
+    matrixCopy = rotateMatrix(matrixCopy);
+    var squares = this._getSquares(matrixCopy); 
+    return this._getNewMovementPositions(squares, 0, 0);
+} 
 
 /* EOF */

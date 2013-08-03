@@ -2,10 +2,9 @@
 function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
 
     this.squaresMatrix = new SquaresMatrix(widthInSquares, heightInSquares);
-    this.fallingSquares = new Array(4); /* Only 4 squares may fall at a time. */
 
-    this.canvasDiv = canvasDiv; 
-    this.canvasDiv.setAttribute("style", 
+    this.canvasDiv = canvasDiv;
+    this.canvasDiv.setAttribute("style",
                                 "display: block; width: 0px; height: 0px");
     /* canvasDiv dimensions */
     var width  = widthInSquares  * SQUARE_SIZE;
@@ -14,39 +13,40 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
     this.canvasDiv.style.width  = width  + "px";
     this.canvasDiv.style.height = height + "px";
 
+    this.currentTetromino = null; 
+    this.generateRandomTetromino();
     this.generateRandomInitialRows();
-    this.generateRandomFallingShape();
 }
 
 Board.prototype.insertSquare = function(square) {
     this.squaresMatrix.insertSquare(square);
 }
 
-Board.prototype.getWidth = function() { 
-    return parseInt(this.canvasDiv.style.width); 
+Board.prototype.getWidth = function() {
+    return parseInt(this.canvasDiv.style.width);
 }
 
-Board.prototype.getHeight = function() { 
-    return parseInt(this.canvasDiv.style.height); 
+Board.prototype.getHeight = function() {
+    return parseInt(this.canvasDiv.style.height);
 }
 
 /**
  * Draw, append, the squares to the canvas div.
  */
-Board.prototype.drawSquares = function() { 
+Board.prototype.drawSquares = function() {
     /*TODO: Optimization, remove and append only the squares that have moved. */
-    while(this.canvasDiv.hasChildNodes()) {                                           
-        this.canvasDiv.removeChild(this.canvasDiv.lastChild);                              
-    }     
+    while(this.canvasDiv.hasChildNodes()) {
+        this.canvasDiv.removeChild(this.canvasDiv.lastChild);
+    }
     /* draw board squares */
-    var squares = this.squaresMatrix.getSquares();
+    var squares = this.squaresMatrix.getMatrix();
     for(var col= 0; col < this.squaresMatrix.getWidth(); col++)
-        this.drawSquaresArray(squares[col]); 
+        this.drawSquaresArray(squares[col]);
     /* draw falling squares */
-    this.drawSquaresArray(this.fallingSquares); 
+    this.drawSquaresArray(this.currentTetromino.getSquares());
 }
 
-Board.prototype.drawSquaresArray = function(squaresArray) { 
+Board.prototype.drawSquaresArray = function(squaresArray) {
     if(!(squaresArray instanceof Array))
         return;
     /*TODO: consider "for in"*/
@@ -57,68 +57,43 @@ Board.prototype.drawSquaresArray = function(squaresArray) {
     }
 }
 
-Board.prototype.generateRandomFallingShape = function() { 
+Board.prototype.generateRandomTetromino = function() {
     var tetrominoType = getRandonTetrominoType();
-    var y = 0;
     var x = Math.floor(this.squaresMatrix.getWidth() / 2) - 1;
-    this.fallingSquares = getTetrominoSquares(x, y, tetrominoType);
+    var y = 0;
+    this.currentTetromino = new Tetromino(x, y, tetrominoType); 
 }
 
-Board.prototype.updateSquares = function() { 
-    this.move(DOWN);
-}
+Board.prototype.updateSquares = function(direction) {
+    var newPositions = this.moveCurrentTetromino(direction);
 
-Board.prototype.move = function(direction) { 
-    switch(direction) {
-        case UP: /* rotate */
-            return ;
-        case DOWN:
-            var xModifier = 0;
-            var yModifier = 1;
-            return this.shiftSquares(xModifier, yModifier);
-        case RIGHT:
-            var xModifier = 1;
-            var yModifier = 0;
-            return this.shiftSquares(xModifier, yModifier);
-        case LEFT:
-            var xModifier = -1;
-            var yModifier = 0;
-            return this.shiftSquares(xModifier, yModifier);
-    } 
-    return null;
-}
-
-Board.prototype.shiftSquares = function(xModifier, yModifier) { 
-    var nextPositions = Array(4);
-    for(var i = 0; i < 4; i++) {
-        var square = this.fallingSquares[i];
-
-        var x = square.getX();
-        var y = square.getY();
-
-        var nextX = square.getX() + xModifier;
-        var nextY = square.getY() + yModifier;
-
-        nextPositions[i] = [nextX, nextY];
-    }
-
-    if(!this.squaresMatrix.arePositionsAvailable(nextPositions))
+    if(!this.squaresMatrix.arePositionsAvailable(newPositions))
         return false;
 
-    for(var i = 0; i < 4; i++) {
-        var square = this.fallingSquares[i];
-        var coordinates = nextPositions[i];
-
-        var x = coordinates[0];
-        var y = coordinates[1];
-
-        square.setX(x);
-        square.setY(y);
-    }
-    return true;
+    this.currentTetromino.move(direction);
 }
 
-Board.prototype.generateRandomInitialRows = function() { 
+Board.prototype.moveCurrentTetromino = function(direction) {
+    var xModifier = 0;
+    var yModifier = 0;
+    switch(direction) {
+        case UP: /* rotate */
+            return this.currentTetromino.getRotatePositions();
+        case DOWN:
+            xModifier = 0;
+            yModifier = 1;
+        case RIGHT:
+            xModifier = 1;
+            yModifier = 0;
+        case LEFT:
+            xModifier = -1;
+            yModifier = 0;
+    }
+    return this.currentTetromino
+               .getNewMovementPositions(xModifier, yModifier);
+}
+
+Board.prototype.generateRandomInitialRows = function() {
     var numFilledRows = 3;
     var positionsLeftEmpty = this.squaresMatrix.getWidth() * 1;
     var totalSquaresNeeded = (this.squaresMatrix.getWidth() * numFilledRows) -
@@ -132,7 +107,7 @@ Board.prototype.generateRandomInitialRows = function() {
         var yRnd = Math.floor(Math.random() * (yMax - yMin + 1)) + yMin;
         var tetrominoType = getRandonTetrominoType();
         var square = new Square(xRnd, yRnd, tetrominoType);
-        this.squaresMatrix.insertSquare(square); 
+        this.squaresMatrix.insertSquare(square);
     }
 }
 
