@@ -9,7 +9,6 @@ function getRandonTetrominoType() {
     }  
 
     /* Make a clone of TETROMINOS */
-    /* Not a deep copy, not sure yet if this affects. */
     _SHUFFLED_TETROMINOS = TETROMINOS.slice(0); 
 
     /* Fisher-Yates shuffle, modern version */

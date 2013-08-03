@@ -21,17 +21,17 @@ SquaresMatrix.prototype.insertSquare = function(square) {
     var x = square.getX();
     var y = square.getY();
     this.squaresMatrix[x][y] = square;
+
     return this;
 }
 
 SquaresMatrix.prototype.insertSquareAt = function(x, y, square) {
     square.setX(x);
     square.setY(y);
-    this.squaresMatrix[x][y] = square;
-    return this;
+    return this.insertSquare(square);
 }
 
-SquaresMatrix.prototype.getSquares = function() {
+SquaresMatrix.prototype.getMatrix = function() {
     return this.squaresMatrix;
 }
 
