@@ -4,8 +4,8 @@
 
 function Tetromino(x, y, tetrominoType = "invalidTetrominoType") {
     
-    this.shiftX = x < 0 ? 1 : x + 1;
-    this.shiftY = y < 0 ? 1 : y + 1;
+    this.realX = x < 0 ? 0 : x;
+    this.realY = y < 0 ? 0 : y;
 
     this.matrix = new Array(4);
     for(var i = 0; i < 4; i++) {
@@ -78,8 +78,8 @@ Tetromino.prototype.getSquares = function() {
             if(! (square instanceof Square))
                 continue;
 
-            square.setX(x * this.shiftX);
-            square.setY(y * this.shiftY);
+            square.setX(x + this.realX);
+            square.setY(y + this.realY);
             squares.push(square);
         }
     }

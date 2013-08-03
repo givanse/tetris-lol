@@ -9,6 +9,7 @@ test("Tetromino.getSquares", function() {
     var expecteds = new Array(0);
     deepEqual(actuals, expecteds);
 
+    /* Tests with origin at 0x0 */
     tetromino = new Tetromino(0, 0, SQUARESHP);
     actuals = tetromino.getSquares();
     expecteds = [new Square(0, 0, SQUARESHP),
@@ -63,6 +64,23 @@ test("Tetromino.getSquares", function() {
                  new Square(1, 1, LSHP_L),
                  new Square(2, 0, LSHP_L),
                  new Square(2, 1, LSHP_L)];
+    deepEqual(actuals, expecteds);
+
+    /* Tests with a random origin. */
+    tetromino = new Tetromino(65, 86, SQUARESHP);
+    actuals = tetromino.getSquares();
+    expecteds = [new Square(65, 86, SQUARESHP),
+                 new Square(65, 87, SQUARESHP),
+                 new Square(66, 86, SQUARESHP),
+                 new Square(66, 87, SQUARESHP)];
+    deepEqual(actuals, expecteds);
+
+    tetromino = new Tetromino(15, 15, SSHP_R);
+    actuals = tetromino.getSquares();
+    expecteds = [new Square(15, 16, SSHP_R),
+                 new Square(16, 15, SSHP_R),
+                 new Square(16, 16, SSHP_R),
+                 new Square(17, 15, SSHP_R)];
     deepEqual(actuals, expecteds);
 
 });
