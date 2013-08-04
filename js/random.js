@@ -2,14 +2,14 @@
 /* Do not access this from anywhere, except from getRandonTetrominoType() */
 var _SHUFFLED_TETROMINOS = [];
 
-function getRandonTetrominoType() {
+function getRandomTetrominoName() {
 
     if(_SHUFFLED_TETROMINOS.length > 0) {
         return _SHUFFLED_TETROMINOS.pop();
     }  
 
     /* Make a clone of TETROMINOS */
-    _SHUFFLED_TETROMINOS = TETROMINOS.slice(0); 
+    _SHUFFLED_TETROMINOS = TETROMINO_NAMES.slice(0); 
 
     /* Fisher-Yates shuffle, modern version */
     for(var i = _SHUFFLED_TETROMINOS.length - 1; i > 0; i--) {
