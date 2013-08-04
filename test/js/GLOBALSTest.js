@@ -26,22 +26,22 @@ test("GLOBALS TETROMINO_BASE_COORDINATES", function() {
 
     /**
      *   -1 0 1
-     *  1 
+     *  1 x x
      *  0 x x
-     * -1 x x
+     * -1 
      */
     actuals = TETROMINO_BASE_COORDINATES.SQUARESHP;
-    expecteds = [[-1, 0], [-1, -1], [0, 0], [0, -1]];
+    expecteds = [[-1, 1], [-1, 0], [0, 1], [0, 0]];
     deepEqual(actuals, expecteds, "SQUARESHP");
 
     /**
      *   -1 0 1
-     *  1 
-     *  0 x x x
-     * -1   x
+     *  1 x x x 
+     *  0   x 
+     * -1   
      */
     actuals = TETROMINO_BASE_COORDINATES.TSHP;
-    expecteds = [[-1, 0], [0, 0], [0, -1], [1, 0]];
+    expecteds = [[-1, 1], [0, 1], [0, 0], [1, 1]];
     deepEqual(actuals, expecteds, "TSHP");
 
     /**
