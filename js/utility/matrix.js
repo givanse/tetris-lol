@@ -52,32 +52,29 @@ function transposeMatrix(matrix) {
     return matrix;
 }
 
-function invertMatrixRows(matrix) {
+function invertMatrixCols(matrix) {
 
     if(!isValidMatrix(matrix))
         return matrix;
 
-    var width = matrix.length;
-    var height = matrix[0].length;
+    var firstCol = 0;
+    var lastCol = matrix.length - 1;
+    
+    while(firstCol < lastCol) {
+        var tmpCol = matrix[firstCol];
+        matrix[firstCol] = matrix[lastCol];
+        matrix[lastCol] = tmpCol; 
 
-    for(var i = 0; i < width; i++) {
-        var firstRowIndex = 0;
-        var lastRowIndex = height - 1;
-        while(firstRowIndex < lastRowIndex) {
-            var tmpRow = matrix[i][firstRowIndex];
-            matrix[i][firstRowIndex] = matrix[i][lastRowIndex];
-            matrix[i][lastRowIndex] = tmpRow;
-            firstRowIndex++;
-            lastRowIndex--;
-        }
+        firstCol++;
+        lastCol--;
     }
-
+    
     return matrix;
 }
 
 function rotateMatrix(matrix) {
     matrix = transposeMatrix(matrix);              
-    matrix = invertMatrixRows(matrix);             
+    matrix = invertMatrixCols(matrix);             
     return matrix;
 }
 
