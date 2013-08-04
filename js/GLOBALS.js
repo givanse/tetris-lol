@@ -36,7 +36,7 @@ Object.freeze(TETROMINO_NAME);
  * All the shapes share at least one position in common, which is set to be
  * the coordinate (0, 0).
  */
-var TETROMINO = {
+var TETROMINO_BASE_COORDINATES = {
     LINESHP:   [[-1,  0], [0, 0], [ 1, 0], [2,  0]],
     SQUARESHP: [[-1,  0], [0, 0], [-1, 1], [0,  1]], 
     TSHP:      [[-1,  0], [0, 0], [ 0, 1], [1,  0]], 
