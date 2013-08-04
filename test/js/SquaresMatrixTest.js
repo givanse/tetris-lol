@@ -27,28 +27,28 @@ test("SquaresMatrix.arePositionsAvailable", function() {
     var squaresMatrix = new SquaresMatrix(1, 1);
     var positions; 
     ok(!squaresMatrix.arePositionsAvailable(positions));
-    var positions = []; 
+    positions = []; 
     ok(!squaresMatrix.arePositionsAvailable(positions));
-    var positions = [[-1, -1]]; 
+    positions = [[-1, -1]]; 
     ok(!squaresMatrix.arePositionsAvailable(positions));
-    var positions = [[-1, 1]]; 
+    positions = [[-1, 1]]; 
     ok(!squaresMatrix.arePositionsAvailable(positions));
-    var positions = [[1, -1]]; 
+    positions = [[1, -1]]; 
     ok(!squaresMatrix.arePositionsAvailable(positions));
-    var positions = [[1, 1]]; 
+    positions = [[1, 1]]; 
     ok(!squaresMatrix.arePositionsAvailable(positions));
-    var positions = [[0, 0]]; 
+    positions = [[0, 0]]; 
     ok(squaresMatrix.arePositionsAvailable(positions));
 
     /**
      *   01
      * 0[x ]
      */
-    var squaresMatrix = new SquaresMatrix(2, 1)
+    squaresMatrix = new SquaresMatrix(2, 1)
                         .insertSquare(new Square(0, 0));
-    var positions = [[1, 0]]; 
+    positions = [[1, 0]]; 
     ok(squaresMatrix.arePositionsAvailable(positions));
-    var positions = [[0, 0], [1, 0]]; 
+    positions = [[0, 0], [1, 0]]; 
     ok(!squaresMatrix.arePositionsAvailable(positions));
 
     /**
@@ -57,14 +57,45 @@ test("SquaresMatrix.arePositionsAvailable", function() {
      * 1[x]
      * 2[ ]
      */
-    var squaresMatrix = new SquaresMatrix(1, 3)
+    squaresMatrix = new SquaresMatrix(1, 3)
                         .insertSquare(new Square(0, 1));
-    var positions = [[0, 1]]; 
+    positions = [[0, 1]]; 
     ok(!squaresMatrix.arePositionsAvailable(positions));
-    var positions = [[0, 0], [0, 2]]; 
+    positions = [[0, 0], [0, 2]]; 
     ok(squaresMatrix.arePositionsAvailable(positions));
-    var positions = [[0, 0], [0, 1], [0, 2]]; 
+    positions = [[0, 0], [0, 1], [0, 2]]; 
     ok(!squaresMatrix.arePositionsAvailable(positions));
+
+    /**
+     *   0123
+     * 0[    ]
+     * 1[    ]
+     * 2[    ]
+     * 3[    ]
+     */
+    squaresMatrix = new SquaresMatrix(4, 4);
+
+    positions = [[0, 0], [0, 1], [1, 0], [1, 1]]; 
+    ok(squaresMatrix.arePositionsAvailable(positions));
+
+    positions = [[1, 2], [1, 3], [2, 3], [3, 3]]; 
+    ok(squaresMatrix.arePositionsAvailable(positions));
+
+    /* right border */
+    positions = [[2, 2], [3, 2], [3, 3], [4, 2]]; 
+    ok(!squaresMatrix.arePositionsAvailable(positions), "T out of borders");
+
+    /* left border */
+    positions = [[-1, 0], [1, 0], [2, 0], [3, 0]]; 
+    ok(!squaresMatrix.arePositionsAvailable(positions), "line out of borders");
+
+    /* top border */
+    positions = [[1, -1], [2, -1], [0, 0], [1, 0]]; 
+    ok(!squaresMatrix.arePositionsAvailable(positions), "S out of borders");
+
+    /* bottom border */
+    positions = [[0, 2], [1, 2], [1, 3], [1, 4]]; 
+    ok(!squaresMatrix.arePositionsAvailable(positions), "L out of borders");
 });
 
 test("SquaresMatrix.packColumn", function() {
@@ -171,6 +202,7 @@ test("SquaresMatrix.packColumn", function() {
                     .insertSquare(new Square(0, 2, LINESHP)).getMatrix();
     actuals = squaresMatrix.getMatrix();
     deepEqual(actuals, expecteds);
+
 });
 
 /* EOF */
