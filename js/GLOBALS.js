@@ -21,7 +21,7 @@ var SSHP_L = "SSHP_L";
 var LSHP_R = "LSHP_R";
 var LSHP_L = "LSHP_L";
 
-var TETROMINO_NAME = [
+var TETROMINO_NAMES = [
     LINESHP,
     SQUARESHP,
     TSHP,
@@ -30,7 +30,7 @@ var TETROMINO_NAME = [
     LSHP_R,
     LSHP_L
 ];
-Object.freeze(TETROMINO_NAME);
+Object.freeze(TETROMINO_NAMES);
 
 /**
  * All the shapes share at least one position in common, which is set to be
@@ -40,7 +40,7 @@ var TETROMINO_BASE_COORDINATES = {
     LINESHP:   [[-1,  0], [ 0,  0], [1,  0], [2,  0]],
     SQUARESHP: [[-1,  1], [-1,  0], [0,  1], [0,  0]],
     TSHP:      [[-1,  1], [ 0,  1], [0,  0], [1,  1]],
-    SSHP_R:    [[-1,  0], [ 0,  1], [0,  0], [1,  0]],
+    SSHP_R:    [[-1,  0], [ 0,  1], [0,  0], [1,  1]],
     SSHP_L:    [[-1,  1], [ 0,  1], [0,  0], [1,  0]],
     LSHP_R:    [[-1,  1], [-1,  0], [0,  0], [1,  0]],
     LSHP_L:    [[-1,  0], [ 0,  0], [1,  1], [1,  0]]
