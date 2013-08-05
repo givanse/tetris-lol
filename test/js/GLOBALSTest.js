@@ -57,7 +57,7 @@ test("GLOBALS TETROMINO_BASE_COORDINATES", function() {
      * -1  
      */
     actuals = TETROMINO_BASE_COORDINATES.SSHP_R;
-    expecteds = [[-1, 0], [0, 1], [0, 0], [1, 0]];
+    expecteds = [[-1, 0], [0, 1], [0, 0], [1, 1]];
     deepEqual(actuals, expecteds);
 
     /**
