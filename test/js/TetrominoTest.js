@@ -7,8 +7,8 @@
 test("Tetromino.getSquares", function() {
     var tetromino = new Tetromino(0, 0);
     var actuals = tetromino.getSquares();
-    var expecteds = ["invalidTetrominoName"];
-    deepEqual(actuals, expecteds, "invalidTetrominoName");
+    var expecteds = null;
+    equal(actuals, expecteds);
 
     /**
      *   -1 0 1 2
@@ -140,6 +140,29 @@ test("Tetromino.getSquares", function() {
                  new Square(67, 89, SQUARESHP),
                  new Square(67, 88, SQUARESHP)];
     deepEqual(actuals, expecteds, "(65, 86)");
+});
+
+test("Tetromino.rotate", function() {
+    /**
+     *   -1 0 1
+     *  1 x x
+     *  0   x x
+     * -1
+     */
+    var tetromino = new Tetromino(0, 0, SSHP_L);
+    var actuals = tetromino.rotate();
+    /**
+     *   -1 0 1
+     *  1   x  
+     *  0 x x 
+     * -1 x   
+     */
+    var expecteds = [new Square(1, 1, SSHP_L),
+                     new Square(1, 2, SSHP_L),
+                     new Square(2, 2, SSHP_L),
+                     new Square(2, 3, SSHP_L)];
+    deepEqual(actuals, expecteds, "SSHP_L");
+    
 });
 
 /* EOF */

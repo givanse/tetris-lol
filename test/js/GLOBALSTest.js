@@ -58,7 +58,7 @@ test("GLOBALS TETROMINO_BASE_COORDINATES", function() {
      */
     actuals = TETROMINO_BASE_COORDINATES.SSHP_R;
     expecteds = [[-1, 0], [0, 1], [0, 0], [1, 1]];
-    deepEqual(actuals, expecteds);
+    deepEqual(actuals, expecteds, "SSHP_R");
 
     /**
      *   -1 0 1
@@ -68,7 +68,7 @@ test("GLOBALS TETROMINO_BASE_COORDINATES", function() {
      */
     actuals = TETROMINO_BASE_COORDINATES.SSHP_L;
     expecteds = [[-1, 1], [0, 1], [0, 0], [1, 0]];
-    deepEqual(actuals, expecteds);
+    deepEqual(actuals, expecteds, "SSHP_L");
 
     /**
      *   -1 0 1
@@ -78,7 +78,7 @@ test("GLOBALS TETROMINO_BASE_COORDINATES", function() {
      */
     actuals = TETROMINO_BASE_COORDINATES.LSHP_R;
     expecteds = [[-1, 1], [-1, 0], [0, 0], [1, 0]];
-    deepEqual(actuals, expecteds);
+    deepEqual(actuals, expecteds, "LSHP_R");
 
     /**
      *   -1 0 1
@@ -88,7 +88,7 @@ test("GLOBALS TETROMINO_BASE_COORDINATES", function() {
      */
     actuals = TETROMINO_BASE_COORDINATES.LSHP_L;
     expecteds = [[-1, 0], [0, 0], [1, 1], [1, 0]];
-    deepEqual(actuals, expecteds);
+    deepEqual(actuals, expecteds, "LSHP_L");
 
 });
 

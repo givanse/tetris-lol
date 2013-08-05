@@ -6,60 +6,40 @@ function Tetromino(x, y, tetrominoName = "invalidTetrominoName") {
     
     this.realX = x < 0 ? 0 : x;
     this.realY = y < 0 ? 0 : y;
+    this.tetrominoName = tetrominoName;
+
     this.baseCoordinates = TETROMINO_BASE_COORDINATES[tetrominoName];
     this.squares = null;
-
-    if(this.baseCoordinates == undefined)
-        this.squares = [tetrominoName];
-    else
-        this._buildTetrominoSquares(tetrominoName);
 }
 
-Tetromino.prototype._buildTetrominoSquares = function(tetrominoName) {
-    this.squares = new Array(4);
+Tetromino.prototype.getSquares = function() {
 
-    var c = this.baseCoordinates[0];
+    if(this.baseCoordinates == undefined)
+        return this.squares;
 
-    for(var i = 0; i < 4; i++) {
+    if(this.squares == null)
+        this.squares = new Array(4);
+
+    for(var i = 0; i < this.baseCoordinates.length; i++) {
         var coords = this.baseCoordinates[i];
 
         /* +2 to ensure that the base coords have positive values */
         var x = coords[0] + 2; 
         var y = coords[1] + 2;
 
-        /* coordinates offset */
+        /* add coordinates offset */
         x += this.realX; 
         y += this.realY;
 
-        this.squares[i] = new Square(x, y, tetrominoName);
-    }
-}
-
-Tetromino.prototype.getSquares = function() {
-    return this.squares;
-}
-
-Tetromino.prototype._getSquares = function(matrix) {
-    var squaresCount = 0;
-    var squares = new Array(0);
-    for(var x = 0; x < 4; x++) {
-        for(var y = 0; y < 4; y++) {
-            var square = matrix[x][y];
-
-            if(square instanceof Square)
-                squaresCount++;
-            else
-                continue;
-
-            square.setX(x + this.realX);
-            square.setY(y + this.realY);
-            squares.push(square);
-
-            if(squaresCount == 4)
-                return squares;
+        var square = this.squares[i];
+        if(square instanceof Square) {
+            square.setX(x);
+            square.setY(y);
+        } else {
+            this.squares[i] = new Square(x, y, this.tetrominoName);
         }
     }
-    return squares;
+    return this.squares;
 }
 
 Tetromino.prototype.move = function(direction) {
@@ -108,7 +88,14 @@ Tetromino.prototype.getRotatedPositions = function() {
 
 
 Tetromino.prototype.rotate = function() {                              
-    this.matrix =  rotateMatrix(this.matrix);
+    for(var i = 0; i < this.baseCoordinates.length; i++) {
+        var coords = this.baseCoordinates[i];
+        /* (-y, x) */
+        var x = coords[1] * -1;
+        var y = coords[0];
+        this.baseCoordinates[i] = [x, y];
+    }
+    return this.getSquares();
 }
 
 /* EOF */
