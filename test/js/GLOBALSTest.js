@@ -27,7 +27,7 @@ test("GLOBALS TETROMINO_BASE_COORDINATES", function() {
      * -1 
      */
     var actuals = TETROMINO_BASE_COORDINATES.LINESHP;
-    var expecteds = [[-1, 0], [0,0], [1, 0], [2, 0]];
+    var expecteds = [[-1, 0], [0, 0], [1, 0], [2, 0]];
     deepEqual(actuals, expecteds, "LINESHP");
 
     /**

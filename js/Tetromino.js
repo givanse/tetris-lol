@@ -3,9 +3,9 @@
  */
 
 function Tetromino(x, y, tetrominoName = "invalidTetrominoName") {
-    
-    this.realX = x < 0 ? 0 : x;
-    this.realY = y < 0 ? 0 : y;
+
+    this.xOffset = x < 0 ? 0 : x;
+    this.yOffset = y < 0 ? 0 : y;
     this.tetrominoName = tetrominoName;
 
     this.baseCoordinates = TETROMINO_BASE_COORDINATES[tetrominoName];
@@ -22,14 +22,9 @@ Tetromino.prototype.getSquares = function() {
 
     for(var i = 0; i < this.baseCoordinates.length; i++) {
         var coords = this.baseCoordinates[i];
-
-        /* +2 to ensure that the base coords have positive values */
-        var x = coords[0] + 2; 
-        var y = coords[1] + 2;
-
-        /* add coordinates offset */
-        x += this.realX; 
-        y += this.realY;
+        var newCoords = this._addCoordinatesOffset(coords);
+        var x = newCoords[0];
+        var y = newCoords[1];
 
         var square = this.squares[i];
         if(square instanceof Square) {
@@ -47,54 +42,82 @@ Tetromino.prototype.move = function(direction) {
         case UP:
             this.rotate(); return;
         case DOWN:
-            this.realY++; return; 
+            this.yOffset++; return;
         case LEFT:
-            this.realX--; return; 
+            this.xOffset--; return;
         case RIGHT:
-            this.realX++; return; 
+            this.xOffset++; return;
     }
 }
 
-Tetromino.prototype.getNewMovementPositions = function(xModifier, yModifier) {           
+Tetromino.prototype.getNewMovementPositions = function(xModifier, yModifier) {
     var squares = this.getSquares();
     return this._getNewMovementPositions(squares, xModifier, yModifier);
 }
 
-Tetromino.prototype._getNewMovementPositions = function(squares, xModifier, 
-                                                                 yModifier) {           
-    var newPositions = Array(4);                                                 
-    for(var i = 0; i < 4; i++) {                                                 
-        var square = squares[i];                                                 
-                                                                                 
-        var x = square.getX();                                                   
-        var y = square.getY();                                                   
-                                                                                 
-        var nextX = square.getX() + xModifier;                                   
-        var nextY = square.getY() + yModifier;                                   
-                                                                                 
-        newPositions[i] = [nextX, nextY];                                        
-    }                                                                            
-    return newPositions;                                                         
-}                                                                                
-                                                                                 
-Tetromino.prototype.getRotatedPositions = function() {                              
-    var matrixCopy = this.matrix.slice();
-    matrixCopy = rotateMatrix(matrixCopy);
-    var squares = this._getSquares(matrixCopy); 
-    /* shift by -2 columns the new positions */
-    var newPositions = this._getNewMovementPositions(squares, -2, 0);
+Tetromino.prototype._getNewMovementPositions = function(squares, xModifier,
+                                                                 yModifier) {
+    var newPositions = Array(4);
+    for(var i = 0; i < 4; i++) {
+        var square = squares[i];
+
+        var x = square.getX();
+        var y = square.getY();
+
+        var nextX = square.getX() + xModifier;
+        var nextY = square.getY() + yModifier;
+
+        newPositions[i] = [nextX, nextY];
+    }
     return newPositions;
-} 
+}
 
+/**
+ * @coordinatesPair Is an array of two numbers, a (x, y) pair.
+ */
+Tetromino.prototype._addCoordinatesOffset = function(coordinatesPair) {
 
-Tetromino.prototype.rotate = function() {                              
-    for(var i = 0; i < this.baseCoordinates.length; i++) {
-        var coords = this.baseCoordinates[i];
+    if(coordinatesPair.length != 2)
+        return;
+
+    /* +2 to ensure that the base coords have positive values */             
+    var x = coordinatesPair[0] + 2;                                                   
+    var y = coordinatesPair[1] + 2;                                                   
+                                                                                 
+    /* add coordinates offset */                                             
+    x += this.xOffset;                                                         
+    y += this.yOffset;
+
+    var newPair = [x, y];
+
+    return newPair;
+}
+
+Tetromino.prototype._rotateBaseCoordinates = function(baseCoords) {
+
+    var rotatedBaseCoords = new Array(baseCoords.length);
+
+    for(var i = 0; i < baseCoords.length; i++) {
+        var coords = baseCoords[i];
         /* (-y, x) */
         var x = coords[1] * -1;
         var y = coords[0];
-        this.baseCoordinates[i] = [x, y];
+        rotatedBaseCoords[i] = [x, y];
     }
+
+    return rotatedBaseCoords;
+}
+
+Tetromino.prototype.getRotatedPositions = function() {
+    var coordinates = this._rotateBaseCoordinates(this.baseCoordinates);
+    for(var i = 0; i < coordinates.length; i++) {
+        coordinates[i] = this._addCoordinatesOffset(coordinates[i]);
+    }
+    return coordinates;
+}
+
+Tetromino.prototype.rotate = function() {
+    this.baseCoordinates = this._rotateBaseCoordinates(this.baseCoordinates);
     return this.getSquares();
 }
 

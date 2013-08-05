@@ -142,6 +142,135 @@ test("Tetromino.getSquares", function() {
     deepEqual(actuals, expecteds, "(65, 86)");
 });
 
+test("Tetromino.getRotatedPositions", function() {
+
+    /**
+     *   -1 0 1 2
+     *  1
+     *  0 x x x x
+     * -1
+     */
+    var tetromino = new Tetromino(0, 0, LINESHP);
+    var actuals = tetromino.getRotatedPositions();
+    /**
+     *   -1 0 1 
+     *  1   x   
+     *  0   x
+     * -1   x
+     * -2   x 
+     */
+    var expecteds = [[2, 1], [2, 2], [2, 3], [2, 4]]; /* +2 */
+    deepEqual(actuals, expecteds, "LINESHP");
+
+    /**
+     *   -1 0 1
+     *  1 x x
+     *  0 x x
+     * -1
+     */
+    tetromino = new Tetromino(0, 0, SQUARESHP);
+    actuals = tetromino.getRotatedPositions();
+    /**
+     *   -1 0 1
+     *  1 
+     *  0 x x
+     * -1 x x
+     */
+    /*          [[-1, -1], [0, -1], [-1, 0], [0, 0]] */
+    expecteds = [[ 1,  1], [2,  1], [ 1, 2], [2, 2]];
+    deepEqual(actuals, expecteds, "SQUARESHP");
+
+    /**
+     *   -1 0 1
+     *  1 x x x
+     *  0   x
+     * -1
+     */
+    tetromino = new Tetromino(0, 0, TSHP);
+    actuals = tetromino.getRotatedPositions();
+    /**
+     *   -1 0 1
+     *  1 x
+     *  0 x x
+     * -1 x
+     */
+    /*          [[-1, -1], [-1, 0], [0, 0], [-1, 1]]*/
+    expecteds = [[ 1,  1], [ 1, 2], [2, 2], [ 1, 3]];
+    deepEqual(actuals, expecteds, "TSHP");
+
+    /**
+     *   -1 0 1
+     *  1 x x
+     *  0   x x
+     * -1
+     */
+    tetromino = new Tetromino(0, 0, SSHP_L);
+    actuals = tetromino.getRotatedPositions();
+    /**
+     *   -1 0 1
+     *  1   x
+     *  0 x x
+     * -1 x
+     */
+    /*          [[-1, -1], [-1, 0], [0, 0], [0, 1]] */
+    expecteds = [[ 1,  1], [ 1, 2], [2, 2], [2, 3]];
+    deepEqual(actuals, expecteds, "SSHP_L");
+
+    /**
+     *   -1 0 1
+     *  1   x x
+     *  0 x x
+     * -1
+     */
+    tetromino = new Tetromino(0, 0, SSHP_R);
+    actuals = tetromino.getRotatedPositions();
+    /**
+     *   -1 0 1
+     *  1 x
+     *  0 x x
+     * -1   x
+     */
+    /*          [[0, -1], [-1, 0], [0, 0], [-1, 1]] */
+    expecteds = [[2,  1], [ 1, 2], [2, 2], [ 1, 3]];
+    deepEqual(actuals, expecteds, "SSHP_R");
+
+    /**
+     *   -1 0 1
+     *  1 x
+     *  0 x x x
+     * -1
+     */
+    tetromino = new Tetromino(0, 0, LSHP_R);
+    actuals = tetromino.getRotatedPositions();
+    /**
+     *   -1 0 1
+     *  1   x
+     *  0   x
+     * -1 x x
+     */
+    /*          [[-1, -1], [0, -1], [0, 0], [0, 1]] */
+    expecteds = [[ 1,  1], [2,  1], [2, 2], [2, 3]];
+    deepEqual(actuals, expecteds, "LSHP_R");
+
+    /**
+     *   -1 0 1
+     *  1     x
+     *  0 x x x
+     * -1
+     */
+    tetromino = new Tetromino(0, 0, LSHP_L);
+    actuals = tetromino.getRotatedPositions();
+    /**
+     *   -1 0 1
+     *  1 x x
+     *  0   x
+     * -1   x
+     */
+    /*          [[0, -1], [0, 0], [-1, 1], [0, 1]] */
+    expecteds = [[2,  1], [2, 2], [ 1, 3], [2, 3]];
+    deepEqual(actuals, expecteds, "LSHP_L");
+});
+
 test("Tetromino.rotate", function() {
     /**
      *   -1 0 1
