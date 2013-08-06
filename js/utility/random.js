@@ -8,21 +8,29 @@ function getRandomTetrominoName() {
         return _SHUFFLED_TETROMINOS.pop();
     }  
 
+    _SHUFFLED_TETROMINOS = getShuffledTetrominoNames();
+
+    return _SHUFFLED_TETROMINOS.pop();
+}
+
+function getShuffledTetrominoNames() {
+
     /* Make a clone of TETROMINOS */
-    _SHUFFLED_TETROMINOS = TETROMINO_NAMES.slice(0); 
+    var tNames = TETROMINO_NAMES.slice(0); 
 
     /* Fisher-Yates shuffle, modern version */
-    for(var i = _SHUFFLED_TETROMINOS.length - 1; i > 0; i--) {
-       // j ← random integer with 0 ≤ j ≤ i
+    for(var i = tNames.length - 1; i > 0; i--) {
+       /* j ← random integer with 0 ≤ j ≤ i */
        var min = 0;
        var max = i;
        var j = Math.floor(Math.random() * (max - min + 1)) + min;
-       // exchange a[j] and a[i]
-       var tmp = _SHUFFLED_TETROMINOS[i];
-       _SHUFFLED_TETROMINOS[j] = _SHUFFLED_TETROMINOS[i];
-       _SHUFFLED_TETROMINOS[i] = tmp; 
+       /* exchange a[j] and a[i] */
+       var tmp = tNames[i];
+       tNames[j] = tNames[i];
+       tNames[i] = tmp; 
     }
-    return _SHUFFLED_TETROMINOS.pop();
+
+    return tNames;
 }
 
 /* EOF */
