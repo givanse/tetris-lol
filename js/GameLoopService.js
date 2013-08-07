@@ -10,6 +10,10 @@
  *   intervalID           
  */                                                                                 
 function run(movementDirection = DOWN) {                                         
+
+    if(boardController == null)
+        return;
+
     var movementPerformed = boardController.updateBoard(movementDirection);      
                                                                                  
     if(movementPerformed) {                                                      
@@ -28,6 +32,7 @@ function run(movementDirection = DOWN) {
         if(! isNewTetroValid) {                                                  
             clearInterval(intervalID);                                           
             boardController.gameOver();                                          
+            boardController = null;
         }                                                                        
     }                                                                            
 } 
