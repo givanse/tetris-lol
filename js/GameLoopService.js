@@ -11,7 +11,7 @@ GameLoopService.prototype.start = function() {
 }
 
 GameLoopService.prototype.run = function() {
-  this.board.updateSquares(DOWN);
+  this.board.updateBoard(DOWN);
   this.board.drawSquares();
 }
 
@@ -42,13 +42,13 @@ GameLoopService.prototype.handleKey = function(e) {
     var dir = '';                                                                  
     switch(c) {                                                                   
         case 37:                                                                     
-            return this.board.updateSquares(LEFT);
+            return this.board.updateBoard(LEFT);
         case 38: // up: rotate                                                       
-            return this.board.updateSquares(UP);
+            return this.board.updateBoard(UP);
         case 39:                                                                     
-            return this.board.updateSquares(RIGHT);
+            return this.board.updateBoard(RIGHT);
         case 40:                                                                     
-            return this.board.updateSquares(DOWN);
+            return this.board.updateBoard(DOWN);
         case 27: // esc: toggle pause                                                
             this.pause(); break;                                                 
         default: /* other key, do nothing */ break;                                  
