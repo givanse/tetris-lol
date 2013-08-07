@@ -4,8 +4,15 @@
 
 function Tetromino(x, y, tetrominoName = "invalidTetrominoName") {
 
-    this.xOffset = x < 0 ? x : x;
-    this.yOffset = y < 0 ? y : y;
+    /**
+      * TODO: Review, the values are altered. This helps to compensate for 
+      *       the +2 offset used during creation in _addCoordinatesOffset(). 
+      *       This goes back to the use of negative values for the 
+      *       baseCoordinates, which eases the rotation routine.
+      */
+    this.xOffset = x - 1;
+    this.yOffset = y - 2;
+
     this.tetrominoName = tetrominoName;
 
     this.baseCoordinates = TETROMINO_BASE_COORDINATES[tetrominoName];

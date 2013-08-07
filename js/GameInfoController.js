@@ -25,7 +25,7 @@ GameInfoController.prototype.drawNextTetromino = function(nextTetromino) {
         return;
 
     var tetrominoName = nextTetromino.getTetrominoName();
-    var baseT = new Tetromino(-1, -2, tetrominoName);
+    var baseT = new Tetromino(0, 0, tetrominoName);
     var squares = baseT.getSquares();
     var tetroWrapper = this.getTWrapper(tetrominoName); 
     for(var i in squares) {
