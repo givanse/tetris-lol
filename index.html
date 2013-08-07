@@ -4,10 +4,12 @@
 
 <head>
     <meta charset="utf-8" />
+    <title>Tetris LoL</title>
+
     <link rel="stylesheet" href="style.css" >
 
-    <script type="text/javascript" src="js/GLOBALS.js"></script>
     <!-- Libraries -->
+    <script type="text/javascript" src="js/GLOBALS.js"></script>
     <script type="text/javascript" src="js/utility/array.js"></script>
     <script type="text/javascript" src="js/utility/random.js"></script>
     <script type="text/javascript" src="js/utility/browser.js"></script>
@@ -23,23 +25,37 @@
 <body>
     <div id="tetrisGame">
         <div id="gameInfo">
+            <div id="nextShape"></div>
+            <br/>
             Score:
             <div id="scoreField"></div>
+            <br/>
+            <button id="newGameButton" onclick="startNewGame()">Play</button>
         </div>
-        <div id="gameCanvas"></div>
+        <div id="gameCanvas">
+        </div>
     </div>
     <script>
         var canvas = document.getElementById("gameCanvas");                           
         var widthInSquares = 12;
         var heightInSquares = 18;
-        var boardController = new Board(canvas, 
-                                        widthInSquares, heightInSquares);
-
         var scoreField = document.getElementById("scoreField");                           
-        var gInfoController = new GameInfoController(scoreField);    
-
         var gameLoopService = new GameLoopService();
-        var intervalID = gameLoopService.start();
+
+        var boardController = null; 
+        var gInfoController = null; 
+        var intervalID = null;
+        function startNewGame() {
+            gameOver();
+
+            boardController = new Board(canvas, 
+                                        widthInSquares, heightInSquares);
+            gInfoController = new GameInfoController(scoreField);    
+            intervalID = gameLoopService.start();
+        }
+
+        /* Start right away. */
+        startNewGame();
     </script>
 </body>
 </html>

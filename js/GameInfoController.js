@@ -3,6 +3,7 @@ function GameInfoController(scoreField) {
     this.score = 0;
     
     this.scoreField = scoreField;
+    this.scoreField.innerHTML = "" + this.score;
 }
 
 

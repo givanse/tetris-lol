@@ -30,12 +30,23 @@ function run(movementDirection = DOWN) {
                                                                                  
         /* Check if the game is over. */                                         
         if(! isNewTetroValid) {                                                  
-            clearInterval(intervalID);                                           
-            boardController.gameOver();                                          
-            boardController = null;
+            gameOver();
         }                                                                        
     }                                                                            
 } 
+
+function gameOver() {
+    if(intervalID == null)
+        return;
+ 
+    clearInterval(intervalID);                                           
+    intervalID = null;
+
+    boardController.gameOver();                                          
+    boardController = null;
+
+    gInfoController = null;                                         
+}
 
 /* GameLoopService object. */
 
