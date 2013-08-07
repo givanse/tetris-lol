@@ -4,14 +4,16 @@ function GameLoopService(board) {
   this.bindKeyEvents();
 }
 
+/* Game service methods. */
+
 GameLoopService.prototype.start = function() {
     var interval = 1000 * 1; /* 1 second */
     this.board.drawSquares();
     setInterval(this.run, interval);
 }
 
-GameLoopService.prototype.run = function() {
-  this.board.updateBoard(DOWN);
+GameLoopService.prototype.run = function(movementDirection = DOWN) {
+  this.board.updateBoard(movementDirection);
   this.board.drawSquares();
 }
 
@@ -19,51 +21,45 @@ GameLoopService.prototype.pause = function() {
 
 }
 
-GameLoopService.prototype.bindKeyEvents = function() {                                   
+/* Key binding and handling. */
+
+GameLoopService.prototype.bindKeyEvents = function() {
     var me = this;
-    var event = "keypress";                                                        
-    if(isSafari() || isIE()) {                                                    
-        event = "keydown";                                                           
-    }                                                                              
-    var cb = function(e) {                                                         
-            /*TODO: almost same code as in the run() method */
-            me.handleKey(e);                                                       
-            me.board.drawSquares();
-        };                                                                           
-    if (window.addEventListener) {                                                 
-        document.addEventListener(event, cb, false);                                 
-    } else {                                                                       
-        document.attachEvent('on' + event, cb);                                      
-    }                                                                               
-}      
+    var event = (isSafari() || isIE()) ? "keydown" : "keypress";
+    var callBack = function(e) { me.handleKey(e); };
 
-GameLoopService.prototype.handleKey = function(e) {                                       
-    var c = this.whichKey(e);                                                      
-    var dir = '';                                                                  
-    switch(c) {                                                                   
-        case 37:                                                                     
-            return this.board.updateBoard(LEFT);
-        case 38: // up: rotate                                                       
-            return this.board.updateBoard(UP);
-        case 39:                                                                     
-            return this.board.updateBoard(RIGHT);
-        case 40:                                                                     
-            return this.board.updateBoard(DOWN);
-        case 27: // esc: toggle pause                                                
-            this.pause(); break;                                                 
-        default: /* other key, do nothing */ break;                                  
-    }                                                                              
-    return null;
-}   
+    if(window.addEventListener) {
+        document.addEventListener(event, callBack, false);
+    } else {
+        document.attachEvent('on' + event, callBack);
+    }
+}
 
-GameLoopService.prototype.whichKey = function(e) {                                        
-    var c;                                                                         
-    if(window.event) {                                                            
-        c = window.event.keyCode;                                                    
-    } else if(e) {                                                                
-        c = e.keyCode;                                                               
-    }                                                                              
-    return c;                                                                      
-}    
+GameLoopService.prototype.handleKey = function(ev) {
+    var keyCode = this.getKeyCode(ev);
+    var dir = '';
+    switch(keyCode) {
+        case 37:
+            return this.run(LEFT);
+        case 38: 
+            return this.run(UP);
+        case 39:
+            return this.run(RIGHT);
+        case 40:
+            return this.run(DOWN);
+        case 27: /* esc: toggle pause */
+            this.pause();
+            break;
+        default: /* other key, do nothing */
+            break;
+    }
+}
+
+GameLoopService.prototype.getKeyCode = function(ev) {
+    if(window.event)
+        return window.event.keyCode;
+    else if(ev)
+        return ev.keyCode;
+}
 
 /* EOF */
