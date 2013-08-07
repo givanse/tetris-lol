@@ -21,8 +21,8 @@ Tetromino.prototype.getSquares = function() {
         this.squares = new Array(4);
 
     for(var i = 0; i < this.baseCoordinates.length; i++) {
-        var coords = this.baseCoordinates[i];
-        var newCoords = this._addCoordinatesOffset(coords);
+        var baseCoords = this.baseCoordinates[i];
+        var newCoords = this._addCoordinatesOffset(baseCoords);
         var x = newCoords[0];
         var y = newCoords[1];
 
@@ -37,23 +37,7 @@ Tetromino.prototype.getSquares = function() {
     return this.squares;
 }
 
-Tetromino.prototype.move = function(direction) {
-    switch(direction) {
-        case UP:
-            this.rotate(); return;
-        case DOWN:
-            this.yOffset++; return;
-        case LEFT:
-            this.xOffset--; return;
-        case RIGHT:
-            this.xOffset++; return;
-    }
-}
-
-Tetromino.prototype.getNewMovementPositions = function(xModifier, yModifier) {
-    var squares = this.getSquares();
-    return this._getNewMovementPositions(squares, xModifier, yModifier);
-}
+/* Calculate new positions. */
 
 Tetromino.prototype._getNewMovementPositions = function(squares, xModifier,
                                                                  yModifier) {
@@ -108,7 +92,7 @@ Tetromino.prototype._rotateBaseCoordinates = function(baseCoords) {
     return rotatedBaseCoords;
 }
 
-Tetromino.prototype.getRotatedPositions = function() {
+Tetromino.prototype._getRotatedPositions = function() {
     var coordinates = this._rotateBaseCoordinates(this.baseCoordinates);
     for(var i = 0; i < coordinates.length; i++) {
         coordinates[i] = this._addCoordinatesOffset(coordinates[i]);
@@ -116,9 +100,43 @@ Tetromino.prototype.getRotatedPositions = function() {
     return coordinates;
 }
 
-Tetromino.prototype.rotate = function() {
+Tetromino.prototype.getNewPositions = function(movDirection) {                    
+    var xModifier = 0;                                                           
+    var yModifier = 0;                                                           
+    switch(movDirection) {                                                          
+        case UP: /* rotate */                                                    
+            return this._getRotatedPositions();                  
+        case DOWN:                                                               
+            xModifier = 0;                                                       
+            yModifier = 1;                                                       
+            break;
+        case RIGHT:                                                              
+            xModifier = 1;                                                       
+            yModifier = 0;                                                       
+            break;
+        case LEFT:                                                               
+            xModifier = -1;                                                      
+            yModifier = 0;                                                       
+            break;
+    }                                                                            
+    var squares = this.getSquares();
+    return this._getNewMovementPositions(squares, xModifier, yModifier);
+} 
+
+/* Perform movements. */
+
+Tetromino.prototype._rotate = function() {
     this.baseCoordinates = this._rotateBaseCoordinates(this.baseCoordinates);
     return this.getSquares();
+}
+
+Tetromino.prototype.move = function(movDirection) {
+    switch(movDirection) {
+        case    UP: this._rotate(); return;
+        case  DOWN: this.yOffset += 1; return;
+        case  LEFT: this.xOffset -= 1; return;
+        case RIGHT: this.xOffset += 1; return;
+    }
 }
 
 /* EOF */

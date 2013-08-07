@@ -142,7 +142,7 @@ test("Tetromino.getSquares", function() {
     deepEqual(actuals, expecteds, "(65, 86)");
 });
 
-test("Tetromino.getRotatedPositions", function() {
+test("Tetromino._getRotatedPositions", function() {
 
     /**
      *   -1 0 1 2
@@ -151,7 +151,7 @@ test("Tetromino.getRotatedPositions", function() {
      * -1
      */
     var tetromino = new Tetromino(0, 0, LINESHP);
-    var actuals = tetromino.getRotatedPositions();
+    var actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1 
      *  1   x   
@@ -169,7 +169,7 @@ test("Tetromino.getRotatedPositions", function() {
      * -1
      */
     tetromino = new Tetromino(0, 0, SQUARESHP);
-    actuals = tetromino.getRotatedPositions();
+    actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
      *  1 
@@ -187,7 +187,7 @@ test("Tetromino.getRotatedPositions", function() {
      * -1
      */
     tetromino = new Tetromino(0, 0, TSHP);
-    actuals = tetromino.getRotatedPositions();
+    actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
      *  1 x
@@ -205,7 +205,7 @@ test("Tetromino.getRotatedPositions", function() {
      * -1
      */
     tetromino = new Tetromino(0, 0, SSHP_L);
-    actuals = tetromino.getRotatedPositions();
+    actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
      *  1   x
@@ -223,7 +223,7 @@ test("Tetromino.getRotatedPositions", function() {
      * -1
      */
     tetromino = new Tetromino(0, 0, SSHP_R);
-    actuals = tetromino.getRotatedPositions();
+    actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
      *  1 x
@@ -241,7 +241,7 @@ test("Tetromino.getRotatedPositions", function() {
      * -1
      */
     tetromino = new Tetromino(0, 0, LSHP_R);
-    actuals = tetromino.getRotatedPositions();
+    actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
      *  1   x
@@ -259,7 +259,7 @@ test("Tetromino.getRotatedPositions", function() {
      * -1
      */
     tetromino = new Tetromino(0, 0, LSHP_L);
-    actuals = tetromino.getRotatedPositions();
+    actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
      *  1 x x
@@ -271,7 +271,7 @@ test("Tetromino.getRotatedPositions", function() {
     deepEqual(actuals, expecteds, "LSHP_L");
 });
 
-test("Tetromino.rotate", function() {
+test("Tetromino._rotate", function() {
     /**
      *   -1 0 1
      *  1 x x
@@ -279,7 +279,7 @@ test("Tetromino.rotate", function() {
      * -1
      */
     var tetromino = new Tetromino(0, 0, SSHP_L);
-    var actuals = tetromino.rotate();
+    var actuals = tetromino._rotate();
     /**
      *   -1 0 1
      *  1   x  
