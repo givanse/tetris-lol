@@ -49,6 +49,28 @@ SquaresMatrix.prototype.packColumn = function(xConstant, y) {
     }
 }
 
+/**
+  *
+  * return -
+  */
+SquaresMatrix.prototype.getRowState = function(y) {
+    var squaresCount = 0;
+
+    for(var x = 0; x < this.getWidth(); x++) {
+        var square = this.squaresMatrix[x][y];
+        if(square instanceof Square)
+            squaresCount++;
+    }
+    
+    if(squaresCount == 0)
+        return ROW_EMPTY;
+
+    if(squaresCount == this.getWidth())
+        return ROW_FULL;
+    
+    return ROW_USED;
+}
+
 /* Setters and Getters. */
 
 SquaresMatrix.prototype.getWidth = function() { return this.columns; }

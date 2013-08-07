@@ -54,4 +54,11 @@ var DOWN = 'down';
 var LEFT = 'left';
 var RIGHT = 'right';
 
+/**
+ * Board's row states.
+ */
+var ROW_EMPTY = 'ROW_EMPTY';
+var ROW_FULL  = 'ROW_FULL';
+var ROW_USED  = 'ROW_USED';
+
 /* EOF */

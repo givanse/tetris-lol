@@ -205,4 +205,37 @@ test("SquaresMatrix.packColumn", function() {
 
 });
 
+test("SquaresMatrix.getRowState", function() {
+    var squaresMatrix = new SquaresMatrix(0, 0);
+    var expected = ROW_EMPTY;
+    var actual = squaresMatrix.getRowState(0);
+    equal(actual, expected);
+
+    squaresMatrix = new SquaresMatrix(1, 1);
+    expected = ROW_EMPTY;
+    actual = squaresMatrix.getRowState(0);
+    equal(actual, expected);
+
+    squaresMatrix = new SquaresMatrix(3, 1);
+    expected = ROW_EMPTY;
+    actual = squaresMatrix.getRowState(0);
+    equal(actual, expected, '3 columns, empty');
+
+    /* [__x] */
+    squaresMatrix = new SquaresMatrix(3, 1)
+                        .insertSquare(new Square(2, 0));
+    expected = ROW_USED;
+    actual = squaresMatrix.getRowState(0);
+    equal(actual, expected, '3 columns, 1 used');
+
+    /* [xxx] */
+    squaresMatrix = new SquaresMatrix(3, 1)
+                        .insertSquare(new Square(0, 0))
+                        .insertSquare(new Square(1, 0))
+                        .insertSquare(new Square(2, 0));
+    expected = ROW_FULL;
+    actual = squaresMatrix.getRowState(0);
+    equal(actual, expected, '3 columns, full');
+});
+
 /* EOF */
