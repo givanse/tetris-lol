@@ -14,6 +14,7 @@ GameLoopService.prototype.start = function() {
 }
 
 GameLoopService.prototype.run = function(movementDirection = DOWN) {
+
     var movementPerformed = this.board.updateBoard(movementDirection);
 
     if(movementPerformed) {
@@ -54,11 +55,6 @@ GameLoopService.prototype.handleKey = function(ev) {
             return this.run(RIGHT);
         case 40:
             return this.run(DOWN);
-        case 27: /* esc: toggle pause */
-            this.pause();
-            break;
-        default: /* other key, do nothing */
-            break;
     }
 }
 
