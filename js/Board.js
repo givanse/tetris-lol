@@ -16,7 +16,6 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
     this.currTetromino = null; 
     this.generateRandomTetromino();
     this.generateRandomInitialRows();
-    this.gameOver();
 }
 
 /**
