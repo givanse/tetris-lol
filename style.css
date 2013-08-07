@@ -1,58 +1,74 @@
 
-body {                                                                           
-  background: #d7d7d7;                                                           
-}                                                                                
+body {
+  background: #d7d7d7;
+}
 
-#tetrisGame {                                                                        
-  width: 600px;                                                                  
+#tetrisGame {
+  width: 600px;
   height: 600px;
-  border: 1px solid black;                                                       
-  padding: 0px 30px;                                                                 
-  margin: auto;                                                                   
-}                                                                                
+  border: 1px solid black;
+  padding: 0px 30px;
+  margin: auto;
+}
 
 #gameCanvas {
   /**
-   *  Width and height will be adjusted at game start. 
-   */                                                         
+   *  Width and height will be adjusted at game start.
+   */
   width: 99px; height: 99px;
   background-color: #000;
   position: relative;
   color: #fff;
 }
 
-#gameInfo {                                                                          
-  background-color: #000;                                                        
-  color: #fff;                                                                   
-  float: right;                                                                  
-  width: 150px;                                                                  
-  height: 500px;                                                                 
+#gameInfo {
+  background-color: #000;
+  color: #fff;
+  float: right;
+  width: 150px;
+  height: 500px;
   padding: 10px;
-}  
+}
+
+#gameInfo #nextShape {
+  /* SQUARE_SIZE x 5 */
+  width:  160px;
+  height: 160px;
+  border: 1px solid white;
+}
+
+#gameInfo #scoreField {
+  width: 150px;
+  height: 50px;
+  border: 1px solid white;
+  color: #fff;
+  font-size: 1.1em;
+  text-align: right;
+}
 
 #gameover {
   color: red;
   font-size: 3em;
-  background-color: #fff;                                                        
+  background-color: #fff;
   position: absolute;
-  top: 33%;                                                            
-  vertical-align: middle; 
+  top: 33%;
+  vertical-align: middle;
   line-height: 150px;
   text-align: center;
 }
 
-.square {                                                                        
-  position: absolute;                                                            
-  width: 31px;                                                                   
-  height: 31px;                                                                  
-  border: 1px solid white;                                                       
-}                          
+.square {
+  position: absolute;
+  width: 31px;
+  height: 31px;
+  border: 1px solid white;
+}
 
-.LINESHP {background-color: #A000F0;}                                            
-.SQUARESHP {background-color: #00F0F0;}                                             
-.TSHP {background-color: #F0A000;}                                                  
-.LSHP_R {background-color: #0000F0;}                                            
-.LSHP_L {background-color: #00F000;}                                             
-.SSHP_R {background-color: #F00000;}                                            
-.SSHP_L {background-color: #F0F000;} 
+.LINESHP {background-color: #A000F0;}
+.SQUARESHP {background-color: #00F0F0;}
+.TSHP {background-color: #F0A000;}
+.LSHP_R {background-color: #0000F0;}
+.LSHP_L {background-color: #00F000;}
+.SSHP_R {background-color: #F00000;}
+.SSHP_L {background-color: #F0F000;}
 
