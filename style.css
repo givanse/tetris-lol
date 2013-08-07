@@ -12,13 +12,13 @@ body {
 }
 
 #gameCanvas {
+  position: relative;
   /**
    * 12 x 18 Squares.
    */
   width: 384px; 
   height: 576px;
   background-color: #000;
-  position: relative;
   color: #fff;
 }
 
@@ -31,11 +31,19 @@ body {
   padding: 10px;
 }
 
-#gameInfo #nextShape {
+#gameInfo #nextTetrominoField {
   /* SQUARE_SIZE x 5 */
   width:  160px;
   height: 160px;
   border: 1px solid white;
+}
+
+#gameInfo #nextTetrominoField .nextTWrapper {
+  position: relative;
+  width: 0px; height: 0px; /* Will be overriden, GameInfoController.js. */
+  margin: auto;
+  top: 48px; /* SQUARE_SIZE x 1.5 */
+  border: 0px;
 }
 
 #gameInfo #scoreField {

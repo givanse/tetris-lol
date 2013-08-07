@@ -33,4 +33,12 @@ function _getShuffledTetrominoNames() {
     return tNames;
 }
 
+function getRandomTetromino(width) {
+    var rndTetrominoName = getRandomTetrominoName();                             
+    /* TODO: Tetromino uses by default a +2 offset, needs to be adressed. */     
+    var x = Math.floor(width / 2) - 1;                   
+    var y = 0;                                                                   
+    return new Tetromino(x, y, rndTetrominoName);
+}
+
 /* EOF */

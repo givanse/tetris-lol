@@ -14,6 +14,7 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
     this.canvasDiv.style.height = this.height + "px";
 
     this.currTetromino = null; 
+    this.nextTetromino = null; 
     this.generateRandomTetromino();
     this.generateRandomInitialRows();
     this.drawSquares();
@@ -84,17 +85,17 @@ Board.prototype._drawSquaresArray = function(squaresArray) {
 
 Board.prototype.generateRandomTetromino = function() {
     /* First, save the current falling shape. */
-    this._insertCurrTetromino();
-
-    var tetrominoName = getRandomTetrominoName();
-    /* TODO: Tetromino uses by default a +2 offset, needs to be adressed. */
-    var x = Math.floor(this.squaresMatrix.getWidth() / 2) - 1;
-    var y = 0; 
-    this.currTetromino = new Tetromino(x, y, tetrominoName); 
+    if(this.currTetromino instanceof Tetromino) {
+        this._insertCurrTetromino();
+        this.currTetromino = this.nextTetromino;
+        this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
+    } else {
+        this.currTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
+        this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
+    }
 
     /* Check if the tetromino can be shown on the board. */
     var newTetroPositions = this.currTetromino.getPositions();
-
     return this.squaresMatrix.arePositionsAvailable(newTetroPositions);
 }
 
@@ -119,12 +120,10 @@ Board.prototype.generateRandomInitialRows = function() {
 /* Setters and Getters. */
 
 Board.prototype._insertCurrTetromino = function() {
-    if(this.currTetromino instanceof Tetromino) {                                
-        var squares = this.currTetromino.getSquares();                           
-        for(var i in squares) {                                                  
-            this.insertSquare(squares[i]);                                       
-        }                                                                        
-    } 
+    var squares = this.currTetromino.getSquares();                           
+    for(var i in squares) {                                                  
+        this.insertSquare(squares[i]);                                       
+    }                                                                        
 }
 
 Board.prototype.insertSquare = function(square) {
@@ -137,6 +136,10 @@ Board.prototype.getWidth = function() {
 
 Board.prototype.getHeight = function() {
     return parseInt(this.canvasDiv.style.height);
+}
+
+Board.prototype.getNextTetromino = function() {
+    return this.nextTetromino;
 }
 
 /* EOF */

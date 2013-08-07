@@ -4,12 +4,16 @@
 
 function Tetromino(x, y, tetrominoName = "invalidTetrominoName") {
 
-    this.xOffset = x < 0 ? 0 : x;
-    this.yOffset = y < 0 ? 0 : y;
+    this.xOffset = x < 0 ? x : x;
+    this.yOffset = y < 0 ? y : y;
     this.tetrominoName = tetrominoName;
 
     this.baseCoordinates = TETROMINO_BASE_COORDINATES[tetrominoName];
     this.squares = this.getSquares();
+}
+
+Tetromino.prototype.getTetrominoName = function() {
+    return this.tetrominoName;
 }
 
 Tetromino.prototype.getSquares = function() {
