@@ -7,15 +7,16 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
     this.canvasDiv.setAttribute("style",
                                 "display: block; width: 0px; height: 0px");
     /* canvasDiv dimensions */
-    var width  = widthInSquares  * SQUARE_SIZE;
-    var height = heightInSquares * SQUARE_SIZE;
+    this.width  = widthInSquares  * SQUARE_SIZE;
+    this.height = heightInSquares * SQUARE_SIZE;
     /* set canvasDiv dimensions */
-    this.canvasDiv.style.width  = width  + "px";
-    this.canvasDiv.style.height = height + "px";
+    this.canvasDiv.style.width  = this.width  + "px";
+    this.canvasDiv.style.height = this.height + "px";
 
     this.currTetromino = null; 
     this.generateRandomTetromino();
     this.generateRandomInitialRows();
+    this.gameOver();
 }
 
 /**
@@ -35,6 +36,16 @@ Board.prototype.updateBoard = function(movDirection) {
 }
 
 /* Drawing into the canvas. */
+
+Board.prototype.gameOver = function() {
+    var div = document.createElement('div');
+    div.id = "gameover"
+    div.setAttribute("style", "display: block; width: 0px; height: 0px");         
+    div.style.width = this.width + "px";
+    div.style.height = this.height / 3 + "px";
+    div.innerHTML = "Defeat";
+    this.canvasDiv.appendChild(div);
+}
 
 /**
  * Draw, append, the squares to the canvas div.
@@ -78,6 +89,11 @@ Board.prototype.generateRandomTetromino = function() {
     var x = Math.floor(this.squaresMatrix.getWidth() / 2) - 1;
     var y = 0; 
     this.currTetromino = new Tetromino(x, y, tetrominoName); 
+
+    /* Check if the tetromino can be shown on the board. */
+    var newTetroPositions = this.currTetromino.getPositions();
+
+    return this.squaresMatrix.arePositionsAvailable(newTetroPositions);
 }
 
 Board.prototype.generateRandomInitialRows = function() {

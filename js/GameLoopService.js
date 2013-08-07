@@ -1,7 +1,8 @@
 
 function GameLoopService(board) {
-  this.board = board;
-  this.bindKeyEvents();
+    this.board = board;
+    this.bindKeyEvents();
+    this.intervalID = null;
 }
 
 /* Game service methods. */
@@ -9,7 +10,7 @@ function GameLoopService(board) {
 GameLoopService.prototype.start = function() {
     var interval = 1000 * 1; /* 1 second */
     this.board.drawSquares();
-    setInterval(this.run, interval);
+    this.intervalID = setInterval(this.run, interval);
 }
 
 GameLoopService.prototype.run = function(movementDirection = DOWN) {
@@ -18,12 +19,13 @@ GameLoopService.prototype.run = function(movementDirection = DOWN) {
     if(movementPerformed) {
         this.board.drawSquares();
     } else if(movementDirection == DOWN) {
-        this.board.generateRandomTetromino();
+        var isNewTetroValid = this.board.generateRandomTetromino();
+
+        if(! isNewTetroValid) {
+            clearInterval(this.intervalID);
+            this.board.gameOver(); 
+        }
     }
-}
-
-GameLoopService.prototype.pause = function() {
-
 }
 
 /* Key binding and handling. */

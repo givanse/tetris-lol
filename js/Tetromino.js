@@ -9,7 +9,7 @@ function Tetromino(x, y, tetrominoName = "invalidTetrominoName") {
     this.tetrominoName = tetrominoName;
 
     this.baseCoordinates = TETROMINO_BASE_COORDINATES[tetrominoName];
-    this.squares = null;
+    this.squares = this.getSquares();
 }
 
 Tetromino.prototype.getSquares = function() {
@@ -39,8 +39,12 @@ Tetromino.prototype.getSquares = function() {
 
 /* Calculate new positions. */
 
-Tetromino.prototype._getNewMovementPositions = function(squares, xModifier,
-                                                                 yModifier) {
+Tetromino.prototype.getPositions = function() {
+    return this._getPositions(this.squares);
+}
+
+Tetromino.prototype._getPositions = function(squares, 
+                                             xModifier = 0, yModifier = 0) {
     var newPositions = Array(4);
     for(var i = 0; i < 4; i++) {
         var square = squares[i];
@@ -120,7 +124,7 @@ Tetromino.prototype.getNewPositions = function(movDirection) {
             break;
     }                                                                            
     var squares = this.getSquares();
-    return this._getNewMovementPositions(squares, xModifier, yModifier);
+    return this._getPositions(squares, xModifier, yModifier);
 } 
 
 /* Perform movements. */

@@ -30,6 +30,17 @@ body {
   padding: 10px;
 }  
 
+#gameover {
+  color: red;
+  font-size: 3em;
+  background-color: #fff;                                                        
+  position: absolute;
+  top: 33%;                                                            
+  vertical-align: middle; 
+  line-height: 150px;
+  text-align: center;
+}
+
 .square {                                                                        
   position: absolute;                                                            
   width: 31px;                                                                   
