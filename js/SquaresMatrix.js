@@ -4,35 +4,13 @@ function SquaresMatrix(columns, rows) {
     this.columns = columns < 0 ? 0 : columns;
     this.rows = rows < 0 ? 0 : rows;
 
-    this.squaresMatrix = new Array(this.columns); 
-    for(var col = 0; col < this.columns; col++) { 
-        this.squaresMatrix[col] = new Array(this.rows); 
-        for(var row = 0; row < this.rows; row++) { 
-            this.squaresMatrix[col][row] = null; 
+    this.squaresMatrix = new Array(this.columns);
+    for(var col = 0; col < this.columns; col++) {
+        this.squaresMatrix[col] = new Array(this.rows);
+        for(var row = 0; row < this.rows; row++) {
+            this.squaresMatrix[col][row] = null;
         }
     }
-}
-
-SquaresMatrix.prototype.getWidth = function() { return this.columns; }
-
-SquaresMatrix.prototype.getHeight = function() { return this.rows; }
-
-SquaresMatrix.prototype.insertSquare = function(square) {
-    var x = square.getX();
-    var y = square.getY();
-    this.squaresMatrix[x][y] = square;
-
-    return this;
-}
-
-SquaresMatrix.prototype.insertSquareAt = function(x, y, square) {
-    square.setX(x);
-    square.setY(y);
-    return this.insertSquare(square);
-}
-
-SquaresMatrix.prototype.getMatrix = function() {
-    return this.squaresMatrix;
 }
 
 SquaresMatrix.prototype.arePositionsAvailable = function(positions) {
@@ -69,6 +47,30 @@ SquaresMatrix.prototype.packColumn = function(xConstant, y) {
             }
         }
     }
+}
+
+/* Setters and Getters. */
+
+SquaresMatrix.prototype.getWidth = function() { return this.columns; }
+
+SquaresMatrix.prototype.getHeight = function() { return this.rows; }
+
+SquaresMatrix.prototype.insertSquare = function(square) {
+    var x = square.getX();
+    var y = square.getY();
+    this.squaresMatrix[x][y] = square;
+
+    return this;
+}
+
+SquaresMatrix.prototype.insertSquareAt = function(x, y, square) {
+    square.setX(x);
+    square.setY(y);
+    return this.insertSquare(square);
+}
+
+SquaresMatrix.prototype.getMatrix = function() {
+    return this.squaresMatrix;
 }
 
 /* EOF */
