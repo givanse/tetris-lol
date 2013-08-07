@@ -1,4 +1,10 @@
 
+/*******************************************************************************
+  *
+  * Tetris game start up.
+  *
+  *****************************************************************************/
+
 var canvas = document.getElementById("gameCanvas");
 var widthInSquares = 12;
 var heightInSquares = 18;
@@ -13,7 +19,12 @@ var intervalID = null;
 /* Start right away. */
 startNewGame();
 
-/* Methods: */
+
+/*******************************************************************************
+ *
+ * Tetris game functions.
+ *
+ ******************************************************************************/
 
 function startNewGame() {
     gameOver();
@@ -27,6 +38,9 @@ function startNewGame() {
 }
 
 /**
+ * This is where all the magic happens. It is the callback passed to the
+ * GameLoopService.
+ *
  * It will be invoked with a wrong <this> value.
  * The <this> keyword will be set to the <window> (or <global>) object.
  * More info: developer.mozilla.org/en-US/docs/Web/API/window.setInterval
@@ -50,7 +64,6 @@ function run(movementDirection = DOWN) {
     /* Collisioned with the board's squares. */
     else if(movementDirection == DOWN) {
 
-        gInfoController.increaseScore();
 
         /* Add next falling Tetromino. */
         var isNewTetroValid = boardController.generateRandomTetromino();
@@ -61,6 +74,8 @@ function run(movementDirection = DOWN) {
         /* Check if the game is over. */
         if(! isNewTetroValid) {
             gameOver();
+        } else {
+            gInfoController.increaseScore(); /* And keep rolling ;) */
         }
     }
 }
