@@ -8,12 +8,12 @@ function getRandomTetrominoName() {
         return _SHUFFLED_TETROMINOS.pop();
     }  
 
-    _SHUFFLED_TETROMINOS = getShuffledTetrominoNames();
+    _SHUFFLED_TETROMINOS = _getShuffledTetrominoNames();
 
     return _SHUFFLED_TETROMINOS.pop();
 }
 
-function getShuffledTetrominoNames() {
+function _getShuffledTetrominoNames() {
 
     /* Make a clone of TETROMINOS */
     var tNames = TETROMINO_NAMES.slice(0); 
@@ -25,7 +25,7 @@ function getShuffledTetrominoNames() {
        var max = i;
        var j = Math.floor(Math.random() * (max - min + 1)) + min;
        /* exchange a[j] and a[i] */
-       var tmp = tNames[i];
+       var tmp = tNames[j];
        tNames[j] = tNames[i];
        tNames[i] = tmp; 
     }
