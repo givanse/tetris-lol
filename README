@@ -1,9 +1,8 @@
 Tetris game, theme based on League of Legends.
 
 Implementation:
-  Pure Javascript, HTML and CSS.
-  The objects, tetris shapes, are DIVs that are placed inside another DIV 
-  that functions as the board of the game.
+  Javascript, DOM manipulation. The objects, tetris shapes, are DIVs that are 
+  placed inside another DIV that functions as the canvas of the game.
   
   The only dependency of the project is QUnit, used for unit testing.
   
