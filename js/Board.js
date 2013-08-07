@@ -18,13 +18,20 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
     this.generateRandomInitialRows();
 }
 
+/**
+ *
+ * return - true if the falling shape performed a movement, false otherwise.
+ */
 Board.prototype.updateBoard = function(movDirection) {
+
     var newTetroPositions = this.currTetromino.getNewPositions(movDirection);
 
     if(!this.squaresMatrix.arePositionsAvailable(newTetroPositions))
         return false;
 
     this.currTetromino.move(movDirection);
+
+    return true;
 }
 
 /* Drawing into the canvas. */
@@ -63,6 +70,9 @@ Board.prototype._drawSquaresArray = function(squaresArray) {
 /* Generate random pieces. */
 
 Board.prototype.generateRandomTetromino = function() {
+    /* First, save the current falling shape. */
+    this._insertCurrTetromino();
+
     var tetrominoName = getRandomTetrominoName();
     /* TODO: Tetromino uses by default a +2 offset, needs to be adressed. */
     var x = Math.floor(this.squaresMatrix.getWidth() / 2) - 1;
@@ -89,6 +99,15 @@ Board.prototype.generateRandomInitialRows = function() {
 }
 
 /* Setters and Getters. */
+
+Board.prototype._insertCurrTetromino = function() {
+    if(this.currTetromino instanceof Tetromino) {                                
+        var squares = this.currTetromino.getSquares();                           
+        for(var i in squares) {                                                  
+            this.insertSquare(squares[i]);                                       
+        }                                                                        
+    } 
+}
 
 Board.prototype.insertSquare = function(square) {
     this.squaresMatrix.insertSquare(square);

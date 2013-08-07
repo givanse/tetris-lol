@@ -13,8 +13,13 @@ GameLoopService.prototype.start = function() {
 }
 
 GameLoopService.prototype.run = function(movementDirection = DOWN) {
-  this.board.updateBoard(movementDirection);
-  this.board.drawSquares();
+    var movementPerformed = this.board.updateBoard(movementDirection);
+
+    if(movementPerformed) {
+        this.board.drawSquares();
+    } else if(movementDirection == DOWN) {
+        this.board.generateRandomTetromino();
+    }
 }
 
 GameLoopService.prototype.pause = function() {
