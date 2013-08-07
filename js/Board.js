@@ -38,6 +38,8 @@ Board.prototype.updateBoard = function(movDirection) {
 /* Drawing into the canvas. */
 
 Board.prototype.gameOver = function() {
+    this.drawSquares();
+
     var div = document.createElement('div');
     div.id = "gameover"
     div.setAttribute("style", "display: block; width: 0px; height: 0px");         
