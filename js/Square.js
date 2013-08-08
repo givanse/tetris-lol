@@ -5,9 +5,6 @@
  */
 function Square(x, y, tetrominoType = 'noType') {
 
-  x  = x  < 0 ? 0 : x;
-  y = y < 0 ? 0 : y;
-
   this.div = document.createElement('div');
 
   this.setX(x);

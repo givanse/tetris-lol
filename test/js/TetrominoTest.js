@@ -18,7 +18,6 @@ test("Tetromino.getSquares", function() {
      */
     tetromino = new Tetromino(0, 0, LINESHP);
     actuals = tetromino.getSquares();
-    /* +2 */
     expecteds = [new Square(0, 0, LINESHP),
                  new Square(1, 0, LINESHP),
                  new Square(2, 0, LINESHP),
@@ -154,12 +153,12 @@ test("Tetromino._getRotatedPositions", function() {
     var actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1 
-     *  1   x   
-     *  0   x
-     * -1   x
-     * -2   x 
+     *  2     x 
+     *  1     x  
+     *  0     x 
+     * -1     x 
      */
-    var expecteds = [[2, 1], [2, 2], [2, 3], [2, 4]]; /* +2 */
+    var expecteds = [[1, -1], [1, 0], [1, 1], [1, 2]];
     deepEqual(actuals, expecteds, "LINESHP");
 
     /**
@@ -173,11 +172,10 @@ test("Tetromino._getRotatedPositions", function() {
     /**
      *   -1 0 1
      *  1 
-     *  0 x x
-     * -1 x x
+     *  0   x x
+     * -1   x x
      */
-    /*          [[-1, -1], [0, -1], [-1, 0], [0, 0]] */
-    expecteds = [[ 1,  1], [2,  1], [ 1, 2], [2, 2]];
+    expecteds = [[ 0, -1], [1,  -1], [ 0, 0], [1, 0]];
     deepEqual(actuals, expecteds, "SQUARESHP");
 
     /**
@@ -190,12 +188,11 @@ test("Tetromino._getRotatedPositions", function() {
     actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
-     *  1 x
-     *  0 x x
-     * -1 x
+     *  1   x
+     *  0   x x
+     * -1   x
      */
-    /*          [[-1, -1], [-1, 0], [0, 0], [-1, 1]]*/
-    expecteds = [[ 1,  1], [ 1, 2], [2, 2], [ 1, 3]];
+    expecteds = [[ 0, -1], [ 0, 0], [1, 0], [ 0, 1]];
     deepEqual(actuals, expecteds, "TSHP");
 
     /**
@@ -208,12 +205,11 @@ test("Tetromino._getRotatedPositions", function() {
     actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
-     *  1   x
-     *  0 x x
-     * -1 x
+     *  1     x
+     *  0   x x
+     * -1   x
      */
-    /*          [[-1, -1], [-1, 0], [0, 0], [0, 1]] */
-    expecteds = [[ 1,  1], [ 1, 2], [2, 2], [2, 3]];
+    expecteds = [[ 0,  -1], [ 0, 0], [1, 0], [1, 1]];
     deepEqual(actuals, expecteds, "SSHP_L");
 
     /**
@@ -226,12 +222,11 @@ test("Tetromino._getRotatedPositions", function() {
     actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
-     *  1 x
-     *  0 x x
-     * -1   x
+     *  1   x
+     *  0   x x
+     * -1     x
      */
-    /*          [[0, -1], [-1, 0], [0, 0], [-1, 1]] */
-    expecteds = [[2,  1], [ 1, 2], [2, 2], [ 1, 3]];
+    expecteds = [[1, -1], [0, 0], [1, 0], [ 0, 1]];
     deepEqual(actuals, expecteds, "SSHP_R");
 
     /**
@@ -244,12 +239,11 @@ test("Tetromino._getRotatedPositions", function() {
     actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
-     *  1   x
-     *  0   x
-     * -1 x x
+     *  1     x
+     *  0     x
+     * -1   x x
      */
-    /*          [[-1, -1], [0, -1], [0, 0], [0, 1]] */
-    expecteds = [[ 1,  1], [2,  1], [2, 2], [2, 3]];
+    expecteds = [[ 0, -1], [ 1, -1], [ 1, 0], [ 1, 1]];
     deepEqual(actuals, expecteds, "LSHP_R");
 
     /**
@@ -262,12 +256,11 @@ test("Tetromino._getRotatedPositions", function() {
     actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
-     *  1 x x
-     *  0   x
-     * -1   x
+     *  1   x x
+     *  0     x
+     * -1     x
      */
-    /*          [[0, -1], [0, 0], [-1, 1], [0, 1]] */
-    expecteds = [[2,  1], [2, 2], [ 1, 3], [2, 3]];
+    expecteds = [[1,  -1], [1, 0], [ 0, 1], [1, 1]];
     deepEqual(actuals, expecteds, "LSHP_L");
 });
 
@@ -282,14 +275,14 @@ test("Tetromino._rotate", function() {
     var actuals = tetromino._rotate();
     /**
      *   -1 0 1
-     *  1   x  
-     *  0 x x 
-     * -1 x   
+     *  1     x 
+     *  0   x x 
+     * -1   x  
      */
-    var expecteds = [new Square(1, 1, SSHP_L),
-                     new Square(1, 2, SSHP_L),
-                     new Square(2, 2, SSHP_L),
-                     new Square(2, 3, SSHP_L)];
+    var expecteds = [new Square(0, -1, SSHP_L),
+                     new Square(0,  0, SSHP_L),
+                     new Square(1,  0, SSHP_L),
+                     new Square(1,  1, SSHP_L)];
     deepEqual(actuals, expecteds, "SSHP_L");
     
 });
