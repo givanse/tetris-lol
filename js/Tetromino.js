@@ -19,41 +19,21 @@ function Tetromino(x, y, tetrominoName = "invalidTetrominoName") {
     this.squares = this.getSquares();
 }
 
-Tetromino.prototype.getTetrominoName = function() {
-    return this.tetrominoName;
-}
-
-Tetromino.prototype.getSquares = function() {
-
-    if(this.baseCoordinates == undefined)
-        return this.squares;
-
-    if(this.squares == null)
-        this.squares = new Array(4);
-
-    for(var i = 0; i < this.baseCoordinates.length; i++) {
-        var baseCoords = this.baseCoordinates[i];
-        var newCoords = this._addCoordinatesOffset(baseCoords);
-        var x = newCoords[0];
-        var y = newCoords[1];
-
-        var square = this.squares[i];
-        if(square instanceof Square) {
-            square.setX(x);
-            square.setY(y);
-        } else {
-            this.squares[i] = new Square(x, y, this.tetrominoName);
-        }
-    }
-    return this.squares;
-}
-
 /* Calculate new positions. */
 
+/**
+ *
+ * return - The positions of the Squares that belong to this Tetromino.
+ */
 Tetromino.prototype.getPositions = function() {
     return this._getPositions(this.squares);
 }
 
+/**
+ *
+ * return - The positions of the Squares that belong to this Tetromino with
+ *          an offset added to each of them.
+ */
 Tetromino.prototype._getPositions = function(squares, 
                                              xModifier = 0, yModifier = 0) {
     var newPositions = Array(4);
@@ -112,6 +92,7 @@ Tetromino.prototype._getRotatedPositions = function() {
     for(var i = 0; i < coordinates.length; i++) {
         coordinates[i] = this._addCoordinatesOffset(coordinates[i]);
     }
+
     return coordinates;
 }
 
@@ -152,6 +133,37 @@ Tetromino.prototype.move = function(movDirection) {
         case  LEFT: this.xOffset -= 1; return;
         case RIGHT: this.xOffset += 1; return;
     }
+}
+
+/* Getters and Setter. */
+
+Tetromino.prototype.getTetrominoName = function() {
+    return this.tetrominoName;
+}
+
+Tetromino.prototype.getSquares = function() {
+
+    if(this.baseCoordinates == undefined)
+        return this.squares;
+
+    if(this.squares == null)
+        this.squares = new Array(4);
+
+    for(var i = 0; i < this.baseCoordinates.length; i++) {
+        var baseCoords = this.baseCoordinates[i];
+        var newCoords = this._addCoordinatesOffset(baseCoords);
+        var x = newCoords[0];
+        var y = newCoords[1];
+
+        var square = this.squares[i];
+        if(square instanceof Square) {
+            square.setX(x);
+            square.setY(y);
+        } else {
+            this.squares[i] = new Square(x, y, this.tetrominoName);
+        }
+    }
+    return this.squares;
 }
 
 /* EOF */
