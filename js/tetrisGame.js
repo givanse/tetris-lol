@@ -64,15 +64,13 @@ function run(movementDirection = DOWN) {
     /* Collisioned with the board's squares. */
     else if(movementDirection == DOWN) {
 
-
-        /* Add next falling Tetromino. */
-        var isNewTetroValid = boardController.generateRandomTetromino();
-
-        var nextTetromino = boardController.getNextTetromino();
-        gInfoController.drawNextTetromino(nextTetromino);
+        /* Use the next falling Tetromino. */
+        var isNextTetroValid = boardController.generateRandomTetromino();
+        var newNextTetromino = boardController.getNextTetromino();
+        gInfoController.drawNextTetromino(newNextTetromino);
 
         /* Check if the game is over. */
-        if(! isNewTetroValid) {
+        if(! isNextTetroValid) {
             gameOver();
         } else {
             gInfoController.increaseScore(); /* And keep rolling ;) */
