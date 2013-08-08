@@ -31,4 +31,33 @@ test("array hasDuplicates", function() {
     ok(!hasDuplicates(arr));
 });
 
+test("array isDuplicate", function() {
+    var arr = [];
+    ok(!isDuplicate(arr, -1));
+
+    arr = [];
+    ok(!isDuplicate(arr, null));
+
+    arr = [];
+    ok(!isDuplicate(arr, 0));
+
+    arr = [];
+    ok(!isDuplicate(arr, 1));
+
+    arr = [1];
+    ok(isDuplicate(arr, 1));
+
+    arr = [33, 44, 55];
+    ok(!isDuplicate(arr, 3));
+
+    arr = [33, 44, 55];
+    ok(isDuplicate(arr, 33));
+
+    arr = [33, 44, 55];
+    ok(isDuplicate(arr, 44));
+
+    arr = [33, 44, 55];
+    ok(isDuplicate(arr, 55));
+});
+
 /* EOF */
