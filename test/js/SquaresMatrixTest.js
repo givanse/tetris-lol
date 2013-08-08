@@ -226,7 +226,21 @@ test("SquaresMatrix.getRowState", function() {
                         .insertSquare(new Square(2, 0));
     expected = ROW_USED;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '3 columns, 1 used');
+    equal(actual, expected, '[__x]');
+
+    /* [_x_] */
+    squaresMatrix = new SquaresMatrix(3, 1)
+                        .insertSquare(new Square(2, 0));
+    expected = ROW_USED;
+    actual = squaresMatrix.getRowState(0);
+    equal(actual, expected, '[_x_]');
+
+    /* [x__] */
+    squaresMatrix = new SquaresMatrix(3, 1)
+                        .insertSquare(new Square(2, 0));
+    expected = ROW_USED;
+    actual = squaresMatrix.getRowState(0);
+    equal(actual, expected, '[x__]');
 
     /* [xxx] */
     squaresMatrix = new SquaresMatrix(3, 1)
