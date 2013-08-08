@@ -250,6 +250,29 @@ test("SquaresMatrix.getRowState", function() {
     expected = ROW_FULL;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, '3 columns, full');
+
+    /**
+      *   01
+      * 0 x  
+      * 1 xx 
+      * 2  x 
+      */
+    squaresMatrix = new SquaresMatrix(2, 3)
+                        .insertSquare(new Square(0, 0))
+                        .insertSquare(new Square(0, 1))
+                        .insertSquare(new Square(1, 1))
+                        .insertSquare(new Square(1, 2));
+    expected = ROW_USED;
+    actual = squaresMatrix.getRowState(0);
+    equal(actual, expected, 'first row');
+
+    expected = ROW_FULL;
+    actual = squaresMatrix.getRowState(1);
+    equal(actual, expected, 'second row');
+
+    expected = ROW_USED;
+    actual = squaresMatrix.getRowState(2);
+    equal(actual, expected, 'third row');
 });
 
 /* EOF */
