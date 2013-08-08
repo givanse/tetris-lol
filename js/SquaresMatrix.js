@@ -51,12 +51,13 @@ SquaresMatrix.prototype.packColumn = function(xConstant, y) {
 
 /**
   *
-  * return -
+  * return - The state of the row: ROW_EMPTY, ROW_FULL or ROW_USED.
   */
 SquaresMatrix.prototype.getRowState = function(y) {
     var squaresCount = 0;
 
-    for(var x = 0; x < this.getWidth(); x++) {
+    var width = this.getWidth();
+    for(var x = 0; x < width; x++) {
         var square = this.squaresMatrix[x][y];
         if(square instanceof Square)
             squaresCount++;
@@ -65,17 +66,28 @@ SquaresMatrix.prototype.getRowState = function(y) {
     if(squaresCount == 0)
         return ROW_EMPTY;
 
-    if(squaresCount == this.getWidth())
+    if(squaresCount == width)
         return ROW_FULL;
     
     return ROW_USED;
 }
 
+SquaresMatrix.prototype.deleteRows = function(rowNums = []) {
+    rowNums.sort();
+    
+    for(var y = rowNums.length - 1; y >= 0; y--) {
+        this._deleteRow(y);        
+    }
+}
+
+SquaresMatrix.prototype._deleteRow = function(y) {
+    var width = this.getWidth();
+    for(var x = 0; x < width; x++) {
+        this.squaresMatrix[x][y] = null;
+    }
+}
+
 /* Setters and Getters. */
-
-SquaresMatrix.prototype.getWidth = function() { return this.columns; }
-
-SquaresMatrix.prototype.getHeight = function() { return this.rows; }
 
 SquaresMatrix.prototype.insertSquare = function(square) {
     var x = square.getX();
@@ -91,8 +103,10 @@ SquaresMatrix.prototype.insertSquareAt = function(x, y, square) {
     return this.insertSquare(square);
 }
 
-SquaresMatrix.prototype.getMatrix = function() {
-    return this.squaresMatrix;
-}
+SquaresMatrix.prototype.getWidth = function() { return this.columns; }
+
+SquaresMatrix.prototype.getHeight = function() { return this.rows; }
+
+SquaresMatrix.prototype.getMatrix = function() { return this.squaresMatrix; }
 
 /* EOF */

@@ -275,4 +275,65 @@ test("SquaresMatrix.getRowState", function() {
     equal(actual, expected, 'third row');
 });
 
+test("SquaresMatrix._deleteRow", function() {
+
+    /* [x] */
+    var squaresMatrix = new SquaresMatrix(1, 1)
+                        .insertSquare(new Square(0, 0));
+    squaresMatrix._deleteRow(0);
+    var actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
+    ok(actual);
+
+    /* [xx] */
+    squaresMatrix = new SquaresMatrix(2, 1)
+                        .insertSquare(new Square(0, 0))
+                        .insertSquare(new Square(1, 0));
+    squaresMatrix._deleteRow(0);
+    actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0]]);
+    ok(actual);
+
+    /** 
+      * [_] 
+      * [x]
+      */
+    squaresMatrix = new SquaresMatrix(1, 2)
+                        .insertSquare(new Square(0, 1));
+    squaresMatrix._deleteRow(1);
+    actual = squaresMatrix.arePositionsAvailable([[0, 0], [0, 1]]);
+    ok(actual);
+
+    /** 
+      * [x] 
+      * [_]
+      */
+    squaresMatrix = new SquaresMatrix(1, 2)
+                        .insertSquare(new Square(0, 0));
+    squaresMatrix._deleteRow(0);
+    actual = squaresMatrix.arePositionsAvailable([[0, 0], [0, 1]]);
+    ok(actual);
+
+    /** 
+      * [__] 
+      * [xx]
+      */
+    squaresMatrix = new SquaresMatrix(2, 2)
+                        .insertSquare(new Square(0, 1))
+                        .insertSquare(new Square(1, 1));
+    squaresMatrix._deleteRow(1);
+    actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0], 
+                                                  [0, 1], [1, 1]]);
+    ok(actual);
+
+    /** 
+      * [xx]
+      * [__] 
+      */
+    squaresMatrix = new SquaresMatrix(2, 2)
+                        .insertSquare(new Square(0, 0))
+                        .insertSquare(new Square(1, 0));
+    squaresMatrix._deleteRow(0);
+    actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0], 
+                                                  [0, 1], [1, 1]]);
+});
+
 /* EOF */
