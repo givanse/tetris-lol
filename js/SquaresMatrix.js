@@ -31,21 +31,20 @@ SquaresMatrix.prototype.arePositionsAvailable = function(positions) {
 }
 
 SquaresMatrix.prototype.packColumn = function(xConstant, y) {
-    for( ; y > 0; y--) { /* bottom to top */
-        var currentSquare = this.squaresMatrix[xConstant][y];
-        if(! (currentSquare instanceof Square)) {
-            var upperIndex = y;
-            var upperSquare;
-            do {
-                upperIndex--; /* reason for: for( y > 0) */
-                upperSquare = this.squaresMatrix[xConstant][upperIndex];
-            } while(! (upperSquare instanceof Square) && upperIndex > 0);
 
-            if(upperSquare instanceof Square) { /* found an upper Square? */
-                this.squaresMatrix[xConstant][upperIndex] = null;
-                this.insertSquareAt(xConstant, y, upperSquare);
-            }
-        }
+    var startingSquare = this.squaresMatrix[xConstant][y];
+    if(startingSquare instanceof Square)
+        return;
+
+    for( ; y > 0; y--) { /* bottom to top */
+        var upperVal = this.squaresMatrix[xConstant][y - 1];
+
+        if(upperVal instanceof Square)
+            this.insertSquareAt(xConstant, y, upperVal);
+        else
+            this.squaresMatrix[xConstant][y] = null;
+
+        this.squaresMatrix[xConstant][y - 1] = null;
     }
 }
 
@@ -74,9 +73,12 @@ SquaresMatrix.prototype.getRowState = function(y) {
 
 SquaresMatrix.prototype.deleteRows = function(rowNums = []) {
     rowNums.sort();
-    
-    for(var y = rowNums.length - 1; y >= 0; y--) {
-        this._deleteRow(y);        
+    var y = rowNums[rowNums.length - 1]; /* closest to bottom */   
+ 
+    this._deleteRow(y);        
+
+    for(var x = 0; x < this.getWidth(); x++) {
+        this.packColumn(x, y);
     }
 }
 

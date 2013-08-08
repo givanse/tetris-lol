@@ -135,7 +135,7 @@ test("SquaresMatrix.packColumn", function() {
                         .insertSquare(new Square(0, 0));
     squaresMatrix.packColumn(0, 2); 
     expecteds = new SquaresMatrix(1, 3)                                  
-                    .insertSquare(new Square(0, 2)).getMatrix();
+                    .insertSquare(new Square(0, 1)).getMatrix();
     actuals = squaresMatrix.getMatrix();
     deepEqual(actuals, expecteds);
 
@@ -164,7 +164,7 @@ test("SquaresMatrix.packColumn", function() {
                         .insertSquare(new Square(0, 2, LINESHP));
     squaresMatrix.packColumn(0, 2); 
     expecteds = new SquaresMatrix(1, 3)                                  
-                    .insertSquare(new Square(0, 1, SQUARESHP))
+                    .insertSquare(new Square(0, 0, SQUARESHP))
                     .insertSquare(new Square(0, 2, LINESHP)).getMatrix();
     actuals = squaresMatrix.getMatrix();
     deepEqual(actuals, expecteds);
@@ -179,9 +179,9 @@ test("SquaresMatrix.packColumn", function() {
     squaresMatrix = new SquaresMatrix(1, 4)
                         .insertSquare(new Square(0, 0, SQUARESHP))
                         .insertSquare(new Square(0, 3, LINESHP));
-    squaresMatrix.packColumn(0, 3); 
+    squaresMatrix.packColumn(0, 2); 
     expecteds = new SquaresMatrix(1, 4)                                  
-                    .insertSquare(new Square(0, 2, SQUARESHP))
+                    .insertSquare(new Square(0, 1, SQUARESHP))
                     .insertSquare(new Square(0, 3, LINESHP)).getMatrix();
     actuals = squaresMatrix.getMatrix();
     deepEqual(actuals, expecteds);
@@ -196,10 +196,10 @@ test("SquaresMatrix.packColumn", function() {
     squaresMatrix = new SquaresMatrix(1, 4)
                         .insertSquare(new Square(0, 0, SQUARESHP))
                         .insertSquare(new Square(0, 2, LINESHP));
-    squaresMatrix.packColumn(0, 2); 
+    squaresMatrix.packColumn(0, 3); 
     expecteds = new SquaresMatrix(1, 4)                                  
                     .insertSquare(new Square(0, 1, SQUARESHP))
-                    .insertSquare(new Square(0, 2, LINESHP)).getMatrix();
+                    .insertSquare(new Square(0, 3, LINESHP)).getMatrix();
     actuals = squaresMatrix.getMatrix();
     deepEqual(actuals, expecteds);
 
@@ -334,6 +334,72 @@ test("SquaresMatrix._deleteRow", function() {
     squaresMatrix._deleteRow(0);
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0], 
                                                   [0, 1], [1, 1]]);
+    ok(actual);
+});
+
+test("SquaresMatrix.deleteRows", function() {
+    /** 
+      * [x] 
+      * [x]
+      */
+    var squaresMatrix = new SquaresMatrix(1, 2)
+                            .insertSquare(new Square(0, 0));
+    squaresMatrix.deleteRows([1]);
+
+    var actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
+    ok(actual);
+
+    actual = squaresMatrix.arePositionsAvailable([[0, 1]]);
+    ok(!actual);
+
+    /** 
+      * [xx] 
+      * [xx]
+      */
+    squaresMatrix = new SquaresMatrix(2, 2)
+                        .insertSquare(new Square(0, 0))
+                        .insertSquare(new Square(1, 0));
+    squaresMatrix.deleteRows([1]);
+
+    actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0]]);
+    ok(actual);
+
+    actual = squaresMatrix.arePositionsAvailable([[0, 1]]);
+    ok(!actual);
+
+    actual = squaresMatrix.arePositionsAvailable([[1, 1]]);
+    ok(!actual);
+
+    /** 
+      * [x ] 
+      * [ x]
+      * [xx]
+      */
+    squaresMatrix = new SquaresMatrix(2, 3)
+                        .insertSquare(new Square(0, 0))
+                        .insertSquare(new Square(1, 1))
+                        .insertSquare(new Square(0, 2))
+                        .insertSquare(new Square(1, 2));
+    actual = squaresMatrix.arePositionsAvailable([[1, 0], [0, 1]]);
+    ok(actual, "available positions, before delete");
+
+    squaresMatrix.deleteRows([2]);
+    /** 
+      * [  ]
+      * [x ] 
+      * [ x]
+      */
+    actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0],
+                                                          [1, 1],
+                                                  [0, 2]         ]);
+    console.log(squaresMatrix.getMatrix());
+    ok(actual, "available positions, after delete");
+
+    actual = squaresMatrix.arePositionsAvailable([[0, 1]]);
+    ok(!actual, "unavailable positions");
+
+    actual = squaresMatrix.arePositionsAvailable([[1, 2]]);
+    ok(!actual, "unavailable positions");
 });
 
 /* EOF */

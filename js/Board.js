@@ -20,6 +20,8 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
     this.drawSquares();
 }
 
+/* Board business logic. */
+
 /**
  *
  * return - true if the falling shape performed a movement, false otherwise.
@@ -34,6 +36,34 @@ Board.prototype.updateBoard = function(movDirection) {
     this.currTetromino.move(movDirection);
 
     return true;
+}
+
+
+/** 
+ * Asumes that this function is called when this.currTetromino still is valid 
+ * and the current Tetromino that is falling.
+ *
+ * return - The number of rows that were complete and deleted.
+ */
+Board.prototype.lookForCompletedRows = function() {
+    var rowsToDelete = new Array(0);
+    var coordinates = this.currTetromino.getPositions();
+    for(var i = 0; i < coordinates.length; i++) {
+        var position = coordinates[i];
+        var rowNum = position[1];
+        
+        /* Don't process duplicates. */
+        if(isDuplicate(rowsToDelete, rowNum))
+            continue;
+
+        var rowState = this.squaresMatrix.getRowState(rowNum);
+        if(rowState == ROW_FULL)
+            rowsToDelete.push(rowNum);
+    }
+
+    this.squaresMatrix.deleteRows(rowsToDelete);
+
+    return rowsToDelete.length;
 }
 
 /* Drawing into the canvas. */
@@ -124,6 +154,8 @@ Board.prototype._insertCurrTetromino = function() {
     for(var i in squares) {                                                  
         this.insertSquare(squares[i]);                                       
     }                                                                        
+
+    this.lookForCompletedRows();
 }
 
 Board.prototype.insertSquare = function(square) {
