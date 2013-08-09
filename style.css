@@ -111,14 +111,11 @@ div#gameInfo a#newGame:hover {
 
 /* BOARD */
 
-#gameover {
-  background-color: #fff;
-  position: absolute;
-  top: 33%;
-  color: red;
-  font-size: 3em;
-  line-height: 150px;
-  text-align: center;
+div#tetrisGame div#gameCanvas div#gameover {
+    position: absolute;
+    top: 33%;
+    /* width & height defined in Board.js */
+    background: transparent url('img/defeat.png') center top no-repeat;
 }
 
 .square {

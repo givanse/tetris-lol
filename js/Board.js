@@ -76,8 +76,7 @@ Board.prototype.gameOver = function() {
     div.id = "gameover"
     div.setAttribute("style", "display: block; width: 0px; height: 0px");         
     div.style.width = this.width + "px";
-    div.style.height = this.height / 3 + "px";
-    div.innerHTML = "Defeat";
+    div.style.height = "200px";
     this.canvasDiv.appendChild(div);
 }
 
