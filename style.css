@@ -4,12 +4,12 @@ body {
 }
 
 #tetrisGame {
-  width: 600px;
-  height: 600px;
-  border: 1px solid black;
-  padding: 0px 30px;
-  margin: auto;
-  background-color: #000;
+    width: 600px;
+    height: 600px;
+    border: 0px;
+    padding: 10px 30px;
+    margin: auto;
+    background-color: #000;
 }
 
 #gameCanvas {
@@ -23,13 +23,12 @@ body {
 }
 
 #gameInfo {
-  background-color: #000;
-  color: #fff;
-  float: right;
-  width: 160px;
-  height: 500px;
-  padding: 10px;
-  background-color: gray;
+    color: #fff;
+    float: right;
+    width: 160px;
+    height: 500px;
+    padding: 10px;
+    background-color: #04080f;
     /* border */
     border-width: 14px 7px 42px 7px;
     -moz-border-image:    url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
@@ -85,8 +84,9 @@ body {
 
 .square {
   position: absolute;
-  width: 31px;
-  height: 31px;
+  /* SQUARE_SIZE = 32 */
+  width:  30px; /* 32 - 2 x border */
+  height: 30px; /* 32 - 2 x border */
   border: 1px solid white;
 }
 
