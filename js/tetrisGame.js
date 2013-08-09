@@ -50,8 +50,11 @@ function startNewGame() {
  *   boardController
  *   intervalID
  */
-function run(movementDirection = DOWN) {
+function run(movementDirection) {
 
+    movementDirection = (movementDirection == undefined) ? DOWN :
+                                                           movementDirection;
+    
     if(boardController == null)
         return;
 

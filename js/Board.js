@@ -1,6 +1,9 @@
 
-function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
+function Board(canvasDiv, widthInSquares, heightInSquares) {
 
+    widthInSquares = (widthInSquares == undefined) ? 0 : widthInSquares;
+    heightInSquares = (heightInSquares == undefined) ? 0 : heightInSquares;
+    
     this.squaresMatrix = new SquaresMatrix(widthInSquares, heightInSquares);
 
     this.canvasDiv = canvasDiv;

@@ -2,7 +2,10 @@
  *
  */
 
-function Tetromino(x, y, tetrominoName = "invalidTetrominoName") {
+function Tetromino(x, y, tetrominoName) {
+
+	tetrominoName = (tetrominoName == undefined) ? "invalidTetrominoName" : 
+                                                    tetrominoName;
 
     /**
       * TODO: Review, the values are altered. This helps to compensate for 
@@ -34,8 +37,11 @@ Tetromino.prototype.getPositions = function() {
  * return - The positions of the Squares that belong to this Tetromino with
  *          an offset added to each of them.
  */
-Tetromino.prototype._getPositions = function(squares, 
-                                             xModifier = 0, yModifier = 0) {
+Tetromino.prototype._getPositions = function(squares, xModifier, yModifier) {
+    
+    xModifier = (xModifier == undefined) ? 0 : xModifier;
+    yModifier = (yModifier == undefined) ? 0 : yModifier;
+    
     var newPositions = Array(4);
     for(var i = 0; i < 4; i++) {
         var square = squares[i];

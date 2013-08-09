@@ -71,7 +71,10 @@ SquaresMatrix.prototype.getRowState = function(y) {
     return ROW_USED;
 }
 
-SquaresMatrix.prototype.deleteRows = function(rowNums = []) {
+SquaresMatrix.prototype.deleteRows = function(rowNums) {
+
+    rowNums = (rowNums == undefined) ? [] : rowNums;
+    
     rowNums.sort();
     var lastRow = rowNums[rowNums.length - 1]; /* closest to bottom */   
  
