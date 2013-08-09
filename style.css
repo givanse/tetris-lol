@@ -6,43 +6,55 @@ body {
 #tetrisGame {
     position: relative;
     
+    /* border */
+    border-width: 28px 8px 12px 8px;
+    -moz-border-image:    url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    -webkit-border-image: url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    border-image:         url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    
     width: 690px;
-    height: 600px;
-    border: 0px;
+    height: 655px;
     background-color: black;
 }
 
-#gameCanvas {
+
+div#tetrisGame div#gameCanvas {
     position: absolute;
-    top: 10px;
+    top: 15px;
     left: 30px;
+    
+    /* border */
+    border-width: 14px 7px 42px 7px;
+    -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -webkit-border-image: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     
     /**
      * 12 x 18 Squares.
      */
     width: 384px; 
     height: 576px;
-    background-color: #fff;
+    background-color: #02060c;
 }
 
 /* GAME INFO */
 
 #gameInfo {
     position: absolute;
-    top: 10px;
+    top: 15px;
     right: 30px;
-    
-    color: #fff;
-    width: 160px;
-    height: 500px;
-    padding: 10px;
-    background-color: #04080f;
     
     /* border */
     border-width: 14px 7px 42px 7px;
-    -moz-border-image:    url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
-    -webkit-border-image: url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
-    border-image:         url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
+    -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -webkit-border-image: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    
+    color: #fff;
+    width: 160px;
+    height: 556px;
+    padding: 10px;
+    background-color: #02060c;
 }
 
 div#gameInfo div.field {
@@ -52,8 +64,9 @@ div#gameInfo div.field {
     -webkit-border-image: url('img/display.png') 14 10 repeat repeat;
     border-image:         url('img/display.png') 14 10 repeat repeat;
     /* SQUARE_SIZE x 5 = 160 */
-    /* width specified by ID */
+    /* width specified by each element with its ID */
     height: 160px;
+    background-color: #07111d;
 }
 
 div#gameInfo div#nextTetrominoField {
@@ -84,7 +97,7 @@ div#gameInfo div#scoreField {
 div#gameInfo a#newGame {
     display: block;
     position: absolute;
-    bottom: 10px;
+    bottom: 50px;
     
     width: 142px;
     height: 56px;
@@ -113,7 +126,7 @@ div#gameInfo a#newGame:hover {
   /* SQUARE_SIZE = 32 */
   width:  30px; /* 32 - 2 x border */
   height: 30px; /* 32 - 2 x border */
-  border: 1px solid white;
+  border: 1px solid black;
 }
 
 .LINESHP {background-color: #A000F0;}
