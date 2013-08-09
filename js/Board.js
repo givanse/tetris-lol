@@ -13,9 +13,9 @@ function Board(canvasDiv, widthInSquares = 0, heightInSquares = 0) {
     this.canvasDiv.style.width  = this.width  + "px";
     this.canvasDiv.style.height = this.height + "px";
 
-    this.currTetromino = null; 
-    this.nextTetromino = null; 
-    this.generateRandomTetromino();
+    this.currTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
+    this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
+
     this.generateRandomInitialRows();
     this.drawSquares();
 }
@@ -45,7 +45,7 @@ Board.prototype.updateBoard = function(movDirection) {
  *
  * return - The number of rows that were complete and deleted.
  */
-Board.prototype.lookForCompletedRows = function() {
+Board.prototype.deleteCompletedRows = function() {
     var rowsToDelete = new Array(0);
     var coordinates = this.currTetromino.getPositions();
     for(var i = 0; i < coordinates.length; i++) {
@@ -59,9 +59,9 @@ Board.prototype.lookForCompletedRows = function() {
             rowsToDelete.push(rowNum);
     }
 
-    this.squaresMatrix.deleteRows(rowsToDelete);
+    var deletedRowsCount = this.squaresMatrix.deleteRows(rowsToDelete);
 
-    return rowsToDelete.length;
+    return deletedRowsCount;
 }
 
 /* Drawing into the canvas. */
@@ -111,16 +111,10 @@ Board.prototype._drawSquaresArray = function(squaresArray) {
 
 /* Generate random pieces. */
 
-Board.prototype.generateRandomTetromino = function() {
-    /* First, save the current falling shape. */
-    if(this.currTetromino instanceof Tetromino) {
-        this._insertCurrTetromino();
-        this.currTetromino = this.nextTetromino;
-        this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
-    } else {
-        this.currTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
-        this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
-    }
+Board.prototype.useNextTetromino = function() {
+
+    this.currTetromino = this.nextTetromino;
+    this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
 
     /* Check if the tetromino can be shown on the board. */
     var newTetroPositions = this.currTetromino.getPositions();
@@ -147,13 +141,11 @@ Board.prototype.generateRandomInitialRows = function() {
 
 /* Setters and Getters. */
 
-Board.prototype._insertCurrTetromino = function() {
+Board.prototype.insertCurrTetromino = function() {
     var squares = this.currTetromino.getSquares();                           
     for(var i in squares) {                                                  
         this.insertSquare(squares[i]);                                       
     }                                                                        
-
-    this.lookForCompletedRows();
 }
 
 Board.prototype.insertSquare = function(square) {

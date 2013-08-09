@@ -58,14 +58,17 @@ function run(movementDirection = DOWN) {
     var movementPerformed = boardController.updateBoard(movementDirection);
 
     if(movementPerformed) {
-        boardController.drawSquares();
-    }
 
-    /* Collisioned with the board's squares. */
-    else if(movementDirection == DOWN) {
+        boardController.drawSquares();
+
+    } else if(movementDirection == DOWN) { /* Collisioned with squares. */
+
+        boardController.insertCurrTetromino();
+        var deletedRowsCount = boardController.deleteCompletedRows();
+        gInfoController.addDeletedRowsPoints(deletedRowsCount);
 
         /* Use the next falling Tetromino. */
-        var isNextTetroValid = boardController.generateRandomTetromino();
+        var isNextTetroValid = boardController.useNextTetromino();
         var newNextTetromino = boardController.getNextTetromino();
         gInfoController.drawNextTetromino(newNextTetromino);
 

@@ -75,22 +75,27 @@ SquaresMatrix.prototype.deleteRows = function(rowNums = []) {
     rowNums.sort();
     var lastRow = rowNums[rowNums.length - 1]; /* closest to bottom */   
  
+    var deletedRowsCount = 0;
     for(var y = lastRow; ; y--) {
 
         if(this.getRowState(y) == ROW_FULL) {
             this._deleteRow(y);
+            deletedRowsCount++;
 
             for(var x = 0; x < this.getWidth(); x++) {
                 this.packColumn(x, y);
             }
+
             /* Re-process the same row, it might have been filled again. */
             y++;
         }
 
         if(this.getRowState(y) == ROW_EMPTY) {
-            return;
+            return deletedRowsCount;
         }
     }
+
+    return deletedRowsCount;
 }
 
 SquaresMatrix.prototype._deleteRow = function(y) {

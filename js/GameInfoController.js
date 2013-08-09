@@ -14,6 +14,13 @@ GameInfoController.prototype.increaseScore = function() {
     this.scoreField.innerHTML = "" + this.score;
 }
 
+GameInfoController.prototype.addDeletedRowsPoints = function(deletedRowsCount) {
+    /* Exponential, to reward big combos. */
+    var points = deletedRowsCount * deletedRowsCount;
+    this.score += points;
+    this.scoreField.innerHTML = "" + this.score;
+}
+
 GameInfoController.prototype.drawNextTetromino = function(nextTetromino) {
     /* Clear the field. */
     while(this.nextTetrominoField.hasChildNodes()) {
