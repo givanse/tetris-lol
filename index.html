@@ -24,18 +24,20 @@
 </head>
 
 <body>
-    <div id="tetrisGame">
-        <div id="gameInfo">
-            <div id="nextTetrominoField" class="field"></div>
-            <br/>
-            <div id="scoreField" class="field"></div>
-            <br/>
-            <button id="newGameButton" onclick="startNewGame()" type="button">
-            </button>
+    
+        <div id="tetrisGame">
+            <div id="gameInfo">
+                <div id="nextTetrominoField" class="field"></div>
+                <br/>
+                <div id="scoreField" class="field"></div>
+                <br/>
+                    <a id="newGame" onclick="startNewGame()"></a>
+                </button>
+            </div>
+            <div id="gameCanvas">
+            </div>
         </div>
-        <div id="gameCanvas">
-        </div>
-    </div>
+    
     <!-- This is not an object, the reason is the <this> problem -->
     <!-- developer.mozilla.org/en-US/docs/Web/API/window.setInterval#The_.22this.22_problem -->
     <script type="text/javascript" src="js/tetrisGame.js"></script>

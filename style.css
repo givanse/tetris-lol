@@ -22,6 +22,8 @@ body {
   background-color: #fff;
 }
 
+/* GAME INFO */
+
 #gameInfo {
     color: #fff;
     float: right;
@@ -35,8 +37,6 @@ body {
     -webkit-border-image: url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
     border-image:         url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
 }
-
-/* GAME INFO */
 
 div#gameInfo div.field {
     /* border */
@@ -73,14 +73,15 @@ div#gameInfo div#scoreField {
     text-align: right;
 }
 
-#gameInfo #newGameButton {
+div#gameInfo a#newGame {
     width: 142px;
     height: 56px;
-    font-size: 1.5em;
-    background: url('img/play.png') no-repeat;
-    border: 0px;
-    padding: 0px; 
-    margin: 0px 9px; /* center within #gameInfo */
+    display: block;
+    background: transparent url('img/play.png') center top no-repeat;
+}
+
+div#gameInfo a#newGame:hover {
+    background-image: url('img/playHover.png');
 }
 
 /* BOARD */
