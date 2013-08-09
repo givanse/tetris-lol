@@ -73,12 +73,23 @@ SquaresMatrix.prototype.getRowState = function(y) {
 
 SquaresMatrix.prototype.deleteRows = function(rowNums = []) {
     rowNums.sort();
-    var y = rowNums[rowNums.length - 1]; /* closest to bottom */   
+    var lastRow = rowNums[rowNums.length - 1]; /* closest to bottom */   
  
-    this._deleteRow(y);        
+    for(var y = lastRow; ; y--) {
 
-    for(var x = 0; x < this.getWidth(); x++) {
-        this.packColumn(x, y);
+        if(this.getRowState(y) == ROW_FULL) {
+            this._deleteRow(y);
+
+            for(var x = 0; x < this.getWidth(); x++) {
+                this.packColumn(x, y);
+            }
+            /* Re-process the same row, it might have been filled again. */
+            y++;
+        }
+
+        if(this.getRowState(y) == ROW_EMPTY) {
+            return;
+        }
     }
 }
 

@@ -55,9 +55,7 @@ Board.prototype.lookForCompletedRows = function() {
         /* Don't process duplicates. */
         if(isDuplicate(rowsToDelete, rowNum))
             continue;
-
-        var rowState = this.squaresMatrix.getRowState(rowNum);
-        if(rowState == ROW_FULL)
+        else
             rowsToDelete.push(rowNum);
     }
 
