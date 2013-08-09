@@ -1,36 +1,43 @@
 
 body {
-  background: #d7d7d7;
+    background: #d7d7d7;
 }
 
 #tetrisGame {
-    width: 600px;
+    position: relative;
+    
+    width: 690px;
     height: 600px;
     border: 0px;
-    padding: 10px 30px;
-    margin: auto;
-    background-color: #000;
+    background-color: black;
 }
 
 #gameCanvas {
-  position: relative;
-  /**
-   * 12 x 18 Squares.
-   */
-  width: 384px; 
-  height: 576px;
-  background-color: #fff;
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    
+    /**
+     * 12 x 18 Squares.
+     */
+    width: 384px; 
+    height: 576px;
+    background-color: #fff;
 }
 
 /* GAME INFO */
 
 #gameInfo {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    
     color: #fff;
-    float: right;
     width: 160px;
     height: 500px;
     padding: 10px;
     background-color: #04080f;
+    
     /* border */
     border-width: 14px 7px 42px 7px;
     -moz-border-image:    url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
@@ -63,9 +70,10 @@ div#gameInfo div#nextTetrominoField .nextTWrapper {
 }
 
 div#gameInfo div#scoreField {
-    padding: 0px 10px;
     width: 120; /* 160 - border width - padding */
     height: 50px;
+    padding: 0px 9px; /* (160 - 142) / 2*/
+    
     /* text */
     color: #fff;
     font-size: 1.5em;
@@ -74,9 +82,13 @@ div#gameInfo div#scoreField {
 }
 
 div#gameInfo a#newGame {
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    
     width: 142px;
     height: 56px;
-    display: block;
+    padding: 0px 9px; /* (160 - 142) / 2*/
     background: transparent url('img/play.png') center top no-repeat;
 }
 
