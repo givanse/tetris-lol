@@ -30,6 +30,11 @@ body {
   height: 500px;
   padding: 10px;
   background-color: gray;
+    /* border */
+    border-width: 14px 7px 42px 7px;
+    -moz-border-image:    url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
+    -webkit-border-image: url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
+    border-image:         url('img/bGIBottom.png') 14 7 42 7 repeat repeat;
 }
 
 #gameInfo #nextTetrominoField {
@@ -62,7 +67,7 @@ body {
     width: 142px;
     height: 56px;
     font-size: 1.5em;
-    background: url(img/play.png) no-repeat;
+    background: url('img/play.png') no-repeat;
     border: 0px;
     padding: 0px; 
     margin: 0px 9px; /* center within #gameInfo */
