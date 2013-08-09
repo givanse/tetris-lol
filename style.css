@@ -10,6 +10,9 @@ body {
     border-width: 28px 8px 12px 8px;
     -moz-border-image:    url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
     -webkit-border-image: url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    -o-border-image:      url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    -webkit-border-image property: url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    border-style: solid;
     border-image:         url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
     
     width: 690px;
@@ -26,7 +29,10 @@ div#tetrisGame div#gameCanvas {
     /* border */
     border-width: 14px 7px 42px 7px;
     -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -o-border-image:      url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -webkit-border-image: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -webkit-border-image property: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    border-style: solid;
     border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     
     /**
@@ -47,7 +53,10 @@ div#tetrisGame div#gameCanvas {
     /* border */
     border-width: 14px 7px 42px 7px;
     -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -o-border-image:      url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -webkit-border-image: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -webkit-border-image property: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    border-style: solid;
     border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     
     color: #fff;
@@ -61,8 +70,12 @@ div#gameInfo div.field {
     /* border */
     border-width: 14px 10px;
     -moz-border-image:    url('img/display.png') 14 10 repeat repeat;
+    -o-border-image:      url('img/display.png') 14 10 repeat repeat;
     -webkit-border-image: url('img/display.png') 14 10 repeat repeat;
+    -webkit-border-image property: url('img/display.png') 14 10 repeat repeat;
+    border-style: solid;
     border-image:         url('img/display.png') 14 10 repeat repeat;
+    
     /* SQUARE_SIZE x 5 = 160 */
     /* width specified by each element with its ID */
     height: 160px;
@@ -119,11 +132,11 @@ div#tetrisGame div#gameCanvas div#gameover {
 }
 
 .square {
-  position: absolute;
-  /* SQUARE_SIZE = 32 */
-  width:  30px; /* 32 - 2 x border */
-  height: 30px; /* 32 - 2 x border */
-  border: 1px solid black;
+    position: absolute;
+    /* SQUARE_SIZE = 32 */
+    width:  30px; /* 32 - 2 x border */
+    height: 30px; /* 32 - 2 x border */
+    border: 1px solid black;
 }
 
 .LINESHP {background-color: #A000F0;}
@@ -134,3 +147,4 @@ div#tetrisGame div#gameCanvas div#gameover {
 .SSHP_R {background-color: #F00000;}
 .SSHP_L {background-color: #F0F000;}
 
+/* EOF */
