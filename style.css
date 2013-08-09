@@ -9,6 +9,7 @@ body {
   border: 1px solid black;
   padding: 0px 30px;
   margin: auto;
+  background-color: #000;
 }
 
 #gameCanvas {
@@ -18,8 +19,7 @@ body {
    */
   width: 384px; 
   height: 576px;
-  background-color: #000;
-  color: #fff;
+  background-color: #fff;
 }
 
 #gameInfo {
@@ -29,6 +29,7 @@ body {
   width: 160px;
   height: 500px;
   padding: 10px;
+  background-color: gray;
 }
 
 #gameInfo #nextTetrominoField {
@@ -58,8 +59,13 @@ body {
 }
 
 #gameInfo #newGameButton {
-  width: 160px;
-  font-size: 1.5em;
+    width: 142px;
+    height: 56px;
+    font-size: 1.5em;
+    background: url(img/play.png) no-repeat;
+    border: 0px;
+    padding: 0px; 
+    margin: 0px 9px; /* center within #gameInfo */
 }
 
 #gameover {
