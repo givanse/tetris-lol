@@ -1,23 +1,41 @@
-small {
-    font-size: 0.6em;
-}
 
 body {
     background: #d7d7d7;
     margin: 0px;
     padding: 0px;
+    font-family: arial, sans-serif;
+    color: #003366;
 }
 
 #wrapper {
     position: relative;
     margin: auto;
 
-    width: 850px; 
+    width: 875px; 
 }
 
 #wrapper #projectInfo {
     position: absolute;
-    top: 100px;
+    top: 25px;
+    
+    width: 125px; /* total = 125 + 10 + 10 = 145 */
+    height: 85px; /* total = 145 - 35 - 25 = 85 */
+    padding: 35px 10px 25px 10px;
+    background-color: #eee0e0;
+    border: 1px solid white;
+    border-radius: 15px;
+    
+    text-align: center;
+}
+
+#plink {
+    text-decoration: none;
+    font-size: 1.5em;
+    letter-spacing: 1.4pt;
+}
+
+#plink img {
+    border: 0px;
 }
 
 #wrapper #tetrisGame {
