@@ -1,6 +1,8 @@
 
 body {
     background: #d7d7d7;
+    margin: 0px;
+    padding: 0px;
 }
 
 #tetrisGame {
@@ -16,14 +18,14 @@ body {
     border-image:         url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
     
     width: 690px;
-    height: 655px;
+    height: 650px;
     background-color: black;
 }
 
 
 div#tetrisGame div#gameCanvas {
     position: absolute;
-    top: 15px;
+    top: 10px;
     left: 30px;
     
     /* border */
@@ -47,7 +49,7 @@ div#tetrisGame div#gameCanvas {
 
 #gameInfo {
     position: absolute;
-    top: 15px;
+    top: 10px;
     right: 30px;
     
     /* border */
@@ -137,6 +139,7 @@ div#tetrisGame div#gameCanvas div#gameover {
     width:  30px; /* 32 - 2 x border */
     height: 30px; /* 32 - 2 x border */
     border: 1px solid black;
+    border-radius: 4px;
 }
 
 .LINESHP {background-color: #A000F0;}
