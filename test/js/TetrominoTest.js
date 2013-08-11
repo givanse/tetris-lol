@@ -82,30 +82,32 @@ test("Tetromino.getSquares", function() {
 
     /**
      *   -1 0 1
-     *  1 x
-     *  0 x x x
+     *  1 x x x
+     *  0 x 
      * -1
      */
     tetromino = new Tetromino(0, 0, LSHP_R);
     actuals = tetromino.getSquares();
-    expecteds = [new Square(0, 1, LSHP_R),
-                 new Square(0, 0, LSHP_R),
-                 new Square(1, 0, LSHP_R),
-                 new Square(2, 0, LSHP_R)];
+    /* x += 1 */
+    expecteds = [new Square( 0, 1, LSHP_R),
+                 new Square( 0, 0, LSHP_R),
+                 new Square( 1, 1, LSHP_R),
+                 new Square( 2, 1, LSHP_R)];
     deepEqual(actuals, expecteds, "LSHP_R");
 
     /**
      *   -1 0 1
-     *  1     x
-     *  0 x x x
+     *  1 x x x
+     *  0     x
      * -1
      */
     tetromino = new Tetromino(0, 0, LSHP_L);
     actuals = tetromino.getSquares();
-    expecteds = [new Square(0, 0, LSHP_L),
-                 new Square(1, 0, LSHP_L),
-                 new Square(2, 1, LSHP_L),
-                 new Square(2, 0, LSHP_L)];
+    /* x += 1 */
+    expecteds = [new Square( 0, 1, LSHP_L),
+                 new Square( 1, 1, LSHP_L),
+                 new Square( 2, 1, LSHP_L),
+                 new Square( 2, 0, LSHP_L)];
     deepEqual(actuals, expecteds, "LSHP_L");
 
     /* Tests with a random origin. */
@@ -231,25 +233,25 @@ test("Tetromino._getRotatedPositions", function() {
 
     /**
      *   -1 0 1
-     *  1 x
-     *  0 x x x
+     *  1 x x x
+     *  0 x 
      * -1
      */
     tetromino = new Tetromino(0, 0, LSHP_R);
     actuals = tetromino._getRotatedPositions();
     /**
      *   -1 0 1
-     *  1     x
-     *  0     x
+     *  1   x
+     *  0   x
      * -1   x x
      */
-    expecteds = [[ 0, -1], [ 1, -1], [ 1, 0], [ 1, 1]];
+    expecteds = [[ 0, -1], [ 1, -1], [ 0, 0], [ 0, 1]];
     deepEqual(actuals, expecteds, "LSHP_R");
 
     /**
      *   -1 0 1
-     *  1     x
-     *  0 x x x
+     *  1 x x x
+     *  0     x
      * -1
      */
     tetromino = new Tetromino(0, 0, LSHP_L);
@@ -257,10 +259,10 @@ test("Tetromino._getRotatedPositions", function() {
     /**
      *   -1 0 1
      *  1   x x
-     *  0     x
-     * -1     x
+     *  0   x
+     * -1   x
      */
-    expecteds = [[1,  -1], [1, 0], [ 0, 1], [1, 1]];
+    expecteds = [[0, -1], [0, 0], [ 0, 1], [1, 1]];
     deepEqual(actuals, expecteds, "LSHP_L");
 });
 
