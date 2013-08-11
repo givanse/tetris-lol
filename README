@@ -1,5 +1,7 @@
 Tetris game, theme based on League of Legends.
 
+Play: http://givanse.github.io/tetrislol
+
 Implementation:
   Javascript, DOM manipulation. The objects, tetris shapes, are DIVs that are 
   placed inside another DIV that functions as the canvas of the game.
