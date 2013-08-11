@@ -181,12 +181,13 @@ div#tetrisGame div#gameoverSplash {
     border-radius: 4px;
 }
 
-.LINESHP {background-color: #A000F0;}
-.SQUARESHP {background-color: #00F0F0;}
-.TSHP {background-color: #F0A000;}
-.LSHP_R {background-color: #0000F0;}
-.LSHP_L {background-color: #00F000;}
-.SSHP_R {background-color: #F00000;}
-.SSHP_L {background-color: #F0F000;}
+/* The new teris (N64) colors.*/
+.LINESHP {background-color: #00ffff;}
+.SQUARESHP {background-color: #c0c0c0;}
+.TSHP {background-color: #ffff00;}
+.LSHP_R {background-color: #ff00ff;}
+.LSHP_L {background-color: #7700ff;}
+.SSHP_R {background-color: #00ff00;}
+.SSHP_L {background-color: #ff0000;}
 
 /* EOF */
