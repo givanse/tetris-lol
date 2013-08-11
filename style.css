@@ -9,6 +9,7 @@ body {
     padding: 0px;
     font-family: arial, sans-serif;
     color: #003366;
+    background: transparent url('img/background.png') left top repeat;
 }
 
 #wrapper {
