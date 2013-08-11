@@ -176,7 +176,7 @@ div#tetrisGame div#gameoverSplash {
     /* SQUARE_SIZE = 32 */
     width:  30px; /* 32 - 2 x border */
     height: 30px; /* 32 - 2 x border */
-    border: 1px solid black;
+    border: 1px solid #02060c;
     border-radius: 4px;
 }
 
