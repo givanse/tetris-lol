@@ -25,22 +25,25 @@
 
 <body>
     <div id="wrapper">
-        <div id="projectInfo" class="field">
-            <a id='plink' href="https://github.com/givanse/tetrislol/tree/gh-pages">
-                <img src='img/octcat.png' alt='github project link'/>
-                <span style="display: block;">tetrislol</span>
-            </a>
-        </div>
         <div id="tetrisGame">
+        
+            <div id="gameCanvas"> <!-- Where the game is drawn. --> </div>
+            
             <div id="gameInfo">
                 <div id="nextTetrominoField" class="field"></div>
                 <br/>
                 <div id="scoreField" class="field"></div>
                 <br/>
-                    <a id="newGame" onclick="startNewGame()"></a>
+                
+                <a id="newGameButton" onclick="startNewGame()"></a>
+                <br/>
+                
+                <a id='plink' href="https://github.com/givanse/tetrislol/tree/gh-pages">
+                    &nbsp;&nbsp;&nbsp;&nbsp;tetrislol
+                </a>
+                
             </div>
-            <div id="gameCanvas">
-            </div>
+            
         </div>
     </div>
     <!-- This is not an object, the reason is the <this> problem -->

@@ -1,4 +1,8 @@
 
+img {
+    border: 0px;
+}
+
 body {
     background: #d7d7d7;
     margin: 0px;
@@ -11,31 +15,7 @@ body {
     position: relative;
     margin: auto;
 
-    width: 875px; 
-}
-
-#wrapper #projectInfo {
-    position: absolute;
-    top: 25px;
-    
-    width: 125px; /* total = 125 + 10 + 10 = 145 */
-    height: 85px; /* total = 145 - 35 - 25 = 85 */
-    padding: 35px 10px 25px 10px;
-    background-color: #eee0e0;
-    border: 1px solid white;
-    border-radius: 15px;
-    
-    text-align: center;
-}
-
-#plink {
-    text-decoration: none;
-    font-size: 1.5em;
-    letter-spacing: 1.4pt;
-}
-
-#plink img {
-    border: 0px;
+    width: 710px; 
 }
 
 #wrapper #tetrisGame {
@@ -99,22 +79,25 @@ div#tetrisGame div#gameCanvas {
     background-color: #02060c;
 }
 
+/* Generic field. */
 div#gameInfo div.field {
     /* border */
     border-width: 14px 10px;
-    -moz-border-image:    url('img/display.png') 14 10 repeat repeat;
-    -o-border-image:      url('img/display.png') 14 10 repeat repeat;
-    -webkit-border-image: url('img/display.png') 14 10 repeat repeat;
+    -moz-border-image:    url('img/field.png') 14 10 repeat repeat;
+    -o-border-image:      url('img/field.png') 14 10 repeat repeat;
+    -webkit-border-image: url('img/field.png') 14 10 repeat repeat;
     border-style: solid;
-    border-image:         url('img/display.png') 14 10 repeat repeat;
+    border-image:         url('img/field.png') 14 10 repeat repeat;
     
     /* SQUARE_SIZE x 5 = 160 */
     /* width specified by each element with its ID */
     height: 160px;
-    background-color: #07111d;
+    background-color: #040d16;
 }
 
 div#gameInfo div#nextTetrominoField {
+    margin-top: 25px;
+    
     width:  140px; /* 160 - border width */
 }
 
@@ -131,6 +114,7 @@ div#gameInfo div#scoreField {
     width: 120px; /* 160 - border width - padding */
     height: 50px;
     padding: 0px 9px; /* (160 - 142) / 2*/
+    margin-top: 25px;
     
     /* text */
     color: #fff;
@@ -139,10 +123,9 @@ div#gameInfo div#scoreField {
     text-align: right;
 }
 
-div#gameInfo a#newGame {
+div#gameInfo a#newGameButton {
     display: block;
-    position: absolute;
-    bottom: 50px;
+    margin-top: 25px;
     
     width: 142px;
     height: 56px;
@@ -150,8 +133,30 @@ div#gameInfo a#newGame {
     background: transparent url('img/play.png') center top no-repeat;
 }
 
-div#gameInfo a#newGame:hover {
+div#gameInfo a#newGameButton:hover {
     background-image: url('img/playHover.png');
+}
+
+div#gameInfo a#plink {
+    display: block;
+    position: absolute;
+    bottom: 30px;
+    
+    background: transparent url('img/octcat.png') left top no-repeat;
+    width: 142px;
+    height: 32px;
+    margin: 0px 9px; /* (160 - 142) / 2*/
+    color: #0b2a48;
+    text-decoration: none;
+    font-size: 1.5em;
+    letter-spacing: 1.4pt;
+    font-weight: 600;
+    line-height: 35px;
+}
+
+div#gameInfo a#plink:hover {
+    color: #153e65;
+    background-image: url('img/octcatHover.png');
 }
 
 /* BOARD */
