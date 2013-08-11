@@ -1,14 +1,5 @@
 Tetris game, theme based on League of Legends.
 
-Implementation:
-  Javascript, DOM manipulation. The objects, tetris shapes, are DIVs that are 
-  placed inside another DIV that functions as the canvas of the game.
-  
-  The only dependency of the project is QUnit, used for unit testing.
-  
-Dependencies:
-  - QUnit
-      test/qunit/qunit.js
-      test/qunit/qunit.css
-      Those are symbolic links that must point to the qunit files.
-      Download from: qunitjs.com
+Development has stopped on this branch (Master).
+
+Further work will be done on branch gh-pages.
