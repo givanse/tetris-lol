@@ -1,18 +1,22 @@
-/*******************************************************************************
+/******************************************************************************
  *
  * Tetris game functions.
  *
- ******************************************************************************/
+ *****************************************************************************/
 
 function startNewGame() {
-    gameOver();
+    resetGame();
 
-    boardController = new Board(canvas,
-                                        widthInSquares, heightInSquares);
+    boardController = new Board(canvas, widthInSquares, heightInSquares);
     gInfoController = new GameInfoController(scoreField, nextTetrominoField);
+    
     var nextTetromino = boardController.getNextTetromino();
     gInfoController.drawNextTetromino(nextTetromino);
+    
     intervalID = gameLoopService.start();
+    
+    if(gameoverSplash.parentNode)
+        tetrisGame.removeChild(gameoverSplash);
 }
 
 /**
@@ -54,32 +58,29 @@ function run(movementDirection) {
         gInfoController.drawNextTetromino(newNextTetromino);
 
         /* Check if the game is over. */
-        if(! isNextTetroValid) {
-            gameOver();
+        if(isNextTetroValid) {
+            gInfoController.increaseScore(); /* Keep rolling ;) */
         } else {
-            gInfoController.increaseScore(); /* And keep rolling ;) */
+            gameOver();
         }
     }
 }
 
-function gameOver() {
+function resetGame() {
     if(intervalID == null)
         return;
 
     clearInterval(intervalID);
     intervalID = null;
-
-    var div = document.createElement('div');
-    div.id = "gameover"
-    div.setAttribute("style", "display: block; width: 0px; height: 0px");         
-    div.style.width = "690px";
-    div.style.height = "200px";
-    tetrisGame.appendChild(div);
     
     boardController.gameOver();
     boardController = null;
+    gInfoController = null;    
+}
 
-    gInfoController = null;
+function gameOver() {
+    resetGame();
+    tetrisGame.appendChild(gameoverSplash);
 }
 
 /* EOF */

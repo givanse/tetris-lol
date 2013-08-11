@@ -61,6 +61,12 @@
         var scoreField = document.getElementById("scoreField");
         var nextTetrominoField = document.getElementById("nextTetrominoField");
 
+        var gameoverSplash = document.createElement('div');
+        gameoverSplash.id = "gameoverSplash"
+        gameoverSplash.setAttribute("style", "display: block; width: 0px; height: 0px");         
+        gameoverSplash.style.width = "690px";
+        gameoverSplash.style.height = "200px";
+    
         var widthInSquares = 12;
         var heightInSquares = 15;
         var gameLoopService = new GameLoopService(run);

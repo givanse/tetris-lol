@@ -161,7 +161,7 @@ div#gameInfo a#plink:hover {
 
 /* GAME OVER */
 
-div#tetrisGame div#gameover {
+div#tetrisGame div#gameoverSplash {
     position: absolute;
     top: 100px;
     
