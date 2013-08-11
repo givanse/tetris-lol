@@ -5,11 +5,13 @@
   *
   *****************************************************************************/
 
+var tetrisGame = document.getElementById("tetrisGame");
 var canvas = document.getElementById("gameCanvas");
-var widthInSquares = 12;
-var heightInSquares = 18;
 var scoreField = document.getElementById("scoreField");
 var nextTetrominoField = document.getElementById("nextTetrominoField");
+
+var widthInSquares = 12;
+var heightInSquares = 18;
 var gameLoopService = new GameLoopService(run);
 
 var boardController = null;
@@ -91,6 +93,13 @@ function gameOver() {
     clearInterval(intervalID);
     intervalID = null;
 
+    var div = document.createElement('div');
+    div.id = "gameover"
+    div.setAttribute("style", "display: block; width: 0px; height: 0px");         
+    div.style.width = "690px";
+    div.style.height = "200px";
+    tetrisGame.appendChild(div);
+    
     boardController.gameOver();
     boardController = null;
 

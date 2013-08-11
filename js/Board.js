@@ -71,13 +71,6 @@ Board.prototype.deleteCompletedRows = function() {
 
 Board.prototype.gameOver = function() {
     this.drawSquares();
-
-    var div = document.createElement('div');
-    div.id = "gameover"
-    div.setAttribute("style", "display: block; width: 0px; height: 0px");         
-    div.style.width = this.width + "px";
-    div.style.height = "200px";
-    this.canvasDiv.appendChild(div);
 }
 
 /**

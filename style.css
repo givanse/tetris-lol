@@ -159,14 +159,17 @@ div#gameInfo a#plink:hover {
     background-image: url('img/octcatHover.png');
 }
 
-/* BOARD */
+/* GAME OVER */
 
-div#tetrisGame div#gameCanvas div#gameover {
+div#tetrisGame div#gameover {
     position: absolute;
-    top: 33%;
-    /* width & height defined in Board.js */
+    top: 100px;
+    
+    /* Important: width & height defined in tetrisGame.js */
     background: transparent url('img/defeat.png') center top no-repeat;
 }
+
+/* BOARD */
 
 .square {
     position: absolute;
