@@ -11,7 +11,7 @@ var scoreField = document.getElementById("scoreField");
 var nextTetrominoField = document.getElementById("nextTetrominoField");
 
 var widthInSquares = 12;
-var heightInSquares = 18;
+var heightInSquares = 15;
 var gameLoopService = new GameLoopService(run);
 
 var boardController = null;
