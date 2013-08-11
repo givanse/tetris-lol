@@ -1,27 +1,3 @@
-
-/*******************************************************************************
-  *
-  * Tetris game start up.
-  *
-  *****************************************************************************/
-
-var tetrisGame = document.getElementById("tetrisGame");
-var canvas = document.getElementById("gameCanvas");
-var scoreField = document.getElementById("scoreField");
-var nextTetrominoField = document.getElementById("nextTetrominoField");
-
-var widthInSquares = 12;
-var heightInSquares = 15;
-var gameLoopService = new GameLoopService(run);
-
-var boardController = null;
-var gInfoController = null;
-var intervalID = null;
-
-/* Start right away. */
-startNewGame();
-
-
 /*******************************************************************************
  *
  * Tetris game functions.
