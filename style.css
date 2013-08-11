@@ -47,7 +47,6 @@ body {
     -moz-border-image:    url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
     -webkit-border-image: url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
     -o-border-image:      url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
-    -webkit-border-image property: url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
     border-style: solid;
     border-image:         url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
     
@@ -67,7 +66,6 @@ div#tetrisGame div#gameCanvas {
     -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -o-border-image:      url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -webkit-border-image: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -webkit-border-image property: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     border-style: solid;
     border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     
@@ -91,7 +89,6 @@ div#tetrisGame div#gameCanvas {
     -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -o-border-image:      url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -webkit-border-image: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -webkit-border-image property: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     border-style: solid;
     border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     
@@ -108,7 +105,6 @@ div#gameInfo div.field {
     -moz-border-image:    url('img/display.png') 14 10 repeat repeat;
     -o-border-image:      url('img/display.png') 14 10 repeat repeat;
     -webkit-border-image: url('img/display.png') 14 10 repeat repeat;
-    -webkit-border-image property: url('img/display.png') 14 10 repeat repeat;
     border-style: solid;
     border-image:         url('img/display.png') 14 10 repeat repeat;
     
@@ -132,7 +128,7 @@ div#gameInfo div#nextTetrominoField .nextTWrapper {
 }
 
 div#gameInfo div#scoreField {
-    width: 120; /* 160 - border width - padding */
+    width: 120px; /* 160 - border width - padding */
     height: 50px;
     padding: 0px 9px; /* (160 - 142) / 2*/
     
