@@ -15,8 +15,7 @@ function startNewGame() {
     
     intervalID = gameLoopService.start();
     
-    if(gameoverSplash.parentNode)
-        tetrisGame.removeChild(gameoverSplash);
+    gameoverSplash.style.height = '0px';
 }
 
 /**
@@ -81,7 +80,7 @@ function resetGame() {
 
 function gameOver() {
     resetGame();
-    tetrisGame.appendChild(gameoverSplash);
+    gameoverSplash.style.height = '200px';
 }
 
 /* EOF */
