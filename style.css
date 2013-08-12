@@ -179,6 +179,7 @@ div#tetrisGame div#gameoverSplash {
     height: 30px; /* 32 - 2 x border */
     border: 1px solid #02060c;
     border-radius: 4px;
+    background: transparent url('img/squareBackground.png') center top no-repeat;
 }
 
 /* The new teris (N64) colors.*/
