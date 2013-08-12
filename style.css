@@ -65,6 +65,7 @@ div#tetrisGame div#gameCanvas {
     right: 30px;
     
     /* border */
+    border-color: #003366;
     border-width: 14px 7px 42px 7px;
     -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -o-border-image:      url('img/gameInfo.png') 14 7 42 7 repeat repeat;
@@ -83,6 +84,7 @@ div#tetrisGame div#gameCanvas {
 /* Generic field. */
 div#gameInfo div.field {
     /* border */
+    border-color: #003366;
     border-width: 14px 10px;
     -moz-border-image:    url('img/field.png') 14 10 repeat repeat;
     -o-border-image:      url('img/field.png') 14 10 repeat repeat;
