@@ -467,4 +467,23 @@ test("SquaresMatrix.deleteRows", function() {
     ok(!actual, "2x4: unavailable positions");
 });
 
+test("SquaresMatrix.insertTetromino", function() {
+    var squaresMatrix = new SquaresMatrix(2, 2);
+    squaresMatrix.insertTetromino(new Tetromino(0, 0, SQUARESHP));
+    var expecteds = [
+                   [new Square(0, 0, SQUARESHP), new Square(0, 1, SQUARESHP)],
+                   [new Square(1, 0, SQUARESHP), new Square(1, 1, SQUARESHP)]];
+    var actuals = squaresMatrix.getMatrix();
+    deepEqual(actuals, expecteds);
+    
+    var squaresMatrix = new SquaresMatrix(4, 1);
+    squaresMatrix.insertTetromino(new Tetromino(0, 0, LINESHP));
+    var expecteds = [[new Square(0, 0, LINESHP)], 
+                     [new Square(1, 0, LINESHP)],
+                     [new Square(2, 0, LINESHP)], 
+                     [new Square(3, 0, LINESHP)]];
+    var actuals = squaresMatrix.getMatrix();
+    deepEqual(actuals, expecteds);
+});
+
 /* EOF */

@@ -110,6 +110,16 @@ SquaresMatrix.prototype._deleteRow = function(y) {
 
 /* Setters and Getters. */
 
+SquaresMatrix.prototype.insertTetromino = function(tetromino) {
+    if(! (tetromino instanceof Tetromino))
+        return;
+        
+    var squares = tetromino.getSquares();                           
+    for(var i in squares) {                                                  
+        this.insertSquare(squares[i]);                                       
+    }                                                                        
+}
+
 SquaresMatrix.prototype.insertSquare = function(square) {
     var x = square.getX();
     var y = square.getY();

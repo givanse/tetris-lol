@@ -48,9 +48,10 @@ function run(movementDirection) {
 
     } else if(movementDirection == DOWN) { /* Collisioned with squares. */
 
-        boardController.insertCurrTetromino();
+        var currTetromino = boardController.getCurrentTetromino();
+        boardController.insertTetromino(currTetromino);
         var deletedRowsCount = boardController.deleteCompletedRows();
-        gInfoController.addDeletedRowsPoints(deletedRowsCount);
+        gInfoController.addDeletedRowsScorePoints(deletedRowsCount);
 
         /* Use the next falling Tetromino. */
         var isNextTetroValid = boardController.useNextTetromino();

@@ -136,15 +136,8 @@ Board.prototype.generateRandomInitialRows = function() {
 
 /* Setters and Getters. */
 
-Board.prototype.insertCurrTetromino = function() {
-    var squares = this.currTetromino.getSquares();                           
-    for(var i in squares) {                                                  
-        this.insertSquare(squares[i]);                                       
-    }                                                                        
-}
-
-Board.prototype.insertSquare = function(square) {
-    this.squaresMatrix.insertSquare(square);
+Board.prototype.insertTetromino = function(tetromino) {
+    this.squaresMatrix.insertTetromino(tetromino);
 }
 
 Board.prototype.getWidth = function() {
@@ -153,6 +146,10 @@ Board.prototype.getWidth = function() {
 
 Board.prototype.getHeight = function() {
     return parseInt(this.canvasDiv.style.height);
+}
+
+Board.prototype.getCurrentTetromino = function() {
+    return this.currTetromino;
 }
 
 Board.prototype.getNextTetromino = function() {
