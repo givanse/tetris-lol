@@ -289,4 +289,85 @@ test("Tetromino._rotate", function() {
     
 });
 
+test("Tetromino.getRows", function() {
+    var tetromino = new Tetromino(0, 0, LINESHP);
+    var actuals = tetromino.getRows();
+    var expecteds = [0];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(0, 0, SQUARESHP);
+    actuals = tetromino.getRows();
+    expecteds = [0, 1];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(0, 0, TSHP);
+    actuals = tetromino.getRows();
+    expecteds = [0, 1];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(5, 6, SSHP_R);
+    actuals = tetromino.getRows();
+    expecteds = [6, 7];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(7, 8, SSHP_L);
+    actuals = tetromino.getRows();
+    expecteds = [8, 9];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(55, 66, LSHP_R);
+    actuals = tetromino.getRows();
+    expecteds = [66, 67];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(77, 88, LSHP_L);
+    actuals = tetromino.getRows();
+    expecteds = [88, 89];
+    deepEqual(actuals, expecteds);
+    
+    /* After rotation */
+    
+    tetromino = new Tetromino(0, 0, LINESHP);
+    tetromino.move(UP);
+    actuals = tetromino.getRows();
+    expecteds = [-1, 0, 1, 2];
+    deepEqual(actuals, expecteds, "LINESHP rotated");
+    
+    tetromino = new Tetromino(0, 0, SQUARESHP);
+    tetromino.move(UP);
+    actuals = tetromino.getRows();
+    expecteds = [-1, 0];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(0, 0, TSHP);
+    tetromino.move(UP);
+    actuals = tetromino.getRows();
+    expecteds = [-1, 0, 1];
+    deepEqual(actuals, expecteds, "TSHP rotated");
+    
+    tetromino = new Tetromino(5, 6, SSHP_R);
+    tetromino.move(UP);
+    actuals = tetromino.getRows();
+    expecteds = [5, 6, 7];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(7, 8, SSHP_L);
+    tetromino.move(UP);
+    actuals = tetromino.getRows();
+    expecteds = [7, 8, 9];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(55, 66, LSHP_R);
+    tetromino.move(UP);
+    actuals = tetromino.getRows();
+    expecteds = [65, 66, 67];
+    deepEqual(actuals, expecteds);
+    
+    tetromino = new Tetromino(77, 88, LSHP_L);
+    tetromino.move(UP);
+    actuals = tetromino.getRows();
+    expecteds = [87, 88, 89];
+    deepEqual(actuals, expecteds);    
+});
+    
 /* EOF */

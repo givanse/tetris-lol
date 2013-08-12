@@ -49,21 +49,8 @@ Board.prototype.updateBoard = function(movDirection) {
  * return - The number of rows that were complete and deleted.
  */
 Board.prototype.deleteCompletedRows = function() {
-    var rowsToDelete = new Array(0);
-    var coordinates = this.currTetromino.getPositions();
-    for(var i = 0; i < coordinates.length; i++) {
-        var position = coordinates[i];
-        var rowNum = position[1];
-        
-        /* Don't process duplicates. */
-        if(isDuplicate(rowsToDelete, rowNum))
-            continue;
-        else
-            rowsToDelete.push(rowNum);
-    }
-
+    var rowsToDelete = this.currTetromino.getRows();
     var deletedRowsCount = this.squaresMatrix.deleteRows(rowsToDelete);
-
     return deletedRowsCount;
 }
 

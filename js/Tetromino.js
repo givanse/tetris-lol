@@ -172,4 +172,21 @@ Tetromino.prototype.getSquares = function() {
     return this.squares;
 }
 
+Tetromino.prototype.getRows = function() {
+    var rowsToDelete = new Array(0);
+    var coordinates = this.getPositions();
+    for(var i = 0; i < coordinates.length; i++) {
+        var position = coordinates[i];
+        var rowNum = position[1];
+        
+        /* Don't process duplicates. */
+        if(isDuplicate(rowsToDelete, rowNum))
+            continue;
+        else
+            rowsToDelete.push(rowNum);
+    }
+    
+    return rowsToDelete.sort();
+}
+
 /* EOF */
