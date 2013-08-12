@@ -186,7 +186,8 @@ Tetromino.prototype.getRows = function() {
             rowsToDelete.push(rowNum);
     }
     
-    return rowsToDelete.sort();
+    rowsToDelete.sort(function(a, b) { return a - b; });
+    return rowsToDelete;
 }
 
 /* EOF */

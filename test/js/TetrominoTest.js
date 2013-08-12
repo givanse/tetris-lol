@@ -1,8 +1,8 @@
 
 /**
  * We can predict the order in which the squares array will be filled because
- * of the way we iterate. First all the squares within the first column and then
- * all the squares in the second column and so on.
+ * of the way we iterate. First all the squares within the first column and 
+ * then all the squares in the second column and so on.
  */
 test("Tetromino.getSquares", function() {
     var tetromino = new Tetromino(0, 0);
@@ -331,7 +331,13 @@ test("Tetromino.getRows", function() {
     tetromino.move(UP);
     actuals = tetromino.getRows();
     expecteds = [-1, 0, 1, 2];
-    deepEqual(actuals, expecteds, "LINESHP rotated");
+    deepEqual(actuals, expecteds, "LINESHP rotated (0, 0)");
+
+    tetromino = new Tetromino(4, 8, LINESHP);
+    tetromino.move(UP);
+    actuals = tetromino.getRows();
+    expecteds = [7, 8, 9, 10];
+    deepEqual(actuals, expecteds, "LINESHP rotated (4, 8)");
     
     tetromino = new Tetromino(0, 0, SQUARESHP);
     tetromino.move(UP);
