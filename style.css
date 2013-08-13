@@ -135,7 +135,7 @@ div#gameInfo a#newGameButton {
     padding: 0px 9px; /* (160 - 142) / 2*/
     background: transparent url('img/play.png') center top no-repeat;
     
-    filter: alpha(opacity=90); 
+    filter: alpha(opacity = 90); 
     -moz-opacity: 0.90; 
     opacity: 0.90; 
     -khtml-opacity: 0.90;
@@ -153,21 +153,29 @@ div#gameInfo a#plink {
     position: absolute;
     bottom: 30px;
     
-    background: transparent url('img/octcat.png') left top no-repeat;
+    background: transparent url('img/octcatHover.png') left top no-repeat;
     width: 142px;
     height: 32px;
     margin: 0px 9px; /* (160 - 142) / 2*/
-    color: #0b2a48;
+    color: #153e65;
     text-decoration: none;
-    font-size: 1.5em;
+    font-size: 1.6em;
     letter-spacing: 1.4pt;
     font-weight: 600;
     line-height: 35px;
+    
+    filter: alpha(opacity = 70); 
+    -moz-opacity: 0.70; 
+    opacity: 0.70; 
+    -khtml-opacity: 0.70;
 }
 
 div#gameInfo a#plink:hover {
     color: #153e65;
-    background-image: url('img/octcatHover.png');
+    filter: none; 
+    -moz-opacity: 1.0; 
+    opacity: 1.0; 
+    -khtml-opacity: 1.0;
 }
 
 /* GAME OVER */
