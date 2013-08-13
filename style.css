@@ -149,7 +149,7 @@ div#gameInfo a#plink {
     position: absolute;
     bottom: 30px;
     
-    background: transparent url('img/octcatHover.png') left top no-repeat;
+    background: transparent url('img/octcat.png') left top no-repeat;
     width: 142px;
     height: 32px;
     margin: 0px 9px; /* (160 - 142) / 2*/
