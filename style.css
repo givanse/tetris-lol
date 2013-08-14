@@ -134,14 +134,18 @@ div#gameInfo a#newGameButton {
     height: 56px;
     padding: 0px 9px; /* (160 - 142) / 2*/
     background: transparent url('img/play.png') center top no-repeat;
+    
+    filter: alpha(opacity = 85); 
+    -moz-opacity: 0.85; 
+    opacity: 0.85; 
+    -khtml-opacity: 0.85;
 }
 
 div#gameInfo a#newGameButton:hover {
-    filter: brightness(120%);
-	-webkit-filter: brightness(120%);
-	-moz-filter: brightness(120%);
-	-o-filter: brightness(120%);
-	-ms-filter: brightness(120%);
+    filter: none; 
+    -moz-opacity: 1.0; 
+    opacity: 1.0; 
+    -khtml-opacity: 1.0;
 }
 
 div#gameInfo a#plink {
