@@ -14,7 +14,7 @@ GameInfoController.prototype.increaseScore = function() {
     this.scoreField.innerHTML = "" + this.score;
 }
 
-GameInfoController.prototype.addDeletedRowsPoints = function(deletedRowsCount) {
+GameInfoController.prototype.addDeletedRowsScorePoints = function(deletedRowsCount) {
     /* Exponential, to reward big combos. */
     var points = deletedRowsCount * deletedRowsCount * deletedRowsCount * 10;
     this.score += points;

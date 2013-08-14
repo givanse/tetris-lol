@@ -72,22 +72,22 @@ test("GLOBALS TETROMINO_BASE_COORDINATES", function() {
 
     /**
      *   -1 0 1
-     *  1 x
-     *  0 x x x
+     *  1 x x x
+     *  0 x
      * -1  
      */
     actuals = TETROMINO_BASE_COORDINATES.LSHP_R;
-    expecteds = [[-1, 1], [-1, 0], [0, 0], [1, 0]];
+    expecteds = [[-1, 1], [-1, 0], [0, 1], [1, 1]];
     deepEqual(actuals, expecteds, "LSHP_R");
 
     /**
      *   -1 0 1
-     *  1     x
-     *  0 x x x
+     *  1 x x x  
+     *  0     x
      * -1  
      */
     actuals = TETROMINO_BASE_COORDINATES.LSHP_L;
-    expecteds = [[-1, 0], [0, 0], [1, 1], [1, 0]];
+    expecteds = [[-1, 1], [0, 1], [1, 1], [1, 0]];
     deepEqual(actuals, expecteds, "LSHP_L");
 
 });

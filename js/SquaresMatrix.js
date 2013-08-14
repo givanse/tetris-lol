@@ -74,8 +74,7 @@ SquaresMatrix.prototype.getRowState = function(y) {
 SquaresMatrix.prototype.deleteRows = function(rowNums) {
 
     rowNums = (rowNums == undefined) ? [] : rowNums;
-    
-    rowNums.sort();
+
     var lastRow = rowNums[rowNums.length - 1]; /* closest to bottom */   
  
     var deletedRowsCount = 0;
@@ -109,6 +108,16 @@ SquaresMatrix.prototype._deleteRow = function(y) {
 }
 
 /* Setters and Getters. */
+
+SquaresMatrix.prototype.insertTetromino = function(tetromino) {
+    if(! (tetromino instanceof Tetromino))
+        return;
+        
+    var squares = tetromino.getSquares();                           
+    for(var i in squares) {                                                  
+        this.insertSquare(squares[i]);                                       
+    }                                                                        
+}
 
 SquaresMatrix.prototype.insertSquare = function(square) {
     var x = square.getX();

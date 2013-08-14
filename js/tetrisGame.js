@@ -1,40 +1,21 @@
-
-/*******************************************************************************
-  *
-  * Tetris game start up.
-  *
-  *****************************************************************************/
-
-var canvas = document.getElementById("gameCanvas");
-var widthInSquares = 12;
-var heightInSquares = 18;
-var scoreField = document.getElementById("scoreField");
-var nextTetrominoField = document.getElementById("nextTetrominoField");
-var gameLoopService = new GameLoopService(run);
-
-var boardController = null;
-var gInfoController = null;
-var intervalID = null;
-
-/* Start right away. */
-startNewGame();
-
-
-/*******************************************************************************
+/******************************************************************************
  *
  * Tetris game functions.
  *
- ******************************************************************************/
+ *****************************************************************************/
 
 function startNewGame() {
-    gameOver();
+    resetGame();
 
-    boardController = new Board(canvas,
-                                        widthInSquares, heightInSquares);
+    boardController = new Board(canvas, widthInSquares, heightInSquares);
     gInfoController = new GameInfoController(scoreField, nextTetrominoField);
+    
     var nextTetromino = boardController.getNextTetromino();
     gInfoController.drawNextTetromino(nextTetromino);
+    
     intervalID = gameLoopService.start();
+    
+    gameoverSplash.style.height = '0px';
 }
 
 /**
@@ -66,9 +47,10 @@ function run(movementDirection) {
 
     } else if(movementDirection == DOWN) { /* Collisioned with squares. */
 
-        boardController.insertCurrTetromino();
+        var currTetromino = boardController.getCurrentTetromino();
+        boardController.insertTetromino(currTetromino);
         var deletedRowsCount = boardController.deleteCompletedRows();
-        gInfoController.addDeletedRowsPoints(deletedRowsCount);
+        gInfoController.addDeletedRowsScorePoints(deletedRowsCount);
 
         /* Use the next falling Tetromino. */
         var isNextTetroValid = boardController.useNextTetromino();
@@ -76,25 +58,28 @@ function run(movementDirection) {
         gInfoController.drawNextTetromino(newNextTetromino);
 
         /* Check if the game is over. */
-        if(! isNextTetroValid) {
-            gameOver();
+        if(isNextTetroValid) {
+            gInfoController.increaseScore(); /* Keep rolling ;) */
         } else {
-            gInfoController.increaseScore(); /* And keep rolling ;) */
+            gameOver();
         }
     }
 }
 
-function gameOver() {
+function resetGame() {
     if(intervalID == null)
         return;
 
     clearInterval(intervalID);
     intervalID = null;
-
     boardController.gameOver();
     boardController = null;
+    gInfoController = null;    
+}
 
-    gInfoController = null;
+function gameOver() {
+    resetGame();
+    gameoverSplash.style.height = '200px';
 }
 
 /* EOF */

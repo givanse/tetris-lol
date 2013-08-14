@@ -1,13 +1,28 @@
 
+img {
+    border: 0px;
+}
+
 body {
     background: #d7d7d7;
     margin: 0px;
     padding: 0px;
+    font-family: arial, sans-serif;
+    color: #003366;
+    background: transparent url('img/background.png') left top repeat;
 }
 
-#tetrisGame {
+#wrapper {
     position: relative;
-    
+    margin: auto;
+
+    width: 710px; 
+}
+
+#wrapper #tetrisGame {
+    position: absolute;
+    right: 0px;    
+
     /* border */
     border-width: 28px 8px 12px 8px;
     -moz-border-image:    url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
@@ -18,7 +33,7 @@ body {
     border-image:         url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
     
     width: 690px;
-    height: 650px;
+    height: 560px; /* 600 - 28 - 12*/
     background-color: black;
 }
 
@@ -39,9 +54,8 @@ div#tetrisGame div#gameCanvas {
     
     /**
      * 12 x 18 Squares.
+     * width and height set during game startup (index.html)
      */
-    width: 384px; 
-    height: 576px;
     background-color: #02060c;
 }
 
@@ -53,6 +67,7 @@ div#tetrisGame div#gameCanvas {
     right: 30px;
     
     /* border */
+    border-color: #003366;
     border-width: 14px 7px 42px 7px;
     -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -o-border-image:      url('img/gameInfo.png') 14 7 42 7 repeat repeat;
@@ -63,28 +78,32 @@ div#tetrisGame div#gameCanvas {
     
     color: #fff;
     width: 160px;
-    height: 556px;
+    /* height set during game startup (index.html) */
+    height: 460px;
     padding: 10px;
     background-color: #02060c;
 }
 
+/* Generic field. */
 div#gameInfo div.field {
     /* border */
+    border-color: #003366;
     border-width: 14px 10px;
-    -moz-border-image:    url('img/display.png') 14 10 repeat repeat;
-    -o-border-image:      url('img/display.png') 14 10 repeat repeat;
-    -webkit-border-image: url('img/display.png') 14 10 repeat repeat;
-    -webkit-border-image property: url('img/display.png') 14 10 repeat repeat;
+    -moz-border-image:    url('img/field.png') 14 10 repeat repeat;
+    -o-border-image:      url('img/field.png') 14 10 repeat repeat;
+    -webkit-border-image: url('img/field.png') 14 10 repeat repeat;
     border-style: solid;
-    border-image:         url('img/display.png') 14 10 repeat repeat;
+    border-image:         url('img/field.png') 14 10 repeat repeat;
     
     /* SQUARE_SIZE x 5 = 160 */
     /* width specified by each element with its ID */
     height: 160px;
-    background-color: #07111d;
+    background-color: #040d16;
 }
 
 div#gameInfo div#nextTetrominoField {
+    margin-top: 5px;
+
     width:  140px; /* 160 - border width */
 }
 
@@ -98,9 +117,10 @@ div#gameInfo div#nextTetrominoField .nextTWrapper {
 }
 
 div#gameInfo div#scoreField {
-    width: 120; /* 160 - border width - padding */
+    width: 120px; /* 160 - border width - padding */
     height: 50px;
     padding: 0px 9px; /* (160 - 142) / 2*/
+    margin-top: 5px;
     
     /* text */
     color: #fff;
@@ -109,45 +129,88 @@ div#gameInfo div#scoreField {
     text-align: right;
 }
 
-div#gameInfo a#newGame {
+div#gameInfo a#newGameButton {
     display: block;
-    position: absolute;
-    bottom: 50px;
+    margin-top: 5px;
     
     width: 142px;
     height: 56px;
     padding: 0px 9px; /* (160 - 142) / 2*/
     background: transparent url('img/play.png') center top no-repeat;
+    
+    filter: alpha(opacity = 85); 
+    -moz-opacity: 0.85; 
+    opacity: 0.85; 
+    -khtml-opacity: 0.85;
 }
 
-div#gameInfo a#newGame:hover {
-    background-image: url('img/playHover.png');
+div#gameInfo a#newGameButton:hover {
+    filter: none; 
+    -moz-opacity: 1.0; 
+    opacity: 1.0; 
+    -khtml-opacity: 1.0;
+}
+
+div#gameInfo a#plink {
+    display: block;
+    position: absolute;
+    bottom: 30px;
+    
+    background: transparent url('img/octcat.png') left top no-repeat;
+    width: 142px;
+    height: 32px;
+    margin: 0px 9px; /* (160 - 142) / 2*/
+    color: #153e65;
+    text-decoration: none;
+    font-size: 1.6em;
+    letter-spacing: 1.4pt;
+    font-weight: 600;
+    line-height: 35px;
+    
+    filter: alpha(opacity = 70); 
+    -moz-opacity: 0.70; 
+    opacity: 0.70; 
+    -khtml-opacity: 0.70;
+}
+
+div#gameInfo a#plink:hover {
+    color: #153e65;
+    filter: none; 
+    -moz-opacity: 1.0; 
+    opacity: 1.0; 
+    -khtml-opacity: 1.0;
+}
+
+/* GAME OVER */
+
+div#tetrisGame div#gameoverSplash {
+    position: absolute;
+    top: 100px;
+    
+    width: 690px;
+    height: 0px;
+    background: transparent url('img/defeat.png') center top no-repeat;
 }
 
 /* BOARD */
-
-div#tetrisGame div#gameCanvas div#gameover {
-    position: absolute;
-    top: 33%;
-    /* width & height defined in Board.js */
-    background: transparent url('img/defeat.png') center top no-repeat;
-}
 
 .square {
     position: absolute;
     /* SQUARE_SIZE = 32 */
     width:  30px; /* 32 - 2 x border */
     height: 30px; /* 32 - 2 x border */
-    border: 1px solid black;
+    border: 1px solid #02060c;
     border-radius: 4px;
+    background: transparent url('img/squareBackground.png') center top no-repeat;
 }
 
-.LINESHP {background-color: #A000F0;}
-.SQUARESHP {background-color: #00F0F0;}
-.TSHP {background-color: #F0A000;}
-.LSHP_R {background-color: #0000F0;}
-.LSHP_L {background-color: #00F000;}
-.SSHP_R {background-color: #F00000;}
-.SSHP_L {background-color: #F0F000;}
+/* The new teris (N64) colors.*/
+.LINESHP {background-color: #00ffff;}
+.SQUARESHP {background-color: #c0c0c0;}
+.TSHP {background-color: #ffff00;}
+.LSHP_R {background-color: #ff00ff;}
+.LSHP_L {background-color: #7700ff;}
+.SSHP_R {background-color: #00ff00;}
+.SSHP_L {background-color: #ff0000;}
 
 /* EOF */
