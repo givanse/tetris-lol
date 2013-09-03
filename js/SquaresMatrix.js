@@ -114,16 +114,16 @@ SquaresMatrix.prototype.insertTetromino = function(tetromino) {
         return;
         
     var squares = tetromino.getSquares();                           
-    for(var i in squares) {                                                  
-        this.insertSquare(squares[i]);                                       
-    }                                                                        
+    for(var i = 0; i < squares.length; i++) {
+        var square = squares[i];
+        this.insertSquare(square);                                       
+    }                                     
 }
 
 SquaresMatrix.prototype.insertSquare = function(square) {
     var x = square.getX();
     var y = square.getY();
     this.squaresMatrix[x][y] = square;
-
     return this;
 }
 

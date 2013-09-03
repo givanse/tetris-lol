@@ -477,15 +477,16 @@ test("SquaresMatrix.insertTetromino", function() {
     var actuals = squaresMatrix.getMatrix();
     deepEqual(actuals, expecteds);
     
-    /*squaresMatrix = new SquaresMatrix(3, 2);
+    squaresMatrix = new SquaresMatrix(3, 2);
     squaresMatrix.insertTetromino(new Tetromino(0, 0, TSHP));
+    /* Not intuitive, will change if Tetromino:11 is addressed. */
     expecteds = [
-                [new Square(0, 0, TSHP), null], 
+                [null, new Square(0, 1, TSHP)], 
                 [new Square(1, 0, TSHP), new Square(1, 1, TSHP)], 
-                [new Square(2, 0, TSHP), null]
+                [null, new Square(2, 1, TSHP)]
                 ];
     actuals = squaresMatrix.getMatrix();
-    deepEqual(actuals, expecteds);*/
+    deepEqual(actuals, expecteds);
 });
 
 /* EOF */
