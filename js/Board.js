@@ -111,17 +111,21 @@ Board.prototype.useNextTetromino = function() {
 }
 
 Board.prototype.generateRandomInitialRows = function() {
-    var numFilledRows = 3;
-    var positionsLeftEmpty = this.squaresMatrix.getWidth() * 1;
-    var totalSquaresNeeded = (this.squaresMatrix.getWidth() * numFilledRows) -
-                              positionsLeftEmpty;
+    var numFilledRows = 1;
+    
+    var totalSquares = this.squaresMatrix.getWidth() * numFilledRows;
+    var positionsLeftEmpty = totalSquares / 2; /* use only half */
+    var totalSquaresNeeded = totalSquares - positionsLeftEmpty;
+    
     var xMin = 0;
     var xMax = this.squaresMatrix.getWidth()  - 1;
+    
     var yMin = this.squaresMatrix.getHeight() - numFilledRows;
     var yMax = this.squaresMatrix.getHeight() - 1;
+    
     for(var i = 0; i < totalSquaresNeeded; i++) {
-        var xRnd = Math.floor(Math.random() * (xMax - xMin + 1)) + xMin;
-        var yRnd = Math.floor(Math.random() * (yMax - yMin + 1)) + yMin;
+        var xRnd = Math.floor(Math.random() * ((xMax - xMin) + 1)) + xMin;
+        var yRnd = Math.floor(Math.random() * ((yMax - yMin) + 1)) + yMin;
         var tetrominoName = getRandomTetrominoName();
         var square = new Square(xRnd, yRnd, tetrominoName);
         this.squaresMatrix.insertSquare(square);
