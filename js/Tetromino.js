@@ -155,13 +155,22 @@ Tetromino.prototype.updateSquares = function(baseCoordinates) {
 }
 
 Tetromino.prototype.buildSquares = function() {
+
+    var noxiousTrapPosition = null;
+    if(this.tetrominoName == SQUARESHP)
+        noxiousTrapPosition = 0;
+    
     var squares = new Array(4);
     for(var i = 0; i < this.baseCoordinates.length; i++) {
         var baseCoords = this.baseCoordinates[i];
         var newCoords = this._addOffsetToCoordsPair(baseCoords);
         var x = newCoords[0];
         var y = newCoords[1];
-        squares[i] = new Square(x, y, this.tetrominoName);
+        
+        var squareType = (noxiousTrapPosition == i) ? MUSHROOM : 
+                                                      this.tetrominoName; 
+        
+        squares[i] = new Square(x, y, squareType);
     }
     
     return squares;

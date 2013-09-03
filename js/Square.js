@@ -3,16 +3,16 @@
  * Build a new Square. Later on Tetrominos, tetris shapes, will be built with
  * four Squares each.
  */
-function Square(x, y, tetrominoType) {
+function Square(x, y, squareType) {
 
-    tetrominoType = (tetrominoType == undefined) ? 'noType' : tetrominoType;
+    squareType = (squareType == undefined) ? 'noType' : squareType;
 
     this.div = document.createElement('div');
 
     this.setX(x);
     this.setY(y);
 
-    var SQUARE_CLASS_NAMES = 'square ' + tetrominoType;
+    var SQUARE_CLASS_NAMES = 'square ' + squareType;
     this.div.className = SQUARE_CLASS_NAMES;
 }
 

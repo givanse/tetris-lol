@@ -32,7 +32,7 @@ test("Tetromino.getSquares", function() {
      */
     tetromino = new Tetromino(0, 0, SQUARESHP);
     actuals = tetromino.getSquares();
-    expecteds = [new Square(0, 1, SQUARESHP),
+    expecteds = [new Square(0, 1, MUSHROOM),
                  new Square(0, 0, SQUARESHP),
                  new Square(1, 1, SQUARESHP),
                  new Square(1, 0, SQUARESHP)];
@@ -136,11 +136,11 @@ test("Tetromino.getSquares", function() {
     actuals = tetromino.getSquares();
     tetromino = new Tetromino(65, 86, SQUARESHP);
     actuals = tetromino.getSquares();
-    expecteds = [new Square(65, 87, SQUARESHP),
+    expecteds = [new Square(65, 87, MUSHROOM),
                  new Square(65, 86, SQUARESHP),
                  new Square(66, 87, SQUARESHP),
                  new Square(66, 86, SQUARESHP)];
-    deepEqual(actuals, expecteds, "(65, 86)");
+    deepEqual(actuals, expecteds, "SQUARESHP (65, 86)");
 });
 
 test("Tetromino._getRotatedPositions", function() {
