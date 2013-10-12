@@ -10,9 +10,9 @@
 </head>
 
 <body>
+
     <div id="wrapper">
         <div id="tetrisGame">
-        
             <div id="gameCanvas"> <!-- Where the game is drawn. --> </div>
             
             <div id="gameInfo">
@@ -20,19 +20,16 @@
                 <br/>
                 <div id="scoreField" class="field"></div>
                 <br/>
-                
                 <a id="newGameButton" onclick="startNewGame()"></a>
-                
                 <br/>
-                
-                <a id='plink' href="https://github.com/givanse/tetrislol/tree/gh-pages">
+                <a id='gitlink' href="https://github.com/givanse/tetrislol/tree/gh-pages">
                     &nbsp;&nbsp;&nbsp;&nbsp;tetrislol
-                </a>
-                
+                </a>           
             </div>
             
-            <div id='gameoverSplash'></div>
+            <div style="clear: both;"><!-- clear floats --></div>
             
+            <div id='gameoverSplash'><!-- starts hidden --></div>
         </div>
     </div>
 
@@ -64,6 +61,7 @@
         /* Find DOM objects used for the game. */
         var TETRIS_GAME = document.getElementById("tetrisGame");
         var CANVAS = document.getElementById("gameCanvas");
+        var GAME_INFO = document.getElementById("gameInfo");
         var NEXT_TETROMINO_FIELD = document.getElementById("nextTetrominoField");
         var SCORE_FIELD = document.getElementById("scoreField");
         var GAMEOVER_SPLASH = document.getElementById("gameoverSplash");
@@ -74,10 +72,14 @@
         var G_INFO_CONTROLLER = null;
         var INTERVAL_ID = null;
 
-        var WIDTH_IN_SQUARES = 12;
-        var HEIGHT_IN_SQUARES = 15;
+        /** 
+         * Playfield is 10 cells wide and at least 22 cells tall, where 
+         * rows above 20 are hidden or obstructed by the field frame.
+         */
+        var WIDTH_IN_SQUARES = 10;
+        var HEIGHT_IN_SQUARES = 20;      /* top two are logical only, hidden */
         /* Start right away. */
-        startNewGame();                               /* tetrisGame.js */
+        startNewGame();                                     /* tetrisGame.js */
     </script>
 </body>
 </html>

@@ -12,17 +12,12 @@ body {
     background: transparent url('img/background.png') left top repeat;
 }
 
-#wrapper {
-    position: relative;
-    margin: auto;
-
-    width: 710px; 
+body #wrapper {
+    margin: 0 auto;    
+    width: 700px;
 }
 
 #wrapper #tetrisGame {
-    position: absolute;
-    right: 0px;    
-
     /* border */
     border-width: 28px 8px 12px 8px;
     -moz-border-image:    url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
@@ -32,16 +27,14 @@ body {
     border-style: solid;
     border-image:         url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
     
-    width: 690px;
-    height: 560px; /* 600 - 28 - 12*/
+    width: 625px;
     background-color: black;
 }
 
 
 div#tetrisGame div#gameCanvas {
-    position: absolute;
-    top: 10px;
-    left: 30px;
+    position: relative;
+    float: left;
     
     /* border */
     border-width: 14px 7px 42px 7px;
@@ -52,47 +45,49 @@ div#tetrisGame div#gameCanvas {
     border-style: solid;
     border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     
-    /**
-     * 12 x 18 Squares.
-     * width and height set during game startup (index.html)
-     */
+    margin: 7px 30px;
     background-color: #02060c;
+    /**
+     * 10 x 20 Squares.
+     * width and height set during game startup (Board.js)
+     */
 }
 
 /* GAME INFO */
 
-#gameInfo {
-    position: absolute;
-    top: 10px;
-    right: 30px;
+div#tetrisGame div#gameInfo {
+    position: relative;
+    float: left;
     
     /* border */
     border-color: #003366;
+    border-style: solid;
     border-width: 14px 7px 42px 7px;
     -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -o-border-image:      url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     -webkit-border-image: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -webkit-border-image property: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    border-style: solid;
     border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
     
     color: #fff;
-    width: 160px;
-    /* height set during game startup (index.html) */
-    height: 460px;
-    padding: 10px;
+    margin: 7px 0;
+    padding: 0 10px;
     background-color: #02060c;
+    width: 160px;
+    /**
+     * 10 x 20 Squares.
+     * height set during game startup (Board.js)
+     */
 }
 
 /* Generic field. */
 div#gameInfo div.field {
     /* border */
     border-color: #003366;
+    border-style: solid;
     border-width: 14px 10px;
     -moz-border-image:    url('img/field.png') 14 10 repeat repeat;
     -o-border-image:      url('img/field.png') 14 10 repeat repeat;
     -webkit-border-image: url('img/field.png') 14 10 repeat repeat;
-    border-style: solid;
     border-image:         url('img/field.png') 14 10 repeat repeat;
     
     /* SQUARE_SIZE x 5 = 160 */
@@ -151,7 +146,7 @@ div#gameInfo a#newGameButton:hover {
     -khtml-opacity: 1.0;
 }
 
-div#gameInfo a#plink {
+div#gameInfo a#gitlink {
     display: block;
     position: absolute;
     bottom: 30px;
@@ -186,8 +181,9 @@ div#gameInfo a#plink:hover {
 div#tetrisGame div#gameoverSplash {
     position: absolute;
     top: 100px;
+    margin: 0 auto;
     
-    width: 690px;
+    width: 625px;                            /* same as #wrapper #tetrisGame */
     height: 0px;
     background: transparent url('img/defeat.png') center top no-repeat;
 }
@@ -204,7 +200,9 @@ div#tetrisGame div#gameoverSplash {
     background: transparent url('img/sqrBackground.png') center top no-repeat;
 }
 
-/* The new teris (N64) colors.*/
+/** 
+  * Colors from The New Teris (Nintendo N64). No blue in this set.
+  */
 .LINESHP {background-color: #00ffff;}
 .SQUARESHP {background-color: #c0c0c0;}
 .TSHP {background-color: #ffff00;}

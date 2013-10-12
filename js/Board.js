@@ -1,6 +1,5 @@
 
-function Board(canvasDiv, widthInSquares, heightInSquares) {
-
+function Board(canvasDiv, gameInfoDiv, widthInSquares, heightInSquares) {
     widthInSquares = (widthInSquares == undefined) ? 0 : widthInSquares;
     heightInSquares = (heightInSquares == undefined) ? 0 : heightInSquares;
     
@@ -15,6 +14,9 @@ function Board(canvasDiv, widthInSquares, heightInSquares) {
     /* set canvasDiv dimensions */
     this.canvasDiv.style.width  = this.width  + "px";
     this.canvasDiv.style.height = this.height + "px";
+    
+    /* set gameInfo height*/
+    gameInfoDiv.setAttribute("style", "height: " + this.height + "px");
 
     this.currTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
     this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 

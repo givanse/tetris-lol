@@ -7,8 +7,10 @@
 function startNewGame() {
     resetGame();
 
-    BOARD_CONTROLLER = new Board(CANVAS, WIDTH_IN_SQUARES, HEIGHT_IN_SQUARES);
-    G_INFO_CONTROLLER = new GameInfoController(SCORE_FIELD, NEXT_TETROMINO_FIELD);
+    BOARD_CONTROLLER = new Board(CANVAS, GAME_INFO, 
+                                 WIDTH_IN_SQUARES, HEIGHT_IN_SQUARES);
+    G_INFO_CONTROLLER = new GameInfoController(SCORE_FIELD, 
+                                               NEXT_TETROMINO_FIELD);
     
     var nextTetromino = BOARD_CONTROLLER.getNextTetromino();
     G_INFO_CONTROLLER.drawNextTetromino(nextTetromino);
