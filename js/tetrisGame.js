@@ -7,8 +7,9 @@
 function startNewGame() {
     resetGame();
 
-    BOARD_CONTROLLER = new Board(CANVAS, GAME_INFO, 
-                                 WIDTH_IN_SQUARES, HEIGHT_IN_SQUARES);
+    BOARD_CONTROLLER = new Board(CANVAS, PLAY_FIELD, GAME_INFO, 
+                                 WIDTH_IN_SQUARES, HEIGHT_IN_SQUARES + 2);
+                                                 /* plus two for rows buffer */
     G_INFO_CONTROLLER = new GameInfoController(SCORE_FIELD, 
                                                NEXT_TETROMINO_FIELD);
     

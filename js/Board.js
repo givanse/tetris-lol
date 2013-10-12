@@ -1,22 +1,28 @@
 
-function Board(canvasDiv, gameInfoDiv, widthInSquares, heightInSquares) {
+function Board(canvas, playField, gameInfoDiv, widthInSquares, heightInSquares) {
     widthInSquares = (widthInSquares == undefined) ? 0 : widthInSquares;
     heightInSquares = (heightInSquares == undefined) ? 0 : heightInSquares;
     
     this.squaresMatrix = new SquaresMatrix(widthInSquares, heightInSquares);
 
-    this.canvasDiv = canvasDiv;
-    this.canvasDiv.setAttribute("style",
-                                "display: block; width: 0px; height: 0px");
-    /* canvasDiv dimensions */
+    this.playField = playField;
+    /* set playField dimensions */
+    this.playField.setAttribute("style",
+                         "display: block; width: 0px; height: 0px; top: 0px;");
     this.width  = widthInSquares  * SQUARE_SIZE;
     this.height = heightInSquares * SQUARE_SIZE;
-    /* set canvasDiv dimensions */
-    this.canvasDiv.style.width  = this.width  + "px";
-    this.canvasDiv.style.height = this.height + "px";
+    this.playField.style.width  = this.width  + "px";
+    this.playField.style.height = this.height + "px";
+    this.playField.style.top = - (SQUARE_SIZE * 2) + "px";/* two rows buffer */
+    
+    /* set canvas dimensions */
+    var canvasHeight = ((heightInSquares - 2) * SQUARE_SIZE);
+    canvas.setAttribute("style", "display: block; width: 0px; height: 0px");
+    canvas.style.width  = this.width  + "px";
+    canvas.style.height = canvasHeight + "px";
     
     /* set gameInfo height*/
-    gameInfoDiv.setAttribute("style", "height: " + this.height + "px");
+    gameInfoDiv.setAttribute("style", "height: " + canvasHeight + "px");
 
     this.currTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
     this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
@@ -66,7 +72,7 @@ Board.prototype.gameOver = function() {
     div.setAttribute("style", "display: block; width: 0px; height: 0px");         
     div.style.width = this.width + "px";
     div.style.height = "200px";
-    this.canvasDiv.appendChild(div);
+    this.playField.appendChild(div);
 }
 
 /**
@@ -76,8 +82,8 @@ Board.prototype.drawSquares = function() {
     /*TODO: Optimization, remove and append only the squares that have moved. */
 
     /* Clear the canvas. */
-    while(this.canvasDiv.hasChildNodes()) {
-        this.canvasDiv.removeChild(this.canvasDiv.lastChild);
+    while(this.playField.hasChildNodes()) {
+        this.playField.removeChild(this.playField.lastChild);
     }
 
     /* Draw board squares. */
@@ -96,7 +102,7 @@ Board.prototype._drawSquaresArray = function(squaresArray) {
     for(var i = 0; i < squaresArray.length; i++) {
         var square = squaresArray[i];
         if(square instanceof Square)
-            this.canvasDiv.appendChild(square.getDiv());
+            this.playField.appendChild(square.getDiv());
     }
 }
 
@@ -141,11 +147,11 @@ Board.prototype.insertTetromino = function(tetromino) {
 }
 
 Board.prototype.getWidth = function() {
-    return parseInt(this.canvasDiv.style.width);
+    return parseInt(this.playField.style.width);
 }
 
 Board.prototype.getHeight = function() {
-    return parseInt(this.canvasDiv.style.height);
+    return parseInt(this.playField.style.height);
 }
 
 Board.prototype.getCurrentTetromino = function() {

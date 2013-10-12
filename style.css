@@ -53,6 +53,15 @@ div#tetrisGame div#gameCanvas {
      */
 }
 
+div#tetrisGame div#gameCanvas div#playField {
+    position: absolute;
+     
+    /**
+     * 10 x 20 Squares.
+     * width and height set during game startup (Board.js)
+     */
+}
+
 /* GAME INFO */
 
 div#tetrisGame div#gameInfo {
@@ -198,6 +207,10 @@ div#tetrisGame div#gameoverSplash {
     border: 1px solid #02060c;
     border-radius: 4px;
     background: transparent url('img/sqrBackground.png') center top no-repeat;
+}
+
+div#playField div.square[buffer="true"] {
+    display: none;
 }
 
 /** 

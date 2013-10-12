@@ -13,7 +13,9 @@
 
     <div id="wrapper">
         <div id="tetrisGame">
-            <div id="gameCanvas"> <!-- Where the game is drawn. --> </div>
+            <div id="gameCanvas">
+                <div id="playField"><!-- Where the game is drawn. --> </div>
+            </div>
             
             <div id="gameInfo">
                 <div id="nextTetrominoField" class="field"></div>
@@ -61,6 +63,7 @@
         /* Find DOM objects used for the game. */
         var TETRIS_GAME = document.getElementById("tetrisGame");
         var CANVAS = document.getElementById("gameCanvas");
+        var PLAY_FIELD = document.getElementById("playField");
         var GAME_INFO = document.getElementById("gameInfo");
         var NEXT_TETROMINO_FIELD = document.getElementById("nextTetrominoField");
         var SCORE_FIELD = document.getElementById("scoreField");
@@ -77,7 +80,7 @@
          * rows above 20 are hidden or obstructed by the field frame.
          */
         var WIDTH_IN_SQUARES = 10;
-        var HEIGHT_IN_SQUARES = 20;      /* top two are logical only, hidden */
+        var HEIGHT_IN_SQUARES = 20; /* top two are logical, added internally */
         /* Start right away. */
         startNewGame();                                     /* tetrisGame.js */
     </script>

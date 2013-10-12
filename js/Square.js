@@ -32,6 +32,10 @@ Square.prototype.setY = function(y) {
     this.y = y; 
     /* Update positioning */
     this.div.style.top  = this.y * SQUARE_SIZE + 'px';
+    if(y < 2)
+        this.div.setAttribute("buffer", "true");
+    else
+        this.div.setAttribute("buffer", "false");
 }
 
 Square.prototype.getDiv = function() { return this.div; }

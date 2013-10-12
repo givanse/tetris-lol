@@ -3,7 +3,7 @@ function SquaresMatrix(columns, rows) {
 
     this.columns = columns < 0 ? 0 : columns;
     this.rows = rows < 0 ? 0 : rows;
-
+    
     this.squaresMatrix = new Array(this.columns);
     for(var col = 0; col < this.columns; col++) {
         this.squaresMatrix[col] = new Array(this.rows);
