@@ -7,13 +7,13 @@
 function startNewGame() {
     resetGame();
 
-    boardController = new Board(canvas, widthInSquares, heightInSquares);
-    gInfoController = new GameInfoController(scoreField, nextTetrominoField);
+    BOARD_CONTROLLER = new Board(CANVAS, WIDTH_IN_SQUARES, HEIGHT_IN_SQUARES);
+    G_INFO_CONTROLLER = new GameInfoController(SCORE_FIELD, NEXT_TETROMINO_FIELD);
     
-    var nextTetromino = boardController.getNextTetromino();
-    gInfoController.drawNextTetromino(nextTetromino);
+    var nextTetromino = BOARD_CONTROLLER.getNextTetromino();
+    G_INFO_CONTROLLER.drawNextTetromino(nextTetromino);
     
-    intervalID = gameLoopService.start();
+    INTERVAL_ID = GAMELOOPSERVICE.start();
     
     gameoverSplash.style.height = '0px';
 }
@@ -27,39 +27,39 @@ function startNewGame() {
  * More info: developer.mozilla.org/en-US/docs/Web/API/window.setInterval
  *
  * That is why we can use th following variables (defined in index.html):
- *   gInfoController
- *   boardController
- *   intervalID
+ *   G_INFO_CONTROLLER
+ *   BOARD_CONTROLLER
+ *   INTERVAL_ID
  */
 function run(movementDirection) {
 
     movementDirection = (movementDirection == undefined) ? DOWN :
                                                            movementDirection;
     
-    if(boardController == null)
+    if(BOARD_CONTROLLER == null)
         return;
 
-    var movementPerformed = boardController.updateBoard(movementDirection);
+    var movementPerformed = BOARD_CONTROLLER.updateBoard(movementDirection);
 
     if(movementPerformed) {
 
-        boardController.drawSquares();
+        BOARD_CONTROLLER.drawSquares();
 
     } else if(movementDirection == DOWN) { /* Collisioned with squares. */
 
-        var currTetromino = boardController.getCurrentTetromino();
-        boardController.insertTetromino(currTetromino);
-        var deletedRowsCount = boardController.deleteCompletedRows();
-        gInfoController.addDeletedRowsScorePoints(deletedRowsCount);
+        var currTetromino = BOARD_CONTROLLER.getCurrentTetromino();
+        BOARD_CONTROLLER.insertTetromino(currTetromino);
+        var deletedRowsCount = BOARD_CONTROLLER.deleteCompletedRows();
+        G_INFO_CONTROLLER.addDeletedRowsScorePoints(deletedRowsCount);
 
         /* Use the next falling Tetromino. */
-        var isNextTetroValid = boardController.useNextTetromino();
-        var newNextTetromino = boardController.getNextTetromino();
-        gInfoController.drawNextTetromino(newNextTetromino);
+        var isNextTetroValid = BOARD_CONTROLLER.useNextTetromino();
+        var newNextTetromino = BOARD_CONTROLLER.getNextTetromino();
+        G_INFO_CONTROLLER.drawNextTetromino(newNextTetromino);
 
         /* Check if the game is over. */
         if(isNextTetroValid) {
-            gInfoController.increaseScore(); /* Keep rolling ;) */
+            G_INFO_CONTROLLER.increaseScore(); /* Keep rolling ;) */
         } else {
             gameOver();
         }
@@ -67,19 +67,19 @@ function run(movementDirection) {
 }
 
 function resetGame() {
-    if(intervalID == null)
+    if(INTERVAL_ID == null)
         return;
 
-    clearInterval(intervalID);
-    intervalID = null;
-    boardController.gameOver();
-    boardController = null;
-    gInfoController = null;    
+    clearInterval(INTERVAL_ID);
+    INTERVAL_ID = null;
+    BOARD_CONTROLLER.gameOver();
+    BOARD_CONTROLLER = null;
+    G_INFO_CONTROLLER = null;    
 }
 
 function gameOver() {
     resetGame();
-    gameoverSplash.style.height = '200px';
+    GAMEOVER_SPLASH.style.height = '200px';
 }
 
 /* EOF */

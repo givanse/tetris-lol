@@ -48,7 +48,10 @@
     <script type="text/javascript" src="js/GameInfoController.js"></script>
     <script type="text/javascript" src="js/Board.js"></script>
     <script type="text/javascript" src="js/GameLoopService.js"></script>
+    
+    <!-- GLOBALs abuse, could be circumvented, reasons below: -->
     <!-- This is not an object, the reason is the <this> problem -->
+    <!-- Wrong <this> in tetrisGame.run() -->
     <!-- developer.mozilla.org/en-US/docs/Web/API/window.setInterval#The_.22this.22_problem -->
     <script type="text/javascript" src="js/tetrisGame.js"></script>
     <script>
@@ -58,22 +61,23 @@
           *
           ********************************************************************/
 
-        var tetrisGame = document.getElementById("tetrisGame");
-        var canvas = document.getElementById("gameCanvas");
-        var nextTetrominoField = document.getElementById("nextTetrominoField");
-        var scoreField = document.getElementById("scoreField");
-        var gameoverSplash = document.getElementById("gameoverSplash");
-    
-        var widthInSquares = 12;
-        var heightInSquares = 15;
-        var gameLoopService = new GameLoopService(run);
+        /* Find DOM objects used for the game. */
+        var TETRIS_GAME = document.getElementById("tetrisGame");
+        var CANVAS = document.getElementById("gameCanvas");
+        var NEXT_TETROMINO_FIELD = document.getElementById("nextTetrominoField");
+        var SCORE_FIELD = document.getElementById("scoreField");
+        var GAMEOVER_SPLASH = document.getElementById("gameoverSplash");
+   
+        var GAMELOOPSERVICE = new GameLoopService(run);
 
-        var boardController = null;
-        var gInfoController = null;
-        var intervalID = null;
+        var BOARD_CONTROLLER = null;
+        var G_INFO_CONTROLLER = null;
+        var INTERVAL_ID = null;
 
+        var WIDTH_IN_SQUARES = 12;
+        var HEIGHT_IN_SQUARES = 15;
         /* Start right away. */
-        startNewGame();
+        startNewGame();                               /* tetrisGame.js */
     </script>
 </body>
 </html>
