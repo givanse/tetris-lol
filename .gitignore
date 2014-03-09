@@ -1,4 +1,3 @@
-test/qunit/qunit-git.css
-test/qunit/qunit-git.js
+test/qunit/qunit-*
 resources/
 img/Thumbs.db
