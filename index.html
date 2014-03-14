@@ -22,7 +22,7 @@
                 <br/>
                 <div id="scoreField" class="field"></div>
                 <br/>
-                <a id="newGameButton" onclick="tlol.tetrisGame.resetGame()"></a>
+                <a id="newGameButton" onclick="tlol.tetrisGame.startNewGame()"></a>
                 <br/>
                 <a id="gitlink" href="https://github.com/givanse/tetrislol/tree/gh-pages">
                     &nbsp;&nbsp;&nbsp;&nbsp;tetrislol
@@ -68,7 +68,8 @@
             gameoverSplash: document.getElementById("gameoverSplash")
         };
 
-        tlol.tetrisGame.startNewGame(domElements);
+        tlol.tetrisGame.setDOM(domElements);
+        tlol.tetrisGame.startNewGame();
     </script>
 </body>
 </html>

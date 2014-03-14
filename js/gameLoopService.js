@@ -1,25 +1,23 @@
 
 /**
- * Object that provides the game loop service for tetrisGame.
+ * Singleton object that provides the game loop service for tetrisGame(.js)
  *
  * @gameRunCallback - Is the function that will be called in each iteration of 
  *                    the game loop.
  */
-tlol.gameLoopService = function(gameRunCallback) {
+tlol.gameLoopService = (function() {
 
     var callback = null;
 
-    if (typeof gameRunCallback === 'string' || 
-        gameRunCallback instanceof String) {
-        throw {
-                name: 'TypeError',
-                message: 'setInterval() can not receive a string of code'
-            };
-    } else {
-        callback = gameRunCallback;
-    }
-
     var startLoop = function() {
+        if ( ! callback ) {
+            throw {
+                name: '',
+                message: 'The game run callback has not been set. ' +
+                         'Please use setGameRunCallback().'
+            };
+        }
+
         var interval = 1000 * 1; /* 1 second */
         return setInterval(callback, interval);
     };
@@ -28,14 +26,14 @@ tlol.gameLoopService = function(gameRunCallback) {
         var eventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 
                         'keydown' : 'keypress';
 
-        var callBack = function(ev) { 
+        var callback = function(ev) { 
             handleKeyEvent(ev); 
         };
 
         if (window.addEventListener) {
-            document.addEventListener(eventName, callBack, false);
+            document.addEventListener(eventName, callback, false);
         } else {
-            document.attachEvent('on' + eventName, callBack);
+            document.attachEvent('on' + eventName, callback);
         }
     };
 
@@ -63,16 +61,28 @@ tlol.gameLoopService = function(gameRunCallback) {
         }
     };
 
+    var setCallback = function(gameRunCallback) {
+        if ( tlol.util.isString(callback) ) {
+            throw {
+                name: 'TypeError',
+                message: 'setInterval() can not receive a string of code'
+            };
+        } else {
+            callback = gameRunCallback;
+        }
+    };
+
     /* init object */
     bindKeyEvents();
 
     /* Public interface */
     var glsObj = {
-        start: startLoop 
+        start: startLoop,
+        setGameRunCallback: setCallback 
     };
 
     return glsObj;
 
-}; /* gameLoopService */
+})(); /* gameLoopService */
 
 /* EOF */

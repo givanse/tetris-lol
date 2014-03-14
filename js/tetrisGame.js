@@ -1,134 +1,134 @@
 /******************************************************************************
  *
- * Tetris game object.
+ * Tetris game singleton object.
  *
  *****************************************************************************/
 
-tlol.tetrisGame = {
+tlol.tetrisGame = (function() {
 
-interval_id: null,         /* The ID of the interval used by gameLoopService. */
-board_controller: null,
-g_info_controller: null,
-gls: null,
-isGameRunning: true,
+    var interval_id = null;/* The ID of the interval used by gameLoopService. */
+    var board_controller = null;
+    var g_info_controller = null;
+    var gls = null;
+    var isGameRunning = true;
+    var dom = null;
 
-/* Just listing the expected properties. */
-dom: {canvas: null, 
-      playField: null, 
-      gameInfo: null, 
-      scoreField: null, 
-      nextTetrominoField: null, 
-      gameoverSplash: null},
-
-/**
- * This is where all the magic happens. It is the function executed by the 
- * callback passed to the gameLoopService object when the game is started in
- * function startNewGame().
- *
- */
-run: function(movementDirection) {
-
-    if ( ! this.isGameRunning ) {
-        return;
-    }
-
-    movementDirection = (movementDirection === undefined) ? 
-                        tlol.direction.down : movementDirection;
-
-    var movementPerformed = this.board_controller.updateBoard(movementDirection);
-
-    if(movementPerformed) {
-
-        this.board_controller.drawSquares();
-
-    } else if(movementDirection === tlol.direction.down) { /* Collisioned with squares. */
-
-        var currTetromino = this.board_controller.getCurrentTetromino();
-        this.board_controller.insertTetromino(currTetromino);
-        var deletedRowsCount = this.board_controller.deleteCompletedRows();
-        this.g_info_controller.addDeletedRowsScorePoints(deletedRowsCount);
-
-        /* Use the next falling Tetromino. */
-        var isNextTetroValid = this.board_controller.useNextTetromino();
-        var newNextTetromino = this.board_controller.getNextTetromino();
-        this.g_info_controller.drawNextTetromino(newNextTetromino);
-
-        /* Check if the game is over. */
-        if(isNextTetroValid) {
-            this.g_info_controller.increaseScore(); /* Keep rolling ;) */
-        } else {
-            this.gameOver();
-        }
-    }
-},
-
-resetGame: function() {
-    this.endGame();
-    this.isGameRunning = true;
-    /** 
-     * Playfield is 10 cells wide and at least 22 cells tall, where 
-     * rows above 20 are hidden or obstructed by the field frame.
+    /**
+     * This is where all the magic happens. It is the function executed by the 
+     * callback passed to the gameLoopService object when the game is started in
+     * function startNewGame().
+     *
      */
-    var width = 10;
-    var height = 18; /* top two are logical, added internally */
-    this.board_controller = new Board(this.dom.canvas, 
-                                 this.dom.playField, 
-                                 this.dom.gameInfo, 
-                                 width, 
-                                 height + 2); /*plus two for next shape buffer*/
-    this.g_info_controller = new GameInfoController(this.dom.scoreField, 
-                                                    this.dom.nextTetrominoField);
-    var nextTetromino = this.board_controller.getNextTetromino();
-    this.g_info_controller.drawNextTetromino(nextTetromino);
+    var run = function(movementDirection) {
 
-    this.dom.gameoverSplash.style.height = '0px';
-    
-    var gameRunCallBack = function(movementDirection) {
-        /**
-         * Error, won't work:
-         *   this.run();
-         * Reason:
-         *   this = global; 
-         * It happends when the function is called by setInterval()
-         * More info: developer.mozilla.org/en-US/docs/Web/API/window.setInterval
+        if ( ! isGameRunning ) {
+            return;
+        }
+
+        movementDirection = (movementDirection === undefined) ? 
+                            tlol.direction.down : movementDirection;
+
+        var movementPerformed = board_controller.updateBoard(movementDirection);
+
+        if (movementPerformed) {
+            board_controller.drawSquares();
+        } else if(movementDirection === tlol.direction.down) { 
+            /* Collisioned with squares. */
+
+            var currTetromino = board_controller.getCurrentTetromino();
+            board_controller.insertTetromino(currTetromino);
+            var deletedRowsCount = board_controller.deleteCompletedRows();
+            g_info_controller.addDeletedRowsScorePoints(deletedRowsCount);
+
+            /* Use the next falling Tetromino. */
+            var isNextTetroValid = board_controller.useNextTetromino();
+            var newNextTetromino = board_controller.getNextTetromino();
+            g_info_controller.drawNextTetromino(newNextTetromino);
+
+            /* Check if the game is over. */
+            if(isNextTetroValid) {
+                g_info_controller.increaseScore(); /* Keep rolling ;) */
+            } else {
+                gameOver();
+            }
+        }
+    }; /* run */
+
+    var resetGame = function() {
+        endGame();
+
+        if ( ! dom.canvas ||
+             ! dom.playField || 
+             ! dom.gameInfo || 
+             ! dom.nextTetrominoField ||
+             ! dom.scoreField || 
+             ! dom.gameoverSplash ) {
+            throw {
+                name: "TypeError",
+                message: "A DOM element is missing. Please use setDOM()."
+            };
+        }
+
+        isGameRunning = true;
+        /** 
+         * Playfield is 10 cells wide and at least 22 cells tall, where 
+         * rows above 20 are hidden or obstructed by the field frame.
          */
-        tlol.tetrisGame.run(movementDirection);
+        var width = 10;
+        var height = 18; /* top two are logical, added internally */
+        board_controller = new Board(dom.canvas, 
+                                     dom.playField, 
+                                     dom.gameInfo, 
+                                     width, 
+                                     height + 2); /*+2 next shape buffer*/
+        g_info_controller = new GameInfoController(dom.scoreField, 
+                                                   dom.nextTetrominoField);
+        var nextTetromino = board_controller.getNextTetromino();
+        g_info_controller.drawNextTetromino(nextTetromino);
+
+        dom.gameoverSplash.style.height = '0px';
+    
+        var gameRunCallback = function(movementDirection) {
+            run(movementDirection);
+        };
+
+        tlol.gameLoopService.setGameRunCallback(gameRunCallback); 
+        interval_id = tlol.gameLoopService.start();
+    }; /* resetGame */
+
+    /**
+     * Changes the state of the game to finished.
+     * Deal here with any variables or objects that need to be reset or changed to
+     * the defaults used when a new game is started.
+     */
+    var endGame = function() {
+        if ( ! interval_id ) {
+            return;
+        }
+        clearInterval(interval_id);
+        interval_id = null;
+        isGameRunning = false;
     };
 
-    /* singleton object, or key bindings get registered multiple times */
-    this.gls = (this.gls === null) ? tlol.gameLoopService(gameRunCallBack) : 
-                                     this.gls ;
-    this.interval_id = this.gls.start();
-},
+    /**
+     * Called when a user loses the game, it updates the state of the game and
+     * updates UI elements as necessary.
+     */
+    var gameOver = function() {
+        endGame();
+        dom.gameoverSplash.style.height = '200px';
+    };
 
-/**
- * Changes the state of the game to finished.
- * Deal here with any variables or objects that need to be reset or changed to
- * the defaults used when a new game is started.
- */
-endGame: function() {
-    if ( ! this.interval_id ) {
-        return;
-    }
-    clearInterval(this.interval_id);
-    this.interval_id = null;
-    this.isGameRunning = false;
-},
+    /* Public interface */
+    var tetrisGame = {
+        startNewGame: resetGame,
+        setDOM: function(newDOM) {
+            dom = newDOM;
+        }
+    };
 
-/**
- * Called when a user loses the game, it updates the state of the game and
- * updates UI elements as necessary.
- */
-gameOver: function() {
-    this.endGame();
-    this.dom.gameoverSplash.style.height = '200px';
-},
+    return tetrisGame;
 
-startNewGame: function(dom) {
-    this.dom = dom;
-    this.resetGame();
-}
-
-}; /* tetrisGame */
+})(); /* tetrisGame */
 
 /* EOF */
