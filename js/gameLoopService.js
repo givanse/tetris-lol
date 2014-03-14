@@ -23,7 +23,8 @@ tlol.gameLoopService = function(gameRunCallback) {
     };
 
     var bindKeyEvents = function() {
-        var eventName = ( isSafari() || isIE() ) ? 'keydown' : 'keypress';
+        var eventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 
+                        'keydown' : 'keypress';
 
         var callBack = function(ev) { 
                 handleKeyEvent(ev); 

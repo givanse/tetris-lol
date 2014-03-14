@@ -9,6 +9,15 @@ var tlol = {
     squareFactory: null,
     util: null,
 
+    browser: {
+        browserTest: function(regex) { 
+            return regex.test(navigator.userAgent); 
+        },          
+        isIE: function() { return this.browserTest(/IE/); },
+        isFirefox: function() { return this.browserTest(/Firefox/); },
+        isSafari: function() { return this.browserTest(/Safari/); }
+    }, /* tlol.browser */
+
     cssClass: {
         mushroom: 'MUSHROOM'
     },
