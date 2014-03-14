@@ -1,5 +1,8 @@
 /**                                                                              
- * Application namespace, everything is contained here.                          
+ * Application namespace, everything is contained here.
+ *
+ * The properties defined as null are actually defined in a file of their own
+ * that has the same name as the property.
  */                                                                              
 var tlol = {   
                                                                   

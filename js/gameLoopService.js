@@ -1,5 +1,7 @@
 
 /**
+ * Object that provides the game loop service for tetrisGame.
+ *
  * @gameRunCallback - Is the function that will be called in each iteration of 
  *                    the game loop.
  */
@@ -27,8 +29,8 @@ tlol.gameLoopService = function(gameRunCallback) {
                         'keydown' : 'keypress';
 
         var callBack = function(ev) { 
-                handleKeyEvent(ev); 
-            };
+            handleKeyEvent(ev); 
+        };
 
         if (window.addEventListener) {
             document.addEventListener(eventName, callBack, false);
@@ -65,11 +67,11 @@ tlol.gameLoopService = function(gameRunCallback) {
     bindKeyEvents();
 
     /* Public interface */
-    var that = {
+    var glsObj = {
         start: startLoop 
     };
 
-    return that;
+    return glsObj;
 
 }; /* gameLoopService */
 

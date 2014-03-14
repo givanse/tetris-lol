@@ -9,6 +9,8 @@ tlol.tetrisGame = {
 interval_id: null,         /* The ID of the interval used by gameLoopService. */
 board_controller: null,
 g_info_controller: null,
+gls: null,
+isGameRunning: true,
 
 /* Just listing the expected properties. */
 dom: {canvas: null, 
@@ -25,6 +27,10 @@ dom: {canvas: null,
  *
  */
 run: function(movementDirection) {
+
+    if ( ! this.isGameRunning ) {
+        return;
+    }
 
     movementDirection = (movementDirection === undefined) ? 
                         tlol.direction.down : movementDirection;
@@ -57,14 +63,14 @@ run: function(movementDirection) {
 },
 
 resetGame: function() {
-    this.dom.gameoverSplash.style.height = '0px';
-    //this.board_controller.gameOver();
+    this.endGame();
+    this.isGameRunning = true;
     /** 
      * Playfield is 10 cells wide and at least 22 cells tall, where 
      * rows above 20 are hidden or obstructed by the field frame.
      */
     var width = 10;
-    var height = 20; /* top two are logical, added internally */
+    var height = 18; /* top two are logical, added internally */
     this.board_controller = new Board(this.dom.canvas, 
                                  this.dom.playField, 
                                  this.dom.gameInfo, 
@@ -74,6 +80,8 @@ resetGame: function() {
                                                     this.dom.nextTetrominoField);
     var nextTetromino = this.board_controller.getNextTetromino();
     this.g_info_controller.drawNextTetromino(nextTetromino);
+
+    this.dom.gameoverSplash.style.height = '0px';
     
     var gameRunCallBack = function(movementDirection) {
         /**
@@ -86,16 +94,33 @@ resetGame: function() {
          */
         tlol.tetrisGame.run(movementDirection);
     };
-    var gls = tlol.gameLoopService(gameRunCallBack);
-    this.interval_id = gls.start();
+
+    /* singleton object, or key bindings get registered multiple times */
+    this.gls = (this.gls === null) ? tlol.gameLoopService(gameRunCallBack) : 
+                                     this.gls ;
+    this.interval_id = this.gls.start();
 },
 
-gameOver: function() {
-    if (this.interval_id === null) {
+/**
+ * Changes the state of the game to finished.
+ * Deal here with any variables or objects that need to be reset or changed to
+ * the defaults used when a new game is started.
+ */
+endGame: function() {
+    if ( ! this.interval_id ) {
         return;
     }
     clearInterval(this.interval_id);
     this.interval_id = null;
+    this.isGameRunning = false;
+},
+
+/**
+ * Called when a user loses the game, it updates the state of the game and
+ * updates UI elements as necessary.
+ */
+gameOver: function() {
+    this.endGame();
     this.dom.gameoverSplash.style.height = '200px';
 },
 

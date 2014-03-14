@@ -67,17 +67,6 @@ Board.prototype.deleteCompletedRows = function() {
 
 /* Drawing into the canvas. */
 
-Board.prototype.gameOver = function() {
-    this.drawSquares();
-
-    var div = document.createElement('div');
-    div.id = "gameover"
-    div.setAttribute("style", "display: block; width: 0px; height: 0px");         
-    div.style.width = this.width + "px";
-    div.style.height = "200px";
-    this.playField.appendChild(div);
-}
-
 /**
  * Draw, append, the squares to the canvas div.
  */
