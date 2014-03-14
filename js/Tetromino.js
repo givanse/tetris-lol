@@ -198,23 +198,26 @@ Tetromino.prototype.getSquares = function() {
     return this.squares;
 }
 
+/**
+ * return - A list with the numbers of the rows being used by this Tetromino.
+ */
 Tetromino.prototype.getRows = function() {
-    var rowsToDelete = new Array(0);
+    var rowNums = [];
     var coordinates = this.getPositions();
-    for(var i = 0; i < coordinates.length; i++) {
+    for (var i = 0; i < coordinates.length; i++) {
         var position = coordinates[i];
         var rowNum = position[1];
 
         /* Don't process duplicates. */
-        if ( isDuplicate(rowsToDelete, rowNum) ) {
+        if ( rowNums.isDuplicate(rowNum) ) {
             continue;
         } else {
-            rowsToDelete.push(rowNum);
+            rowNums.push(rowNum);
         }
     }
+    rowNums.sort(function(a, b) { return a - b; });
 
-    rowsToDelete.sort(function(a, b) { return a - b; });
-    return rowsToDelete;
+    return rowNums;
 }
 
 /* EOF */

@@ -15,7 +15,7 @@ test("tetrominoFactory.buildRandomTetromino", function() {
         }
 
         /* Verify that each tetromino is unique. */
-        if ( hasDuplicates(randomTetrominos) ) {
+        if ( randomTetrominos.hasDuplicates() ) {
             ok(false, "Found a duplicate Tetromino.");
             return;
         } else {

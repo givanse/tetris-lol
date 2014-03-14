@@ -36,14 +36,15 @@ GameInfoController.prototype.drawNextTetromino = function(nextTetromino) {
         this.nextTetrominoField.removeChild(child);
     }
 
-    if(! (nextTetromino instanceof Tetromino))
+    if (! (nextTetromino instanceof Tetromino) ) {
         return;
+    }
 
     var tetrominoName = nextTetromino.getTetrominoName();
     var baseT = new Tetromino(0, 0, tetrominoName);
     var squares = baseT.getSquares();
     var tetroWrapper = this.getTWrapper(tetrominoName); 
-    for(var i in squares) {
+    for (var i = 0; i < squares.length; i++) {
         var square = squares[i];
         tetroWrapper.appendChild(square.getDiv());
     }
