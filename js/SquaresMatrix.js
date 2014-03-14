@@ -13,44 +13,57 @@ function SquaresMatrix(columns, rows) {
     }
 }
 
+/**
+ *
+ */
 SquaresMatrix.prototype.arePositionsAvailable = function(positions) {
-    if(!(positions instanceof Array) || positions.length == 0)
+    if (!positions || !tlol.util.isArray(positions) || positions.length <= 0 ) {
         return false;
+    }
 
-    for(var i = 0; i < positions.length; i++) {
+    for (var i = 0; i < positions.length; i++) {
         var coordinates = positions[i];
         var x = coordinates[0];
         var y = coordinates[1];
-        if(x < 0 || x >= this.getWidth() || y < 0 || y >= this.getHeight())
+
+        /* validate that the position is within matrix bounds */
+        if (x < 0 || x >= this.getWidth() || y < 0 || y >= this.getHeight()) {
             return false;
-        if(this.squaresMatrix[x][y] instanceof Square)
+        }
+
+        /* validate that no other square is at that position */
+        var elem = this.squaresMatrix[x][y];
+        if (elem && elem.hasOwnProperty("isEqual")) {
             return false;
+        }
     }
 
-    return true;
+    return true; /* a square can be inserted in any of the passed positions */
 }
 
 SquaresMatrix.prototype.packColumn = function(xConstant, y) {
 
     var startingSquare = this.squaresMatrix[xConstant][y];
-    if(startingSquare instanceof Square)
+    if(startingSquare !== null) {
         return;
+    }
 
     for( ; y > 0; y--) { /* bottom to top */
         var upperVal = this.squaresMatrix[xConstant][y - 1];
 
-        if(upperVal instanceof Square)
+        if(upperVal !== null) {
+            /* ran out of free space, insert here */
             this.insertSquareAt(xConstant, y, upperVal);
-        else
+        } else {
             this.squaresMatrix[xConstant][y] = null;
-
+        }
         this.squaresMatrix[xConstant][y - 1] = null;
     }
 }
 
 /**
   *
-  * return - The state of the row: ROW_EMPTY, ROW_FULL or ROW_USED.
+  * return - The state of the row: tlol.row.empty, tlol.row.full or tlol.row.used.
   */
 SquaresMatrix.prototype.getRowState = function(y) {
     var squaresCount = 0;
@@ -58,33 +71,40 @@ SquaresMatrix.prototype.getRowState = function(y) {
     var width = this.getWidth();
     for(var x = 0; x < width; x++) {
         var square = this.squaresMatrix[x][y];
-        if(square instanceof Square)
+        if(square !== null) {
             squaresCount++;
+        }
     }
     
-    if(squaresCount == 0)
-        return ROW_EMPTY;
+    if (squaresCount === 0) {
+        return tlol.row.empty;
+    }
 
-    if(squaresCount == width)
-        return ROW_FULL;
-    
-    return ROW_USED;
+    if (squaresCount === width) {
+        return tlol.row.full;
+    }
+
+    return tlol.row.used;
 }
 
+/**
+ * One row deleted triggers the process of packing and deleting all 
+ * the upper rows, if valid. 
+ */
 SquaresMatrix.prototype.deleteRows = function(rowNums) {
 
-    rowNums = (rowNums == undefined) ? [] : rowNums;
+    rowNums = (!rowNums) ? [] : rowNums;
 
-    var lastRow = rowNums[rowNums.length - 1]; /* closest to bottom */   
+    var lastRow = rowNums[rowNums.length - 1]; /* closest to bottom row */   
  
     var deletedRowsCount = 0;
-    for(var y = lastRow; ; y--) {
+    for (var y = lastRow; ; y--) {
 
-        if(this.getRowState(y) == ROW_FULL) {
+        if (this.getRowState(y) === tlol.row.full) {
             this._deleteRow(y);
             deletedRowsCount++;
 
-            for(var x = 0; x < this.getWidth(); x++) {
+            for (var x = 0; x < this.getWidth(); x++) {
                 this.packColumn(x, y);
             }
 
@@ -92,7 +112,7 @@ SquaresMatrix.prototype.deleteRows = function(rowNums) {
             y++;
         }
 
-        if(this.getRowState(y) == ROW_EMPTY) {
+        if (this.getRowState(y) === tlol.row.empty) {
             return deletedRowsCount;
         }
     }
@@ -110,14 +130,17 @@ SquaresMatrix.prototype._deleteRow = function(y) {
 /* Setters and Getters. */
 
 SquaresMatrix.prototype.insertTetromino = function(tetromino) {
-    if(! (tetromino instanceof Tetromino))
-        return;
-        
-    var squares = tetromino.getSquares();                           
+    if (!tetromino) {
+        return this;
+    }
+     
+    var squares = tetromino.getSquares();
     for(var i = 0; i < squares.length; i++) {
         var square = squares[i];
         this.insertSquare(square);                                       
-    }                                     
+    }
+
+    return this;                       
 }
 
 SquaresMatrix.prototype.insertSquare = function(square) {

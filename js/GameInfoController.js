@@ -1,5 +1,13 @@
 
 function GameInfoController(scoreField, nextTetrominoField) {
+
+    if (scoreField === undefined || nextTetrominoField === undefined) {
+        throw {
+            name: 'TypeError',
+            message: 'GameInfoController must receive two DOM elements.'
+        };
+    }
+
     this.scoreField = scoreField;
     this.nextTetrominoField = nextTetrominoField;
 
@@ -48,19 +56,19 @@ GameInfoController.prototype.getTWrapper = function(tetrominoName) {
     var width = null;
     var height = null;
     switch(tetrominoName) {
-        case LINESHP:
-            width  = SQUARE_SIZE * 4;
-            height = SQUARE_SIZE;
+        case tlol.tSpec.line():
+            width  = tlol.square_size * 4;
+            height = tlol.square_size;
             break;
-        case SQUARESHP:
-            width  = SQUARE_SIZE * 2;
-            height = SQUARE_SIZE * 2;
+        case tlol.tSpec.square():
+            width  = tlol.square_size * 2;
+            height = tlol.square_size * 2;
             break;
-        case TSHP:
-        case SSHP_R: case SSHP_L:
-        case LSHP_R: case LSHP_L:
-            width  = SQUARE_SIZE * 3;
-            height = SQUARE_SIZE * 2;
+        case tlol.tSpec.t():
+        case tlol.tSpec.s_right(): case tlol.tSpec.s_left():
+        case tlol.tSpec.l_right(): case tlol.tSpec.l_left():
+            width  = tlol.square_size * 3;
+            height = tlol.square_size * 2;
             break;
     }
     tetroWrapper.style.width  = width  + "px";                            

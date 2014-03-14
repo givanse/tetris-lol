@@ -12,7 +12,7 @@
 <body>
 
     <div id="wrapper">
-        <div id="tetrisGame">
+        <div id="tetrisBoard">
             <div id="gameCanvas">
                 <div id="playField"><!-- Where the game is drawn. --> </div>
             </div>
@@ -22,37 +22,34 @@
                 <br/>
                 <div id="scoreField" class="field"></div>
                 <br/>
-                <a id="newGameButton" onclick="startNewGame()"></a>
+                <a id="newGameButton" onclick="tlol.tetrisGame.resetGame()"></a>
                 <br/>
-                <a id='gitlink' href="https://github.com/givanse/tetrislol/tree/gh-pages">
+                <a id="gitlink" href="https://github.com/givanse/tetrislol/tree/gh-pages">
                     &nbsp;&nbsp;&nbsp;&nbsp;tetrislol
                 </a>           
             </div>
             
             <div style="clear: both;"><!-- clear floats --></div>
             
-            <div id='gameoverSplash'><!-- starts hidden --></div>
+            <div id="gameoverSplash"><!-- starts hidden --></div>
         </div>
     </div>
 
     <!-- Libraries -->
-    <script type="text/javascript" src="js/GLOBALS.js"></script>
     <script type="text/javascript" src="js/utility/array.js"></script>
-    <script type="text/javascript" src="js/utility/random.js"></script>
     <script type="text/javascript" src="js/utility/browser.js"></script>
     <!-- Objects -->
+    <script type="text/javascript" src="js/tlol.js"></script>
+    <script type="text/javascript" src="js/tetrominoFactory.js"></script>
+    <script type="text/javascript" src="js/tetrisGame.js"></script>
+    <script type="text/javascript" src="js/gameLoopService.js"></script>
     <script type="text/javascript" src="js/Tetromino.js"></script>
     <script type="text/javascript" src="js/SquaresMatrix.js"></script>
-    <script type="text/javascript" src="js/Square.js"></script>
+    <script type="text/javascript" src="js/squareFactory.js"></script>
     <script type="text/javascript" src="js/GameInfoController.js"></script>
     <script type="text/javascript" src="js/Board.js"></script>
-    <script type="text/javascript" src="js/GameLoopService.js"></script>
-    
-    <!-- GLOBALs abuse, could be circumvented, reasons below: -->
-    <!-- This is not an object, the reason is the <this> problem -->
-    <!-- Wrong <this> in tetrisGame.run() -->
-    <!-- developer.mozilla.org/en-US/docs/Web/API/window.setInterval#The_.22this.22_problem -->
-    <script type="text/javascript" src="js/tetrisGame.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+
     <script>
         /**********************************************************************
           *
@@ -60,29 +57,21 @@
           *
           ********************************************************************/
 
-        /* Find DOM objects used for the game. */
-        var TETRIS_GAME = document.getElementById("tetrisGame");
-        var CANVAS = document.getElementById("gameCanvas");
-        var PLAY_FIELD = document.getElementById("playField");
-        var GAME_INFO = document.getElementById("gameInfo");
-        var NEXT_TETROMINO_FIELD = document.getElementById("nextTetrominoField");
-        var SCORE_FIELD = document.getElementById("scoreField");
-        var GAMEOVER_SPLASH = document.getElementById("gameoverSplash");
-   
-        var GAMELOOPSERVICE = new GameLoopService(run);
+        /* Find the DOM elements used for the game. */
+        var domElements = {
+            /* board */
+            canvas: document.getElementById("gameCanvas"),
+            playField: document.getElementById("playField"),
+            gameInfo: document.getElementById("gameInfo"),
 
-        var BOARD_CONTROLLER = null;
-        var G_INFO_CONTROLLER = null;
-        var INTERVAL_ID = null;
+            /* game info */
+            nextTetrominoField: document.getElementById("nextTetrominoField"),
+            scoreField: document.getElementById("scoreField"),
 
-        /** 
-         * Playfield is 10 cells wide and at least 22 cells tall, where 
-         * rows above 20 are hidden or obstructed by the field frame.
-         */
-        var WIDTH_IN_SQUARES = 10;
-        var HEIGHT_IN_SQUARES = 20; /* top two are logical, added internally */
-        /* Start right away. */
-        startNewGame();                                     /* tetrisGame.js */
+            gameoverSplash: document.getElementById("gameoverSplash")
+        };
+
+        tlol.tetrisGame.startNewGame(domElements);
     </script>
 </body>
 </html>

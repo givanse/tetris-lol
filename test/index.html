@@ -14,21 +14,71 @@
 	<script type="text/javascript" src="qunit/qunit.js"></script>
 
     <!-- Libraries and objects to be tested. -->
-	<script type="text/javascript" src="../js/GLOBALS.js"></script>
+	<script type="text/javascript" src="../js/tlol.js"></script>
 	<script type="text/javascript" src="../js/utility/array.js"></script>
-	<script type="text/javascript" src="../js/utility/random.js"></script>
+	<script type="text/javascript" src="../js/tetrominoFactory.js"></script>
 	<script type="text/javascript" src="../js/utility/matrix.js"></script>
 	<script type="text/javascript" src="../js/Tetromino.js"></script>
-	<script type="text/javascript" src="../js/Square.js"></script>
+	<script type="text/javascript" src="../js/squareFactory.js"></script>
 	<script type="text/javascript" src="../js/SquaresMatrix.js"></script>
+	<script type="text/javascript" src="../js/util.js"></script>
+
+    <script type="text/javascript">
+    QUnit.extend(QUnit.assert, {
+        equalSqrArr: function(arrSqrsAct, arrSqrsExp, message) {
+            /**
+             * At all times the expected object is considered as the correct
+             * value, thus iterations are based on it.
+             */
+        
+            var result = true;
+
+            var compareArrays = function(arrA, arrE) {
+                if (!arrA && !arrE) {
+                    return true;
+                }
+
+                var r = true;
+                for (var i = 0; i < arrE.length; i++) {
+                    var sqrA = arrA[i];
+                    var sqrE = arrE[i];
+                    r = r && sqrE.isEqual( sqrA );
+                }
+                return r;
+            };
+
+            /**
+             * Assummes that if the first element of the Array is an Array, 
+             * then every other element is an Array too.
+             */
+            var compareNestedArrays = function(arrA, arrE) {
+                var r = true;
+                for (var i = 0; i < arrE.length; i++) {
+                    var elemE = arrE[i];
+                    var elemA = arrA[i];
+                    if (tlol.util.isArray(elemE)) {
+                        r = r && compareNestedArrays(elemA, elemE); 
+                    } else {
+                        r = r && compareArrays(elemA, elemE); 
+                    }
+                }
+                return r;
+            };
+
+            result = result && compareNestedArrays(arrSqrsAct, arrSqrsExp);
+
+            QUnit.push(result, arrSqrsAct, arrSqrsExp, message);
+        }
+    });
+    </script>
 
     <!-- Unit tests -->
-	<script type="text/javascript" src="js/GLOBALSTest.js"></script>
+	<script type="text/javascript" src="js/tlolTest.js"></script>
 	<script type="text/javascript" src="js/utility/arrayTest.js"></script>
-	<script type="text/javascript" src="js/utility/randomTest.js"></script>
+	<script type="text/javascript" src="js/tetrominoFactoryTest.js"></script>
 	<script type="text/javascript" src="js/utility/matrixTest.js"></script>
 	<script type="text/javascript" src="js/TetrominoTest.js"></script>
-	<script type="text/javascript" src="js/SquareTest.js"></script>
+	<script type="text/javascript" src="js/squareFactoryTest.js"></script>
 	<script type="text/javascript" src="js/SquaresMatrixTest.js"></script>
 </body>
 </html>

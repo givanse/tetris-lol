@@ -3,20 +3,21 @@ function Board(canvas, playField, gameInfoDiv, widthInSquares, heightInSquares) 
     widthInSquares = (widthInSquares == undefined) ? 0 : widthInSquares;
     heightInSquares = (heightInSquares == undefined) ? 0 : heightInSquares;
     
-    this.squaresMatrix = new SquaresMatrix(widthInSquares, heightInSquares);
+    this.squaresMatrix = tlol.squareFactory
+                             .buildSquaresMatrix(widthInSquares, heightInSquares);
 
     this.playField = playField;
     /* set playField dimensions */
     this.playField.setAttribute("style",
                          "display: block; width: 0px; height: 0px; top: 0px;");
-    this.width  = widthInSquares  * SQUARE_SIZE;
-    this.height = heightInSquares * SQUARE_SIZE;
+    this.width  = widthInSquares  * tlol.square_size;
+    this.height = heightInSquares * tlol.square_size;
     this.playField.style.width  = this.width  + "px";
     this.playField.style.height = this.height + "px";
-    this.playField.style.top = - (SQUARE_SIZE * 2) + "px";/* two rows buffer */
+    this.playField.style.top = - (tlol.square_size * 2) + "px";/* two rows buffer */
     
     /* set canvas dimensions */
-    var canvasHeight = ((heightInSquares - 2) * SQUARE_SIZE);
+    var canvasHeight = ((heightInSquares - 2) * tlol.square_size);
     canvas.setAttribute("style", "display: block; width: 0px; height: 0px");
     canvas.style.width  = this.width  + "px";
     canvas.style.height = canvasHeight + "px";
@@ -24,8 +25,10 @@ function Board(canvas, playField, gameInfoDiv, widthInSquares, heightInSquares) 
     /* set gameInfo height*/
     gameInfoDiv.setAttribute("style", "height: " + canvasHeight + "px");
 
-    this.currTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
-    this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
+    this.currTetromino = tlol.tetrominoFactory
+                             .buildRandomTetromino(this.squaresMatrix.getWidth()); 
+    this.nextTetromino = tlol.tetrominoFactory
+                             .buildRandomTetromino(this.squaresMatrix.getWidth()); 
 
     this.generateRandomInitialRows();
     this.drawSquares();
@@ -96,13 +99,15 @@ Board.prototype.drawSquares = function() {
 }
 
 Board.prototype._drawSquaresArray = function(squaresArray) {
-    if(!(squaresArray instanceof Array))
+    if ( ! tlol.util.isArray(squaresArray) ) {
         return;
+    }
 
-    for(var i = 0; i < squaresArray.length; i++) {
+    for (var i = 0; i < squaresArray.length; i++) {
         var square = squaresArray[i];
-        if(square instanceof Square)
+        if (square) {
             this.playField.appendChild(square.getDiv());
+        }
     }
 }
 
@@ -111,7 +116,8 @@ Board.prototype._drawSquaresArray = function(squaresArray) {
 Board.prototype.useNextTetromino = function() {
 
     this.currTetromino = this.nextTetromino;
-    this.nextTetromino = getRandomTetromino(this.squaresMatrix.getWidth()); 
+    this.nextTetromino = tlol.tetrominoFactory
+                             .buildRandomTetromino(this.squaresMatrix.getWidth()); 
 
     /* Check if the tetromino can be shown on the board. */
     var newTetroPositions = this.currTetromino.getPositions();
@@ -134,8 +140,8 @@ Board.prototype.generateRandomInitialRows = function() {
     for(var i = 0; i < totalSquaresNeeded; i++) {
         var xRnd = Math.floor(Math.random() * ((xMax - xMin) + 1)) + xMin;
         var yRnd = Math.floor(Math.random() * ((yMax - yMin) + 1)) + yMin;
-        var tetrominoName = getRandomTetrominoName();
-        var square = new Square(xRnd, yRnd, tetrominoName);
+        var tSpec = tlol.tetrominoFactory.buildRandomTetrominoSpec();
+        var square = tlol.squareFactory.buildSquare(xRnd, yRnd, tSpec.cssClass);
         this.squaresMatrix.insertSquare(square);
     }
 }

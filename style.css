@@ -17,7 +17,7 @@ body #wrapper {
     width: 700px;
 }
 
-#wrapper #tetrisGame {
+#wrapper #tetrisBoard {
     /* border */
     border-width: 28px 8px 12px 8px;
     -moz-border-image:    url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
@@ -32,7 +32,7 @@ body #wrapper {
 }
 
 
-div#tetrisGame div#gameCanvas {
+div#tetrisBoard div#gameCanvas {
     position: relative;
     float: left;
     
@@ -53,7 +53,7 @@ div#tetrisGame div#gameCanvas {
      */
 }
 
-div#tetrisGame div#gameCanvas div#playField {
+div#tetrisBoard div#gameCanvas div#playField {
     position: absolute;
      
     /**
@@ -64,7 +64,7 @@ div#tetrisGame div#gameCanvas div#playField {
 
 /* GAME INFO */
 
-div#tetrisGame div#gameInfo {
+div#tetrisBoard div#gameInfo {
     position: relative;
     float: left;
     
@@ -99,7 +99,7 @@ div#gameInfo div.field {
     -webkit-border-image: url('img/field.png') 14 10 repeat repeat;
     border-image:         url('img/field.png') 14 10 repeat repeat;
     
-    /* SQUARE_SIZE x 5 = 160 */
+    /* tlol.square_size x 5 = 160 */
     /* width specified by each element with its ID */
     height: 160px;
     background-color: #040d16;
@@ -116,7 +116,7 @@ div#gameInfo div#nextTetrominoField .nextTWrapper {
   position: relative;
   width: 0px; height: 0px; /* Will be overriden, GameInfoController.js. */
   margin: auto;
-  top: 48px; /* SQUARE_SIZE x 1.5 */
+  top: 48px; /* tlol.square_size x 1.5 */
   border: 0px;
 }
 
@@ -187,12 +187,12 @@ div#gameInfo a#plink:hover {
 
 /* GAME OVER */
 
-div#tetrisGame div#gameoverSplash {
+div#tetrisBoard div#gameoverSplash {
     position: absolute;
     top: 100px;
     margin: 0 auto;
     
-    width: 625px;                            /* same as #wrapper #tetrisGame */
+    width: 625px;                            /* same as #wrapper #tetrisBoard */
     height: 0px;
     background: transparent url('img/defeat.png') center top no-repeat;
 }
@@ -201,7 +201,7 @@ div#tetrisGame div#gameoverSplash {
 
 .square {
     position: absolute;
-    /* SQUARE_SIZE = 32 */
+    /* tlol.square_size = 32 */
     width:  30px; /* 32 - 2 x border */
     height: 30px; /* 32 - 2 x border */
     border: 1px solid #02060c;
@@ -214,8 +214,8 @@ div#playField div.square[buffer="true"] {
 }
 
 /** 
-  * Colors from The New Teris (Nintendo N64). No blue in this set.
-  */
+ * Colors from The New Teris (Nintendo N64). No blue in this set.
+ */
 .LINESHP {background-color: #00ffff;}
 .SQUARESHP {background-color: #c0c0c0;}
 .TSHP {background-color: #ffff00;}

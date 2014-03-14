@@ -1,88 +1,109 @@
 /******************************************************************************
  *
- * Tetris game functions.
+ * Tetris game object.
  *
  *****************************************************************************/
 
-function startNewGame() {
-    resetGame();
+tlol.tetrisGame = {
 
-    BOARD_CONTROLLER = new Board(CANVAS, PLAY_FIELD, GAME_INFO, 
-                                 WIDTH_IN_SQUARES, HEIGHT_IN_SQUARES + 2);
-                                                 /* plus two for rows buffer */
-    G_INFO_CONTROLLER = new GameInfoController(SCORE_FIELD, 
-                                               NEXT_TETROMINO_FIELD);
-    
-    var nextTetromino = BOARD_CONTROLLER.getNextTetromino();
-    G_INFO_CONTROLLER.drawNextTetromino(nextTetromino);
-    
-    INTERVAL_ID = GAMELOOPSERVICE.start();
-    
-    gameoverSplash.style.height = '0px';
-}
+interval_id: null,         /* The ID of the interval used by gameLoopService. */
+board_controller: null,
+g_info_controller: null,
+
+/* Just listing the expected properties. */
+dom: {canvas: null, 
+      playField: null, 
+      gameInfo: null, 
+      scoreField: null, 
+      nextTetrominoField: null, 
+      gameoverSplash: null},
 
 /**
- * This is where all the magic happens. It is the callback passed to the
- * GameLoopService.
+ * This is where all the magic happens. It is the function executed by the 
+ * callback passed to the gameLoopService object when the game is started in
+ * function startNewGame().
  *
- * It will be invoked with a wrong <this> value.
- * The <this> keyword will be set to the <window> (or <global>) object.
- * More info: developer.mozilla.org/en-US/docs/Web/API/window.setInterval
- *
- * That is why we can use th following variables (defined in index.html):
- *   G_INFO_CONTROLLER
- *   BOARD_CONTROLLER
- *   INTERVAL_ID
  */
-function run(movementDirection) {
+run: function(movementDirection) {
 
-    movementDirection = (movementDirection == undefined) ? DOWN :
-                                                           movementDirection;
-    
-    if(BOARD_CONTROLLER == null)
-        return;
+    movementDirection = (movementDirection === undefined) ? 
+                        tlol.direction.down : movementDirection;
 
-    var movementPerformed = BOARD_CONTROLLER.updateBoard(movementDirection);
+    var movementPerformed = this.board_controller.updateBoard(movementDirection);
 
     if(movementPerformed) {
 
-        BOARD_CONTROLLER.drawSquares();
+        this.board_controller.drawSquares();
 
-    } else if(movementDirection == DOWN) { /* Collisioned with squares. */
+    } else if(movementDirection === tlol.direction.down) { /* Collisioned with squares. */
 
-        var currTetromino = BOARD_CONTROLLER.getCurrentTetromino();
-        BOARD_CONTROLLER.insertTetromino(currTetromino);
-        var deletedRowsCount = BOARD_CONTROLLER.deleteCompletedRows();
-        G_INFO_CONTROLLER.addDeletedRowsScorePoints(deletedRowsCount);
+        var currTetromino = this.board_controller.getCurrentTetromino();
+        this.board_controller.insertTetromino(currTetromino);
+        var deletedRowsCount = this.board_controller.deleteCompletedRows();
+        this.g_info_controller.addDeletedRowsScorePoints(deletedRowsCount);
 
         /* Use the next falling Tetromino. */
-        var isNextTetroValid = BOARD_CONTROLLER.useNextTetromino();
-        var newNextTetromino = BOARD_CONTROLLER.getNextTetromino();
-        G_INFO_CONTROLLER.drawNextTetromino(newNextTetromino);
+        var isNextTetroValid = this.board_controller.useNextTetromino();
+        var newNextTetromino = this.board_controller.getNextTetromino();
+        this.g_info_controller.drawNextTetromino(newNextTetromino);
 
         /* Check if the game is over. */
         if(isNextTetroValid) {
-            G_INFO_CONTROLLER.increaseScore(); /* Keep rolling ;) */
+            this.g_info_controller.increaseScore(); /* Keep rolling ;) */
         } else {
-            gameOver();
+            this.gameOver();
         }
     }
-}
+},
 
-function resetGame() {
-    if(INTERVAL_ID == null)
+resetGame: function() {
+    this.dom.gameoverSplash.style.height = '0px';
+    //this.board_controller.gameOver();
+    /** 
+     * Playfield is 10 cells wide and at least 22 cells tall, where 
+     * rows above 20 are hidden or obstructed by the field frame.
+     */
+    var width = 10;
+    var height = 20; /* top two are logical, added internally */
+    this.board_controller = new Board(this.dom.canvas, 
+                                 this.dom.playField, 
+                                 this.dom.gameInfo, 
+                                 width, 
+                                 height + 2); /*plus two for next shape buffer*/
+    this.g_info_controller = new GameInfoController(this.dom.scoreField, 
+                                                    this.dom.nextTetrominoField);
+    var nextTetromino = this.board_controller.getNextTetromino();
+    this.g_info_controller.drawNextTetromino(nextTetromino);
+    
+    var gameRunCallBack = function(movementDirection) {
+        /**
+         * Error, won't work:
+         *   this.run();
+         * Reason:
+         *   this = global; 
+         * It happends when the function is called by setInterval()
+         * More info: developer.mozilla.org/en-US/docs/Web/API/window.setInterval
+         */
+        tlol.tetrisGame.run(movementDirection);
+    };
+    var gls = tlol.gameLoopService(gameRunCallBack);
+    this.interval_id = gls.start();
+},
+
+gameOver: function() {
+    if (this.interval_id === null) {
         return;
+    }
+    clearInterval(this.interval_id);
+    this.interval_id = null;
+    this.dom.gameoverSplash.style.height = '200px';
+},
 
-    clearInterval(INTERVAL_ID);
-    INTERVAL_ID = null;
-    BOARD_CONTROLLER.gameOver();
-    BOARD_CONTROLLER = null;
-    G_INFO_CONTROLLER = null;    
+startNewGame: function(dom) {
+    this.dom = dom;
+    this.resetGame();
 }
 
-function gameOver() {
-    resetGame();
-    GAMEOVER_SPLASH.style.height = '200px';
-}
+}; /* tetrisGame */
 
 /* EOF */
