@@ -1,12 +1,13 @@
 
 function SquaresMatrix(columns, rows) {
 
-    this.columns = columns < 0 ? 0 : columns;
-    this.rows = rows < 0 ? 0 : rows;
+    this.columns = (columns < 0) ? 0 : columns;
+    this.rows    = (rows    < 0) ? 0 : rows;
     
-    this.squaresMatrix = new Array(this.columns);
+    /* Fill the matrix with NULLs */
+    this.squaresMatrix = [];
     for(var col = 0; col < this.columns; col++) {
-        this.squaresMatrix[col] = new Array(this.rows);
+        this.squaresMatrix[col] = [];
         for(var row = 0; row < this.rows; row++) {
             this.squaresMatrix[col][row] = null;
         }
@@ -130,14 +131,14 @@ SquaresMatrix.prototype._deleteRow = function(y) {
 /* Setters and Getters. */
 
 SquaresMatrix.prototype.insertTetromino = function(tetromino) {
-    if (!tetromino) {
+    if ( ! tetromino ) {
         return this;
     }
-     
+
     var squares = tetromino.getSquares();
     for(var i = 0; i < squares.length; i++) {
         var square = squares[i];
-        this.insertSquare(square);                                       
+        this.insertSquare(square);                                     
     }
 
     return this;                       
@@ -146,6 +147,7 @@ SquaresMatrix.prototype.insertTetromino = function(tetromino) {
 SquaresMatrix.prototype.insertSquare = function(square) {
     var x = square.getX();
     var y = square.getY();
+
     this.squaresMatrix[x][y] = square;
     return this;
 }

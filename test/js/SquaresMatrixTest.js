@@ -25,25 +25,55 @@ test("SquaresMatrix constructor", function() {
     expecteds = [[null, null], [null, null]];
     actuals = squaresMatrix.getMatrix();
     deepEqual(actuals, expecteds, "2x2 empty");
+
+    squaresMatrix = new SquaresMatrix(1, 2);
+    expecteds = [[null, null]];
+    actuals = squaresMatrix.getMatrix();
+    deepEqual(actuals, expecteds, "1x2 empty");
+
+    squaresMatrix = new SquaresMatrix(2, 1);
+    expecteds = [[null], [null]];
+    actuals = squaresMatrix.getMatrix();
+    deepEqual(actuals, expecteds, "2x1 empty");
 });
 
 test("SquaresMatrix.insertSquare", function(assert) {
     var buildSquare = tlol.squareFactory.buildSquare;
-    var cssClass = tlol.tSpec.square().cssClass;
+    var cssClass = tlol.tSpec.square().getCSSClass();
 
-    var squaresMatrix = new SquaresMatrix(2, 2)
-                            .insertSquare( buildSquare(1, 0, cssClass) );
-    var expecteds = [[null,                        null], 
-                     [buildSquare(1, 0, cssClass), null]];
+    var squaresMatrix = new SquaresMatrix(2, 2);
+    var expecteds = [[],[]];
+    expecteds[0][0] = buildSquare(0, 0, cssClass);
+    expecteds[1][0] = null;
+    expecteds[0][1] = null;
+    expecteds[1][1] = null;
+    squaresMatrix.insertSquare(buildSquare(0, 0, cssClass));
     var actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "insert a square at 0,0");
+
+    expecteds[0][0] = buildSquare(0, 0, cssClass);
+    expecteds[1][0] = null;
+    expecteds[0][1] = buildSquare(0, 1, cssClass);
+    expecteds[1][1] = null;
+    squaresMatrix.insertSquare(buildSquare(0, 1, cssClass));
+    actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "insert a square at 0,1");
+
+    expecteds[0][0] = buildSquare(0, 0, cssClass);
+    expecteds[1][0] = buildSquare(1, 0, cssClass);
+    expecteds[0][1] = buildSquare(0, 1, cssClass);
+    expecteds[1][1] = null;
+    squaresMatrix.insertSquare(buildSquare(1, 0, cssClass));
+    actuals = squaresMatrix.getMatrix();
     assert.equalSqrArr(actuals, expecteds, "insert a square at 1,0");
 
-    var squaresMatrix = new SquaresMatrix(2, 2)
-                            .insertSquare(buildSquare(0, 1, cssClass));
-    var expecteds = [[null, buildSquare(0, 1, cssClass)], 
-                     [null, null]];
-    var actuals = squaresMatrix.getMatrix();
-    assert.equalSqrArr(actuals, expecteds, "insert a square at 0,1");
+    expecteds[0][0] = buildSquare(0, 0, cssClass);
+    expecteds[1][0] = buildSquare(1, 0, cssClass);
+    expecteds[0][1] = buildSquare(0, 1, cssClass);
+    expecteds[1][1] = buildSquare(1, 1, cssClass);;
+    squaresMatrix.insertSquare(buildSquare(1, 1, cssClass));
+    actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "insert a square at 1,1");
 });
 
 test("SquaresMatrix.arePositionsAvailable", function() {
@@ -54,7 +84,6 @@ test("SquaresMatrix.arePositionsAvailable", function() {
      *   0
      * 0[ ]
      */
-    squaresMatrix = new SquaresMatrix(1, 2)
     var squaresMatrix = new SquaresMatrix(1, 1);
     var positions;
     ok( ! squaresMatrix.arePositionsAvailable(positions), "undefined");
@@ -66,13 +95,18 @@ test("SquaresMatrix.arePositionsAvailable", function() {
     ok( ! squaresMatrix.arePositionsAvailable(positions), "coordinates -1, 1");
     positions = [[1, -1]];
     ok( ! squaresMatrix.arePositionsAvailable(positions), "coordinates 1, -1");
+    positions = [[0, 1]];
+    ok( ! squaresMatrix.arePositionsAvailable(positions), "coordinates 0, 1");
+    positions = [[1, 0]];
+    ok( ! squaresMatrix.arePositionsAvailable(positions), "coordinates 1, 0");
     positions = [[1, 1]];
     ok( ! squaresMatrix.arePositionsAvailable(positions), "coordinates 1, 1");
 
     positions = [[0, 0]];
     ok( squaresMatrix.arePositionsAvailable(positions), "0, 0 available");
+
     squaresMatrix.insertSquare(buildSquare(0, 0, cssClass));
-    ok(!squaresMatrix.arePositionsAvailable(positions), "0, 0 unavailable");
+    ok( ! squaresMatrix.arePositionsAvailable(positions), "0, 0 unavailable");
 
     /**
      *   01
@@ -80,10 +114,16 @@ test("SquaresMatrix.arePositionsAvailable", function() {
      */
     squaresMatrix = new SquaresMatrix(2, 1)
                         .insertSquare(buildSquare(0, 0, cssClass));
+    positions = [[0, 1]];
+    ok(!squaresMatrix.arePositionsAvailable(positions), "0,1 unavailable");
+    positions = [[2, 0]];
+    ok(!squaresMatrix.arePositionsAvailable(positions), "0,1 unavailable");
+    positions = [[0, 1]];
+    ok(!squaresMatrix.arePositionsAvailable(positions), "0,1 unavailable");
+    positions = [[1, 1]];
+    ok(!squaresMatrix.arePositionsAvailable(positions), "0,1 unavailable");
     positions = [[1, 0]];
     ok(squaresMatrix.arePositionsAvailable(positions), "1,0 available");
-    positions = [[0, 0]];
-    ok(!squaresMatrix.arePositionsAvailable(positions), "0,0 unavailable");
     positions = [[0, 0], [1, 0]];
     ok(!squaresMatrix.arePositionsAvailable(positions), "line unavailable");
     positions = [[1, 0], [0, 0]];
@@ -103,6 +143,8 @@ test("SquaresMatrix.arePositionsAvailable", function() {
     ok(!squaresMatrix.arePositionsAvailable(positions));
     positions = [[0, 0], [0, 1]];
     ok(!squaresMatrix.arePositionsAvailable(positions));
+    positions = [[0, 1], [0, 0]];
+    ok(!squaresMatrix.arePositionsAvailable(positions));
 
     /**
      *   0
@@ -112,11 +154,17 @@ test("SquaresMatrix.arePositionsAvailable", function() {
      */
     squaresMatrix = new SquaresMatrix(1, 3)
                         .insertSquare(buildSquare(0, 1, cssClass));
+    positions = [[0, 0]];
+    ok(squaresMatrix.arePositionsAvailable(positions));
     positions = [[0, 1]];
     ok(!squaresMatrix.arePositionsAvailable(positions));
-    positions = [[0, 0], [0, 2]];
+    positions = [[0, 2]];
     ok(squaresMatrix.arePositionsAvailable(positions));
     positions = [[0, 0], [0, 1], [0, 2]];
+    ok(!squaresMatrix.arePositionsAvailable(positions));
+    positions = [[0, 1], [0, 2], [0, 0]];
+    ok(!squaresMatrix.arePositionsAvailable(positions));
+    positions = [[0, 2], [0, 0], [0, 1]];
     ok(!squaresMatrix.arePositionsAvailable(positions));
 
     /**
@@ -235,12 +283,12 @@ test("SquaresMatrix.packColumn", function(assert) {
      * 2[x]
      */
     squaresMatrix = new SquaresMatrix(1, 3)
-                        .insertSquare(buildSquare(0, 0, tlol.tSpec.square().cssClass))
-                        .insertSquare(buildSquare(0, 2, tlol.tSpec.line().cssClass));
+                        .insertSquare(buildSquare(0, 0, tlol.tSpec.square().getCSSClass()))
+                        .insertSquare(buildSquare(0, 2, tlol.tSpec.line().getCSSClass()));
     squaresMatrix.packColumn(0, 2);
     expecteds = new SquaresMatrix(1, 3)
-                    .insertSquare(buildSquare(0, 0, tlol.tSpec.square().cssClass))
-                    .insertSquare(buildSquare(0, 2, tlol.tSpec.line().cssClass)).getMatrix();
+                    .insertSquare(buildSquare(0, 0, tlol.tSpec.square().getCSSClass()))
+                    .insertSquare(buildSquare(0, 2, tlol.tSpec.line().getCSSClass())).getMatrix();
     actuals = squaresMatrix.getMatrix();
     assert.equalSqrArr(actuals, expecteds, "single column, move one position");
 
@@ -252,12 +300,12 @@ test("SquaresMatrix.packColumn", function(assert) {
      * 3[x]
      */
     squaresMatrix = new SquaresMatrix(1, 4)
-                        .insertSquare(buildSquare(0, 0, tlol.tSpec.square().cssClass))
-                        .insertSquare(buildSquare(0, 3, tlol.tSpec.line().cssClass));
+                        .insertSquare(buildSquare(0, 0, tlol.tSpec.square().getCSSClass()))
+                        .insertSquare(buildSquare(0, 3, tlol.tSpec.line().getCSSClass()));
     squaresMatrix.packColumn(0, 2);
     expecteds = new SquaresMatrix(1, 4)
-                    .insertSquare(buildSquare(0, 1, tlol.tSpec.square().cssClass))
-                    .insertSquare(buildSquare(0, 3, tlol.tSpec.line().cssClass)).getMatrix();
+                    .insertSquare(buildSquare(0, 1, tlol.tSpec.square().getCSSClass()))
+                    .insertSquare(buildSquare(0, 3, tlol.tSpec.line().getCSSClass())).getMatrix();
     actuals = squaresMatrix.getMatrix();
     assert.equalSqrArr(actuals, expecteds, "single column, move two positions");
 
@@ -269,12 +317,12 @@ test("SquaresMatrix.packColumn", function(assert) {
      * 3[ ]
      */
     squaresMatrix = new SquaresMatrix(1, 4)
-                        .insertSquare(buildSquare(0, 0, tlol.tSpec.square().cssClass))
-                        .insertSquare(buildSquare(0, 2, tlol.tSpec.line().cssClass));
+                        .insertSquare(buildSquare(0, 0, tlol.tSpec.square().getCSSClass()))
+                        .insertSquare(buildSquare(0, 2, tlol.tSpec.line().getCSSClass()));
     squaresMatrix.packColumn(0, 3);
     expecteds = new SquaresMatrix(1, 4)
-                    .insertSquare(buildSquare(0, 1, tlol.tSpec.square().cssClass))
-                    .insertSquare(buildSquare(0, 3, tlol.tSpec.line().cssClass)).getMatrix();
+                    .insertSquare(buildSquare(0, 1, tlol.tSpec.square().getCSSClass()))
+                    .insertSquare(buildSquare(0, 3, tlol.tSpec.line().getCSSClass())).getMatrix();
     actuals = squaresMatrix.getMatrix();
     assert.equalSqrArr(actuals, expecteds, "single column, move two positions");
 
@@ -731,10 +779,11 @@ test("SquaresMatrix.insertTetromino", function(assert) {
     var tSpec = tlol.tSpec.line();
     var squaresMatrix = new SquaresMatrix(4, 1)
                             .insertTetromino(new Tetromino(0, 0, tSpec));
-    var expecteds = [[buildSquare(0, 0, tSpec.cssClass)], 
-                     [buildSquare(1, 0, tSpec.cssClass)],
-                     [buildSquare(2, 0, tSpec.cssClass)], 
-                     [buildSquare(3, 0, tSpec.cssClass)]];
+    var expecteds = [[], [], [], []];
+    expecteds[0][0] = buildSquare(0, 0, tSpec.getCSSClass());
+    expecteds[1][0] = buildSquare(1, 0, tSpec.getCSSClass());
+    expecteds[2][0] = buildSquare(2, 0, tSpec.getCSSClass());
+    expecteds[3][0] = buildSquare(3, 0, tSpec.getCSSClass());
     var actuals = squaresMatrix.getMatrix();
     assert.equalSqrArr(actuals, expecteds, "insert tlol.tSpec.line()");
 
@@ -743,31 +792,27 @@ test("SquaresMatrix.insertTetromino", function(assert) {
      * 0
      * 1  xxxx
      */
-    var tSpec = tlol.tSpec.line();
-    var squaresMatrix = new SquaresMatrix(5, 2)
+    tSpec = tlol.tSpec.line();
+    squaresMatrix = new SquaresMatrix(5, 2)
                             .insertTetromino(new Tetromino(1, 1, tSpec));
-    var expecteds = [[buildSquare(1, 1, tSpec.cssClass)], 
-                     [buildSquare(2, 1, tSpec.cssClass)],
-                     [buildSquare(3, 1, tSpec.cssClass)], 
-                     [buildSquare(4, 1, tSpec.cssClass)]];
-    var actuals = squaresMatrix.getMatrix();
-    assert.equalSqrArr(actuals, expecteds, "insert tlol.tSpec.line() offset");
-    
-    /**
-     *   01
-     * 0 xx
-     * 1 xx
-     */
-    var tSpec = tlol.tSpec.square();
-    var squaresMatrix = new SquaresMatrix(2, 2)
-                            .insertTetromino(new Tetromino(0, 0, tSpec));
-    var expecteds = [[buildSquare(0, 0, tSpec.cssClass), 
-                      buildSquare(0, 1, tSpec.cssClass)], 
-                     [buildSquare(1, 0, tSpec.cssClass), 
-                      buildSquare(1, 1, tSpec.cssClass)]];
-    var actuals = squaresMatrix.getMatrix();
-    assert.equalSqrArr(actuals, expecteds, "insert tlol.tSpec.square()");
+    expecteds = [[], [], [], [], []];
+    expecteds[0][0] = null;
+    expecteds[0][1] = null;
 
+    expecteds[1][0] = null;
+    expecteds[1][1] = buildSquare(1, 1, tSpec.getCSSClass()); 
+
+    expecteds[2][0] = null;
+    expecteds[2][1] = buildSquare(2, 1, tSpec.getCSSClass());
+
+    expecteds[3][0] = null;
+    expecteds[3][1] = buildSquare(3, 1, tSpec.getCSSClass()); 
+
+    expecteds[4][0] = null;
+    expecteds[4][1] = buildSquare(4, 1, tSpec.getCSSClass());
+    actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "insert tlol.tSpec.line() (1,1) offset");
+    
     /**
      *   012
      * 0  x
@@ -776,14 +821,52 @@ test("SquaresMatrix.insertTetromino", function(assert) {
     tSpec = tlol.tSpec.t();
     squaresMatrix = new SquaresMatrix(3, 2)
                         .insertTetromino(new Tetromino(0, 0, tSpec));
-    /* TODO: Review, will change if Tetromino.js:15 is addressed. */
-    expecteds = [
-                [null                             , buildSquare(0, 1, tSpec.cssClass)], 
-                [buildSquare(1, 0, tSpec.cssClass), buildSquare(1, 1, tSpec.cssClass)], 
-                [null                             , buildSquare(2, 1, tSpec.cssClass)]
-                ];
+    expecteds = [[], [], []];
+    expecteds[0][0] = null;
+    expecteds[0][1] = buildSquare(0, 1, tSpec.getCSSClass());
+
+    expecteds[1][0] = buildSquare(1, 0, tSpec.getCSSClass());
+    expecteds[1][1] = buildSquare(1, 1, tSpec.getCSSClass());
+
+    expecteds[2][0] = null;
+    expecteds[2][1] = buildSquare(2, 1, tSpec.getCSSClass());
+
     actuals = squaresMatrix.getMatrix();
     assert.equalSqrArr(actuals, expecteds, "insert tlol.tSpec.t()");
+
+    /**
+     *   012
+     * 0  ab
+     * 1  dc
+     */
+    tSpec = tlol.tSpec.square();
+    squaresMatrix = new SquaresMatrix(3, 2)
+                        .insertTetromino(new Tetromino(0, 0, tSpec));
+    expecteds = [[], [], []];
+    expecteds[0][0] = null;
+    expecteds[0][1] = null;
+
+    expecteds[1][0] = buildSquare(1, 0, tlol.cssClass.mushroom);
+    expecteds[1][1] = buildSquare(1, 1, tSpec.getCSSClass());
+
+    expecteds[2][0] = buildSquare(2, 0, tSpec.getCSSClass());
+    expecteds[2][1] = buildSquare(2, 1, tSpec.getCSSClass());
+
+    actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "insert tlol.tSpec.square()");
+
+    /**
+     *   012
+     * 0[   ] 
+     */
+    tSpec = tlol.tSpec.line();
+    squaresMatrix = new SquaresMatrix(3, 1);
+    try {
+        squaresMatrix.insertTetromino(new Tetromino(0, 0, tSpec));
+    } catch(ev) { 
+        ok(ev.name, "TypeError", ev.message);
+    }
+
 });
 
 /* EOF */

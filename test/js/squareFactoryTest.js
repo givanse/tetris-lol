@@ -1,7 +1,7 @@
 
 test("square getDiv", function() {
     var square = tlol.squareFactory
-                     .buildSquare(5, 5, tlol.tSpec.s_right().cssClass);
+                     .buildSquare(5, 5, tlol.tSpec.s_right().getCSSClass());
     var expected = document.createElement("div");
     expected.className = "square SSHP_R";
     expected.style.left = "160px";
@@ -11,12 +11,12 @@ test("square getDiv", function() {
     deepEqual(actual, expected, "div clone");
 
     square = tlol.squareFactory
-                 .buildSquare(0, 0, tlol.tSpec.s_right().cssClass);
+                 .buildSquare(0, 0, tlol.tSpec.s_right().getCSSClass());
     actual = square.getDiv();
     notDeepEqual(actual, expected, "div with different position");
 
     square = tlol.squareFactory
-                 .buildSquare(5, 5, tlol.tSpec.s_left().cssClass);
+                 .buildSquare(5, 5, tlol.tSpec.s_left().getCSSClass());
     actual = square.getDiv();
     notDeepEqual(actual, expected, "div with different CSS class");
 
@@ -30,7 +30,7 @@ test("square getDiv", function() {
 
 test("square setX", function() {
     var square = tlol.squareFactory
-                     .buildSquare(-1, -1, tlol.tSpec.t().cssClass);
+                     .buildSquare(-1, -1, tlol.tSpec.t().getCSSClass());
     square.setX(16);
     var expected = 16;
     var actual = square.getX();
@@ -43,7 +43,7 @@ test("square setX", function() {
 
 test("square setY", function() {
     var square = tlol.squareFactory
-                     .buildSquare(-1, -1, tlol.tSpec.t().cssClass);
+                     .buildSquare(-1, -1, tlol.tSpec.t().getCSSClass());
     square.setY(16);
     var expected = 16;
     var actual = square.getY();
@@ -54,16 +54,23 @@ test("square setY", function() {
     equal(actual, expected, "y to pixels 512");
 });
 
-test("squareFactory constructor", function() {
-    throws(function () {
-            tlol.squareFactory.buildSquare(-1, -1);
-        }, "Square throws TypeError");
+test("squareFactory buildSquare", function() {
+    throws(function () { tlol.squareFactory.buildSquare(-1, -1); }, 
+           "Square throws TypeError, invalid cssClass");
 
-    var cssClass = tlol.tSpec.line().cssClass;
-    var sqr1 = tlol.squareFactory
-                   .buildSquare(2, 3, cssClass);
-    var sqr2 = tlol.squareFactory
-                   .buildSquare(2, 3, cssClass);
+    var buildSquare = tlol.squareFactory.buildSquare;
+    var cssClass = tlol.tSpec.square().getCSSClass();
+
+    var sqr = buildSquare(0, 0, cssClass);
+    strictEqual(sqr.getX(), 0);
+    strictEqual(sqr.getY(), 0);
+
+    sqr = buildSquare(-1, -1, cssClass);
+    strictEqual(sqr.getX(), 0);
+    strictEqual(sqr.getY(), 0);
+
+    var sqr1 = buildSquare(2, 3, cssClass);
+    var sqr2 = buildSquare(2, 3, cssClass);
     equal(sqr1.getX(), sqr2.getX(), "sqr1, sqr2 same x");
     equal(sqr1.getY(), sqr2.getY(), "sqr1, sqr2 same y");
     deepEqual(sqr1.getDiv(), sqr2.getDiv(), "sqr1, sqr2 same div");

@@ -11,23 +11,26 @@ tlol.squareFactory = (function() {
      */
     var newSquare =  function(x, y, cssClass) {
 
-        if (typeof cssClass !== 'string') {
+        if ( ! tlol.util.isString(cssClass) ) {
             throw {
                 name: 'TypeError',
                 message: 'Square must receive a cssClass that is a valid CSS class name.'
             };
         }
 
+        x = (x < 0) ? 0 : x;
+        y = (y < 0) ? 0 : y;
+
         var div = document.createElement('div');
         div.className = 'square ' + cssClass;
 
-        var setX = function(newX) {
+        function setX(newX) {
             x = newX;
             /* Update positioning */
             div.style.left = x * tlol.square_size + 'px';                                     
         };
 
-        var setY = function(newY) { 
+        function setY(newY) { 
             y = newY; 
             /* Update positioning */
             div.style.top  = y * tlol.square_size + 'px';
@@ -38,7 +41,7 @@ tlol.squareFactory = (function() {
             }
         };
     
-        var isEqual = function(otherSquare) {
+        function isEqual(otherSquare) {
             if (!otherSquare ||
                 !otherSquare.hasOwnProperty("getX") ||
                 !otherSquare.hasOwnProperty("getY") ||

@@ -41,17 +41,15 @@ function Board(canvas, playField, gameInfoDiv, widthInSquares, heightInSquares) 
  * return - true if the falling shape performed a movement, false otherwise.
  */
 Board.prototype.updateBoard = function(movDirection) {
-
-    var newTetroPositions = this.currTetromino.getNewPositions(movDirection);
-
-    if(!this.squaresMatrix.arePositionsAvailable(newTetroPositions))
-        return false;
-
-    this.currTetromino.move(movDirection);
-
-    return true;
+    var simulatedPositions = this.currTetromino
+                                 .getNextPositionCoords(movDirection);
+    var isValidMovement = this.squaresMatrix
+                              .arePositionsAvailable(simulatedPositions);
+    if ( isValidMovement ) {
+        this.currTetromino.move(movDirection);
+    }
+    return isValidMovement;
 }
-
 
 /** 
  * Asumes that this function is called when this.currTetromino still is valid 
@@ -130,7 +128,8 @@ Board.prototype.generateRandomInitialRows = function() {
         var xRnd = Math.floor(Math.random() * ((xMax - xMin) + 1)) + xMin;
         var yRnd = Math.floor(Math.random() * ((yMax - yMin) + 1)) + yMin;
         var tSpec = tlol.tetrominoFactory.buildRandomTetrominoSpec();
-        var square = tlol.squareFactory.buildSquare(xRnd, yRnd, tSpec.cssClass);
+        var square = tlol.squareFactory
+                         .buildSquare(xRnd, yRnd, tSpec.getCSSClass());
         this.squaresMatrix.insertSquare(square);
     }
 }

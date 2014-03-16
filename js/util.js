@@ -4,6 +4,12 @@ tlol.util = {
         return Object.prototype.toString.apply(obj) === "[object Array]";
     },
     isString: function(obj) {
-        return obj === 'string' || obj instanceof String;
+        return typeof obj === 'string' || obj instanceof String;
+    },
+    isSquare: function(obj) {
+        return obj &&
+               obj.hasOwnProperty("getX") &&
+               obj.hasOwnProperty("getY") &&
+               obj.hasOwnProperty("getDiv")
     }
 };

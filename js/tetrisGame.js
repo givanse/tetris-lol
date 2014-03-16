@@ -6,9 +6,9 @@
 
 tlol.tetrisGame = (function() {
 
-    var interval_id = null;/* The ID of the interval used by gameLoopService. */
-    var board_controller = null;
-    var g_info_controller = null;
+    var intervalID = null;/* The ID of the interval used by gameLoopService. */
+    var boardController = null;
+    var gameInfoController = null;
     var gls = null;
     var isGameRunning = true;
     var dom = null;
@@ -28,26 +28,26 @@ tlol.tetrisGame = (function() {
         movementDirection = (movementDirection === undefined) ? 
                             tlol.direction.down : movementDirection;
 
-        var movementPerformed = board_controller.updateBoard(movementDirection);
+        var movementPerformed = boardController.updateBoard(movementDirection);
 
         if (movementPerformed) {
-            board_controller.drawSquares();
+            boardController.drawSquares();
         } else if(movementDirection === tlol.direction.down) { 
             /* Collisioned with squares. */
 
-            var currTetromino = board_controller.getCurrentTetromino();
-            board_controller.insertTetromino(currTetromino);
-            var deletedRowsCount = board_controller.deleteCompletedRows();
-            g_info_controller.addDeletedRowsScorePoints(deletedRowsCount);
+            var currTetromino = boardController.getCurrentTetromino();
+            boardController.insertTetromino(currTetromino);
+            var deletedRowsCount = boardController.deleteCompletedRows();
+            gameInfoController.addDeletedRowsScorePoints(deletedRowsCount);
 
             /* Use the next falling Tetromino. */
-            var isNextTetroValid = board_controller.useNextTetromino();
-            var newNextTetromino = board_controller.getNextTetromino();
-            g_info_controller.drawNextTetromino(newNextTetromino);
+            var isNextTetroValid = boardController.useNextTetromino();
+            var newNextTetromino = boardController.getNextTetromino();
+            gameInfoController.drawNextTetromino(newNextTetromino);
 
             /* Check if the game is over. */
             if(isNextTetroValid) {
-                g_info_controller.increaseScore(); /* Keep rolling ;) */
+                gameInfoController.increaseScore(); /* Keep rolling ;) */
             } else {
                 gameOver();
             }
@@ -76,15 +76,15 @@ tlol.tetrisGame = (function() {
          */
         var width = 10;
         var height = 18; /* top two are logical, added internally */
-        board_controller = new Board(dom.canvas, 
+        boardController = new Board(dom.canvas, 
                                      dom.playField, 
                                      dom.gameInfo, 
                                      width, 
                                      height + 2); /*+2 next shape buffer*/
-        g_info_controller = new GameInfoController(dom.scoreField, 
+        gameInfoController = new GameInfoController(dom.scoreField, 
                                                    dom.nextTetrominoField);
-        var nextTetromino = board_controller.getNextTetromino();
-        g_info_controller.drawNextTetromino(nextTetromino);
+        var nextTetromino = boardController.getNextTetromino();
+        gameInfoController.drawNextTetromino(nextTetromino);
 
         dom.gameoverSplash.style.height = '0px';
     
@@ -93,7 +93,7 @@ tlol.tetrisGame = (function() {
         };
 
         tlol.gameLoopService.setGameRunCallback(gameRunCallback); 
-        interval_id = tlol.gameLoopService.start();
+        intervalID = tlol.gameLoopService.start();
     }; /* resetGame */
 
     /**
@@ -102,11 +102,11 @@ tlol.tetrisGame = (function() {
      * the defaults used when a new game is started.
      */
     var endGame = function() {
-        if ( ! interval_id ) {
+        if ( ! intervalID ) {
             return;
         }
-        clearInterval(interval_id);
-        interval_id = null;
+        clearInterval(intervalID);
+        intervalID = null;
         isGameRunning = false;
     };
 

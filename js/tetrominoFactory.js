@@ -34,8 +34,8 @@ tlol.tetrominoFactory = (function() {
         buildRandomTetrominoSpec: buildRandomTetrominoSpec, 
         buildRandomTetromino: function(width) {
             var tSpec = buildRandomTetrominoSpec();                             
-            /* TODO: Tetromino uses by default a +2 offset, needs to be adressed. */     
-            var x = Math.floor(width / 2) - 1;                   
+            /* assumes that width is always an even number */                   
+            var x = width / 2; 
             var y = 0;                                                                   
             return new Tetromino(x, y, tSpec);
         }
