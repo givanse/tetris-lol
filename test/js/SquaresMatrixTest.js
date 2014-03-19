@@ -16,9 +16,14 @@
  */
 
 test("SquaresMatrix constructor", function() {
-    var squaresMatrix = new SquaresMatrix(1, 1);
-    var expecteds = [[null]];
+    var squaresMatrix = new SquaresMatrix(0, 0);
+    var expecteds = [];
     var actuals = squaresMatrix.getMatrix();
+    deepEqual(actuals, expecteds, "0x0");
+
+    squaresMatrix = new SquaresMatrix(1, 1);
+    expecteds = [[null]];
+    actuals = squaresMatrix.getMatrix();
     deepEqual(actuals, expecteds, "1x1 empty");
 
     squaresMatrix = new SquaresMatrix(2, 2);
@@ -772,46 +777,76 @@ test("SquaresMatrix.deleteRows", function(assert) {
 test("SquaresMatrix.insertTetromino", function(assert) {
     var buildSquare = tlol.squareFactory.buildSquare;
 
+    var tSpec = tlol.tSpec.line();
+
     /**
      *   0123
-     * 0 xxxx
+     * 0
+     * # xxxx
      */
-    var tSpec = tlol.tSpec.line();
-    var squaresMatrix = new SquaresMatrix(4, 1)
-                            .insertTetromino(new Tetromino(0, 0, tSpec));
-    var expecteds = [[], [], [], []];
-    expecteds[0][0] = buildSquare(0, 0, tSpec.getCSSClass());
-    expecteds[1][0] = buildSquare(1, 0, tSpec.getCSSClass());
-    expecteds[2][0] = buildSquare(2, 0, tSpec.getCSSClass());
-    expecteds[3][0] = buildSquare(3, 0, tSpec.getCSSClass());
+    var squaresMatrix = new SquaresMatrix(4, 1);
+
+    var expecteds = [[null], [null], [null], [null]];
     var actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.line() empty matrix"); 
+
+    throws(function() {
+               squaresMatrix.insertTetromino(new Tetromino(0, 0, tSpec))
+           },
+           "tlol.tSpec.line() out of bounds");
+
+    expecteds = [[null], [null], [null], [null]];
+    actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, 
+                       "insert tlol.tSpec.line(), matrix not big enough");
+
+    /**
+     *   0123
+     * 0
+     * 1 xxxx
+     */
+    squaresMatrix = new SquaresMatrix(4, 2)
+                        .insertTetromino(new Tetromino(0, 0, tSpec));
+    expecteds = [[null], [null], [null], [null]];
+    expecteds[0][1] = buildSquare(0, 1, tSpec.getCSSClass());
+    expecteds[1][1] = buildSquare(1, 1, tSpec.getCSSClass());
+    expecteds[2][1] = buildSquare(2, 1, tSpec.getCSSClass());
+    expecteds[3][1] = buildSquare(3, 1, tSpec.getCSSClass());
+    actuals = squaresMatrix.getMatrix();
     assert.equalSqrArr(actuals, expecteds, "insert tlol.tSpec.line()");
 
     /**
      *   01234
      * 0
-     * 1  xxxx
+     * 1
+     * 2  xxxx
      */
     tSpec = tlol.tSpec.line();
-    squaresMatrix = new SquaresMatrix(5, 2)
-                            .insertTetromino(new Tetromino(1, 1, tSpec));
+    squaresMatrix = new SquaresMatrix(5, 3)
+                        .insertTetromino(new Tetromino(1, 1, tSpec));
     expecteds = [[], [], [], [], []];
     expecteds[0][0] = null;
     expecteds[0][1] = null;
+    expecteds[0][2] = null;
 
     expecteds[1][0] = null;
-    expecteds[1][1] = buildSquare(1, 1, tSpec.getCSSClass()); 
+    expecteds[1][1] = null;
+    expecteds[1][2] = buildSquare(1, 2, tSpec.getCSSClass()); 
 
     expecteds[2][0] = null;
-    expecteds[2][1] = buildSquare(2, 1, tSpec.getCSSClass());
+    expecteds[2][1] = null;
+    expecteds[2][2] = buildSquare(2, 2, tSpec.getCSSClass());
 
     expecteds[3][0] = null;
-    expecteds[3][1] = buildSquare(3, 1, tSpec.getCSSClass()); 
+    expecteds[3][1] = null;
+    expecteds[3][2] = buildSquare(3, 2, tSpec.getCSSClass()); 
 
     expecteds[4][0] = null;
-    expecteds[4][1] = buildSquare(4, 1, tSpec.getCSSClass());
+    expecteds[4][1] = null;
+    expecteds[4][2] = buildSquare(4, 2, tSpec.getCSSClass());
     actuals = squaresMatrix.getMatrix();
-    assert.equalSqrArr(actuals, expecteds, "insert tlol.tSpec.line() (1,1) offset");
+    assert.equalSqrArr(actuals, expecteds, 
+                       "insert tlol.tSpec.line() (1,1) offset");
     
     /**
      *   012

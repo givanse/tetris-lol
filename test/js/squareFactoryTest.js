@@ -1,5 +1,5 @@
 
-test("square getDiv", function() {
+test("squareFactory - square.getDiv", function() {
     var square = tlol.squareFactory
                      .buildSquare(5, 5, tlol.tSpec.s_right().getCSSClass());
     var expected = document.createElement("div");
@@ -28,7 +28,7 @@ test("square getDiv", function() {
 
 });
 
-test("square setX", function() {
+test("squareFactory - square.setX", function() {
     var square = tlol.squareFactory
                      .buildSquare(-1, -1, tlol.tSpec.t().getCSSClass());
     square.setX(16);
@@ -41,7 +41,7 @@ test("square setX", function() {
     equal(actual, expected, "x to pixels 512");
 });
 
-test("square setY", function() {
+test("squareFactory - square.setY", function() {
     var square = tlol.squareFactory
                      .buildSquare(-1, -1, tlol.tSpec.t().getCSSClass());
     square.setY(16);
@@ -54,7 +54,7 @@ test("square setY", function() {
     equal(actual, expected, "y to pixels 512");
 });
 
-test("squareFactory buildSquare", function() {
+test("squareFactory.buildSquare", function() {
     throws(function () { tlol.squareFactory.buildSquare(-1, -1); }, 
            "Square throws TypeError, invalid cssClass");
 

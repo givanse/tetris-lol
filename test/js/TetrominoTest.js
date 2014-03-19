@@ -7,34 +7,78 @@ test("Tetromino.getSquares", function(assert) {
     var buildSquare = tlol.squareFactory.buildSquare;
 
     throws(function() {
-        new Tetromino(0, 0) 
-    }, "Tetromino throws TypeError");
+               new Tetromino(0, 0);
+           }, 
+           "Tetromino throws TypeError - missing argument");
+
+    throws(function() {
+               new Tetromino(0, 0, "a random string"); 
+           }, 
+           "Tetromino throws TypeError - random string");
+
+    throws(function() {
+               new Tetromino(0, 0, new Object()); 
+           }, 
+           "Tetromino throws TypeError - random object");
 
     /**
      *    0 1 2 3
      *  0
      *  1 x x x x
      */
-    var tetromino = new Tetromino(0, 0, tlol.tSpec.line());
+    var tSpec = tlol.tSpec.line()
+    var tetromino = new Tetromino(0, 0, tSpec);
     var actuals = tetromino.getSquares();
-    var cssClass = tlol.tSpec.line().getCSSClass();
-    var expecteds = [buildSquare(0, 1, cssClass),
-                     buildSquare(1, 1, cssClass),
-                     buildSquare(2, 1, cssClass),
-                     buildSquare(3, 1, cssClass)]
+
+    assert.notEqualSqrArr(actuals, [], 
+        "not equal to an empty array");
+    assert.notEqualSqrArr(actuals, [[]], 
+        "not equal to an empty nested array");
+    assert.notEqualSqrArr(actuals, [null], 
+        "not equal to an array of 1 NULL");
+    assert.notEqualSqrArr(actuals, [null, null, null, null], 
+        "not equal to an array of 4 NULLs");
+    assert.notEqualSqrArr(actuals, [[null]], 
+        "not equal to an array of 1 array filled with NULL");
+    assert.notEqualSqrArr(actuals, [[null], [null], [null], [null]], 
+        "not equal to an array of 4  arrays filled with NULL");
+
+    var expecteds = [buildSquare(0, 1, tSpec.getCSSClass()),
+                     buildSquare(1, 1, tSpec.getCSSClass()),
+                     buildSquare(2, 1, tSpec.getCSSClass()),
+                     null]
+    assert.notEqualSqrArr(actuals, expecteds, "tlol.tSpec.line() last null");
+
+    expecteds = [buildSquare(0, 1, tSpec.getCSSClass()),
+                 buildSquare(1, 1, tSpec.getCSSClass()),
+                 buildSquare(2, 1, tSpec.getCSSClass()),
+                 buildSquare(3, 1, tSpec.getCSSClass())]
     assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.line()");
 
-    equal(actuals[0].getX(), 0);
-    equal(actuals[0].getY(), 1);
+    expecteds = [expecteds];
+    assert.notEqualSqrArr(actuals, expecteds, "tlol.tSpec.line() nested array");
 
-    equal(actuals[1].getX(), 1);
-    equal(actuals[1].getY(), 1);
+    expecteds = [buildSquare(0, 0, tSpec.getCSSClass()),
+                 buildSquare(1, 0, tSpec.getCSSClass()),
+                 buildSquare(2, 0, tSpec.getCSSClass()),
+                 buildSquare(3, 0, tSpec.getCSSClass())];
+    assert.notEqualSqrArr(actuals, expecteds, 
+                          "tlol.tSpec.line() different row");
 
-    equal(actuals[2].getX(), 2);
-    equal(actuals[2].getY(), 1);
+    expecteds = [buildSquare(1, 1, tSpec.getCSSClass()),
+                 buildSquare(2, 1, tSpec.getCSSClass()),
+                 buildSquare(3, 1, tSpec.getCSSClass()),
+                 buildSquare(4, 1, tSpec.getCSSClass())];
+    assert.notEqualSqrArr(actuals, expecteds, 
+                          "tlol.tSpec.line() different column");
 
-    equal(actuals[3].getX(), 3);
-    equal(actuals[3].getY(), 1);
+    tSpec = tlol.tSpec.t()
+    expecteds = [buildSquare(0, 1, tSpec.getCSSClass()),
+                 buildSquare(1, 1, tSpec.getCSSClass()),
+                 buildSquare(2, 1, tSpec.getCSSClass()),
+                 buildSquare(3, 1, tSpec.getCSSClass())];
+    assert.notEqualSqrArr(actuals, expecteds, 
+                          "tlol.tSpec.line() different css class");
 
     /**
      *    0 1 2
@@ -43,7 +87,7 @@ test("Tetromino.getSquares", function(assert) {
      */
     tetromino = new Tetromino(0, 0, tlol.tSpec.square());
     actuals = tetromino.getSquares();
-    cssClass = tlol.tSpec.square().getCSSClass();
+    var cssClass = tlol.tSpec.square().getCSSClass();
     expecteds = [buildSquare(1, 0, tlol.cssClass.mushroom),
                  buildSquare(2, 0, cssClass),
                  buildSquare(2, 1, cssClass),
@@ -128,8 +172,8 @@ test("Tetromino.getSquares", function(assert) {
     cssClass = tlol.tSpec.l_left().getCSSClass();
     expecteds = [buildSquare( 0, 1, cssClass),
                  buildSquare( 1, 1, cssClass),
-                 buildSquare( 2, 1, cssClass),
-                 buildSquare( 2, 0, cssClass)];
+                 buildSquare( 2, 0, cssClass),
+                 buildSquare( 2, 1, cssClass)];
     assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.l_left()");
 
     /* Tests with a random origin. */
@@ -259,20 +303,21 @@ test("Tetromino.getNextPositionCoords(tlol.direction.up) - rotate", function() {
 test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
     var buildSquare = tlol.squareFactory.buildSquare;
 
+    var tSpec = tlol.tSpec.s_left();
+
     /**
      *   0 1 2 0 1 2
      * 0 x x       x
      * 1   x x   x x
      * 2         x
      */         
-    var tetromino = new Tetromino(0, 0, tlol.tSpec.s_left());
+    var tetromino = new Tetromino(0, 0, tSpec);
     tetromino.move(tlol.direction.up);
     var actuals = tetromino.getSquares();
-    var cssClass = tlol.tSpec.s_left().getCSSClass();
-    var expecteds = [buildSquare(1, 1, cssClass),
-                     buildSquare(1, 2, cssClass),
-                     buildSquare(2, 0, cssClass),
-                     buildSquare(2, 1, cssClass)];
+    var expecteds = [buildSquare(1, 1, tSpec.getCSSClass()),
+                     buildSquare(1, 2, tSpec.getCSSClass()),
+                     buildSquare(2, 0, tSpec.getCSSClass()),
+                     buildSquare(2, 1, tSpec.getCSSClass())];
     assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.s_left()");
 
     /**
@@ -280,17 +325,18 @@ test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
      * 45 x  x           x
      * 46    x  x     x  x
      * 47             x
-     */         
-    tetromino = new Tetromino(33, 45, tlol.tSpec.s_left());
+     */
+    tetromino = new Tetromino(33, 45, tSpec);
     tetromino.move(tlol.direction.up);
     actuals = tetromino.getSquares();
-    cssClass = tlol.tSpec.s_left().getCSSClass();
-    expecteds = [buildSquare(34, 46, cssClass),
-                 buildSquare(34, 47, cssClass),
-                 buildSquare(35, 45, cssClass),
-                 buildSquare(35, 46, cssClass)];
+    expecteds = [buildSquare(34, 46, tSpec.getCSSClass()),
+                 buildSquare(34, 47, tSpec.getCSSClass()),
+                 buildSquare(35, 45, tSpec.getCSSClass()),
+                 buildSquare(35, 46, tSpec.getCSSClass())];
     assert.equalSqrArr(actuals, expecteds, 
                        "tlol.tSpec.s_left() - (33, 45) offset");
+
+    tSpec = tlol.tSpec.line();
 
     /**
      *  0123 0123 
@@ -298,16 +344,15 @@ test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
      * 1xxxx   x
      * 2       x
      * 3       x
-     */         
-    tetromino = new Tetromino(0, 0, tlol.tSpec.line());
+     */     
+    tetromino = new Tetromino(0, 0, tSpec);
     tetromino.move(tlol.direction.up);
     actuals = tetromino.getSquares();
-    cssClass = tlol.tSpec.line().getCSSClass();
-    expecteds = [buildSquare(2, 0, cssClass),
-                 buildSquare(2, 1, cssClass),
-                 buildSquare(2, 2, cssClass),
-                 buildSquare(2, 3, cssClass)];
-    assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.square()");
+    expecteds = [buildSquare(2, 0, tSpec.getCSSClass()),
+                 buildSquare(2, 1, tSpec.getCSSClass()),
+                 buildSquare(2, 2, tSpec.getCSSClass()),
+                 buildSquare(2, 3, tSpec.getCSSClass())];
+    assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.square() - 1 rotation");
 
     /**
      *  0123
@@ -316,15 +361,16 @@ test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
      * 2xxxx
      * 3    
      */         
+    tetromino = new Tetromino(0, 0, tSpec);
     tetromino.move(tlol.direction.up);
     tetromino.move(tlol.direction.up);
     actuals = tetromino.getSquares();
     cssClass = tlol.tSpec.line().getCSSClass();
-    expecteds = [buildSquare(0, 2, cssClass),
-                 buildSquare(1, 2, cssClass),
-                 buildSquare(2, 2, cssClass),
-                 buildSquare(3, 2, cssClass)];
-    assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.square()");
+    expecteds = [buildSquare(0, 2, tSpec.getCSSClass()),
+                 buildSquare(1, 2, tSpec.getCSSClass()),
+                 buildSquare(2, 2, tSpec.getCSSClass()),
+                 buildSquare(3, 2, tSpec.getCSSClass())];
+    assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.line() - 2 rotations");
 
     /**
      *  0123
@@ -333,14 +379,17 @@ test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
      * 2    
      * 3   
      */         
+    tetromino = new Tetromino(0, 0, tSpec)
+    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.up);
     tetromino.move(tlol.direction.up);
     actuals = tetromino.getSquares();
-    cssClass = tlol.tSpec.line().getCSSClass();
-    expecteds = [buildSquare(0, 1, cssClass),
-                 buildSquare(1, 1, cssClass),
-                 buildSquare(2, 1, cssClass),
-                 buildSquare(3, 1, cssClass)];
-    assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.square()");
+    expecteds = [buildSquare(0, 1, tSpec.getCSSClass()),
+                 buildSquare(1, 1, tSpec.getCSSClass()),
+                 buildSquare(2, 1, tSpec.getCSSClass()),
+                 buildSquare(3, 1, tSpec.getCSSClass())];
+    assert.equalSqrArr(actuals, expecteds, "tlol.tSpec.line() - 4 rotations");
 });
 
 test("Tetromino.getRows", function() {

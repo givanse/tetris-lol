@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# Execute this script from the root folder of this repo.
+
 set -e
 
-cd qunit
+cd test/qunit
 
 rm qunit-* || true
 

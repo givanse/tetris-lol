@@ -59,7 +59,7 @@ Tetromino.prototype.buildSquares = function() {
         var baseCoordsPair = baseCoords[i];
         var x = baseCoordsPair[0] + this.xOffset;
         var y = baseCoordsPair[1] + this.yOffset;
-        squares.push( tlol.squareFactory.buildSquare(x, y, cssClass) );
+        squares[i] = tlol.squareFactory.buildSquare(x, y, cssClass);
     }
 
     return squares;

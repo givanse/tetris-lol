@@ -148,7 +148,16 @@ SquaresMatrix.prototype.insertSquare = function(square) {
     var x = square.getX();
     var y = square.getY();
 
+    if ( x < 0 || x >= this.columns || 
+         y < 0 || y >= this.rows ) {
+        throw {
+            name: "SquaresMatrixIndexError",
+            message: "The Square's coordinates are out of bounds."
+        };
+    }
+
     this.squaresMatrix[x][y] = square;
+
     return this;
 }
 
