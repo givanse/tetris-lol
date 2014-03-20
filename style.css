@@ -191,9 +191,23 @@ div#tetrisBoard div#gameoverSplash {
     position: absolute;
     top: 100px;
     margin: 0 auto;
-    
     width: 625px;                            /* same as #wrapper #tetrisBoard */
     height: 0px;
+}
+
+div#gameoverSplash div#background {
+    position: absolute;
+    top: 0px;
+    height: 125%;
+    width: 100%;
+    background-color: rgba(60, 8, 8, 0.60);
+}
+
+div#gameoverSplash div#image {
+    position: absolute;
+    top: 25px;
+    height: 100%;
+    width: 100%;
     background: transparent url('img/defeat.png') center top no-repeat;
 }
 
@@ -207,6 +221,7 @@ div#tetrisBoard div#gameoverSplash {
     border: 1px solid #02060c;
     border-radius: 4px;
     background: transparent url('img/sqrBackground.png') center top no-repeat;
+    opacity: 1.0;
 }
 
 div#playField div.square[buffer="true"] {
