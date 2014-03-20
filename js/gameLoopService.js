@@ -19,39 +19,58 @@ tlol.gameLoopService = (function() {
         }
 
         var gameTimer = (function() {                                                      
-            var               gameSpeed = 1000 * 1;                              
-            var            gameSpeedMax = 250 * 1;                               
-            var      gameSpeedIncrement = 50 * 1;                                
-            var targetTimeForMaxSpeed = 1000 * 60 * 7; /* 7 min */
-            var gameSpeedIncrementSpeed = targetTimeForMaxSpeed / 
-                                          ( (gameSpeed - gameSpeedMax) / 
-                                            gameSpeedIncrement );                              
-                                                                                 
-            /* start the game timer */
-            var callbackTimerId = setInterval(callback, gameSpeed);
+            var gameSpeed = null;                              
+            var gameSpeedMax = null;                               
+            var gameSpeedIncrement = null;                                
+            var targetTimeForMaxSpeed = null;
+            var gameSpeedIncrementSpeed = null; 
+            var callbackTimerId = null;
+            var incrementTimerId = null;                      
 
-            /* automate speed increments */
-            var incrementTimerId = setInterval(function() {                      
+            function startAutomatedGameSpeedIncrements() {
+                incrementTimerId = setInterval(function() {                      
                     if (gameSpeed <= gameSpeedMax) {                             
                         /* stop speed increments */                              
                         clearInterval(incrementTimerId);                         
                     } else {                                                     
                         /* increment speed */                                    
                         gameSpeed = gameSpeed - gameSpeedIncrement;              
-
                         /*TODO: review if already elapsed time should be considered*/
                         clearInterval(callbackTimerId);
                         callbackTimerId = setInterval(callback, gameSpeed);
                     }                                                            
                 },                                                               
                 gameSpeedIncrementSpeed);                                        
-                                                                                 
+
+            }
+
+            function stop() {
+                clearInterval(callbackTimerId);
+                clearInterval(incrementTimerId);
+            }
+
+            function resetValues() {
+                              gameSpeed = 1000 * 1;                              
+                           gameSpeedMax = 250 * 1;                               
+                     gameSpeedIncrement = 50 * 1;                                
+                  targetTimeForMaxSpeed = 1000 * 60 * 7; /* 7 min */
+                gameSpeedIncrementSpeed = targetTimeForMaxSpeed / 
+                                          ( (gameSpeed - gameSpeedMax) / 
+                                            gameSpeedIncrement );                              
+                stop();
+                callbackTimerId = setInterval(callback, gameSpeed);
+                startAutomatedGameSpeedIncrements();
+            }
+
             var that = {
-                getIntervalId: function() { return callbackTimerId; }
+                resetValues: resetValues,
+                stop: stop
             };
 
             return that;                                                         
         })();
+
+        gameTimer.resetValues();
 
         return gameTimer;
     }; /* startLoop */
@@ -111,7 +130,7 @@ tlol.gameLoopService = (function() {
 
     /* Public interface */
     var glsObj = {
-        start: startLoop,
+        startLoop: startLoop,
         setGameRunCallback: setCallback 
     };
 

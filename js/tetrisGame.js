@@ -54,7 +54,7 @@ tlol.tetrisGame = (function() {
         }
     }; /* run */
 
-    var resetGame = function() {
+    var startNewGame = function() {
         endGame();
 
         if ( ! dom.canvas ||
@@ -93,8 +93,8 @@ tlol.tetrisGame = (function() {
         };
 
         tlol.gameLoopService.setGameRunCallback(gameRunCallback); 
-        gameTimer = tlol.gameLoopService.start();
-    }; /* resetGame */
+        gameTimer = tlol.gameLoopService.startLoop();
+    }; /* startNewGame */
 
     /**
      * Changes the state of the game to finished.
@@ -102,14 +102,10 @@ tlol.tetrisGame = (function() {
      * the defaults used when a new game is started.
      */
     var endGame = function() {
-
         if ( ! gameTimer ) {
             return;
         }
-
-        var intervalId = gameTimer.getIntervalId();
-        clearInterval(intervalId);
-        intervalId = null;
+        gameTimer.stop();
         isGameRunning = false;
     };
 
@@ -124,7 +120,7 @@ tlol.tetrisGame = (function() {
 
     /* Public interface */
     var tetrisGame = {
-        startNewGame: resetGame,
+        startNewGame: startNewGame,
         setDOM: function(newDOM) {
             dom = newDOM;
         }
