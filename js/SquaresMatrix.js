@@ -12,6 +12,7 @@ function SquaresMatrix(columns, rows) {
             this.squaresMatrix[col][row] = null;
         }
     }
+    
 }
 
 /**
@@ -89,42 +90,57 @@ SquaresMatrix.prototype.getRowState = function(y) {
 }
 
 /**
+ * Delete any of the Square rows if it fills its matrix row.
+ *
  * One row deleted triggers the process of packing and deleting all 
- * the upper rows, if valid. 
+ * the upper rows, if valid.
+ *
+ * rowNum - The row number used to start searching from bottom to top.
+ * return - A list with the row numbers of the deleted rows.
  */
-SquaresMatrix.prototype.deleteRows = function(rowNums) {
+SquaresMatrix.prototype.findCompletedRows = function(rowNum) {
 
-    rowNums = (!rowNums) ? [] : rowNums;
-
-    var lastRow = rowNums[rowNums.length - 1]; /* closest to bottom row */   
+    if ( rowNum < 0 || rowNum >= this.rows ) {
+        throw {
+            name: "SquaresMatrixIndexError",
+            message: "The row number is out of bounds."
+        };
+    }
  
-    var deletedRowsCount = 0;
-    for (var y = lastRow; ; y--) {
+    var completedRows = [];
 
-        if (this.getRowState(y) === tlol.row.full) {
-            this._deleteRow(y);
-            deletedRowsCount++;
+    for ( ; rowNum >= 0; rowNum--) {
+        var rowState = this.getRowState(rowNum);
 
-            for (var x = 0; x < this.getWidth(); x++) {
-                this.packColumn(x, y);
-            }
-
-            /* Re-process the same row, it might have been filled again. */
-            y++;
-        }
-
-        if (this.getRowState(y) === tlol.row.empty) {
-            return deletedRowsCount;
+        if (rowState === tlol.row.full) {
+            completedRows.push(rowNum);
+        } else if (rowState === tlol.row.empty) {
+            break; 
         }
     }
 
-    return deletedRowsCount;
+    return completedRows;
 }
 
-SquaresMatrix.prototype._deleteRow = function(y) {
-    var width = this.getWidth();
-    for(var x = 0; x < width; x++) {
-        this.squaresMatrix[x][y] = null;
+/**
+ * Pack all the columns at a given row number.
+ */
+SquaresMatrix.prototype.packColumns = function(rowNums) {
+    for(var i = 0; i < rowNums.length; i++) {
+        y = rowNums[i];
+        for (var x = 0; x < this.getWidth(); x++) {
+            this.packColumn(x, y);
+        }
+    }
+}
+
+SquaresMatrix.prototype.deleteRows = function(rowNums) {
+    for(var i = 0; i < rowNums.length; i++) {
+        y = rowNums[i];
+        var width = this.getWidth();
+        for(var x = 0; x < width; x++) {
+            this.squaresMatrix[x][y] = null;
+        }
     }
 }
 
@@ -172,5 +188,33 @@ SquaresMatrix.prototype.getWidth = function() { return this.columns; }
 SquaresMatrix.prototype.getHeight = function() { return this.rows; }
 
 SquaresMatrix.prototype.getMatrix = function() { return this.squaresMatrix; }
+
+/**
+ * return - A list of all the squares in the rows indicated by rowNums.
+ */
+SquaresMatrix.prototype.getRowsSquares = function(rowNums) { 
+    
+    if ( ! tlol.util.isArray(rowNums) ) {
+        throw {
+            name: "TypeError",
+            message: "A list of row numbers is expected."
+        };
+    }
+
+    var squares = [];
+    for(var i = 0; i < rowNums.length; i++) {
+        var rowNum = rowNums[i];
+        
+        if (rowNum < 0 || rowNum >= this.rows) {
+            continue;
+        }
+
+        for(var x = 0; x < this.columns; x++) {
+            squares.push( this.squaresMatrix[x][rowNum] );
+        }
+    }
+ 
+    return squares;
+}
 
 /* EOF */

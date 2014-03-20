@@ -52,15 +52,56 @@ Board.prototype.updateBoard = function(movDirection) {
 }
 
 /** 
- * Asumes that this function is called when this.currTetromino still is valid 
- * and the current Tetromino that is falling.
+ * Find and delete any rows that are complete. 
  *
- * return - The number of rows that were complete and deleted.
+ * Also, upper squares that are left hanging will fall until they collide 
+ * with another square.
+ *
+ * return - The number of rows that were complete and deleted at the moment of
+ *          invocation.
  */
 Board.prototype.deleteCompletedRows = function() {
-    var rowsToDelete = this.currTetromino.getRows();
-    var deletedRowsCount = this.squaresMatrix.deleteRows(rowsToDelete);
+    var candidateRows = this.currTetromino.getRows();
+
+    var lowerRowNum = Math.max.apply(Math, candidateRows);
+    var completedRows = this.squaresMatrix.findCompletedRows(lowerRowNum);
+    var squares = this.squaresMatrix.getRowsSquares(completedRows);
+    this.deleteAndPackSquares(completedRows, squares);
+
+    var deletedRowsCount = completedRows.length;
     return deletedRowsCount;
+}
+
+/**
+ * squares - An array of Squares.
+ */
+Board.prototype.deleteAndPackSquares = function(completedRows, squares) {
+    function animateSquares(opacity) {
+        for(var i = 0; i < squares.length; i++) {
+            var div = squares[i].getDiv();
+            div.style.backgroundColor = "#fff"; 
+
+            /* Change opacity */
+            /* IE */ 
+            div.style.opacity = "alpha(opacity=" + opacity + ")";       
+            /* Other browsers */
+            div.style.opacity = (opacity / 100);            
+        }
+    }
+    var opacity = 100;
+    var animationSpeed = 12; /* milliseconds */
+    var squaresMatrix = this.squaresMatrix;
+    var timerId = setInterval(function() {
+        if ( opacity > 0 ) {
+            opacity--;
+            animateSquares(opacity);
+        } else {
+            clearInterval(timerId);
+            squaresMatrix.deleteRows(completedRows);
+            completedRows = completedRows.reverse();   /* order top to bottom */
+            squaresMatrix.packColumns(completedRows);
+        }
+    }, animationSpeed);
 }
 
 /* Drawing into the canvas. */

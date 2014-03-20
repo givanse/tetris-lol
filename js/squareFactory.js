@@ -63,7 +63,9 @@ tlol.squareFactory = (function() {
             getX: function() { return x; },
             getY: function() { return y; },
             getDiv: function() { return div; },
-            isEqual: isEqual
+            isEqual: isEqual,
+            /* used for debugging */
+            description: (function() { return "("+x+", "+y+") "+cssClass; })() 
         };
 
         return square;

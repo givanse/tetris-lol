@@ -252,18 +252,19 @@ test("SquaresMatrix.packColumn", function(assert) {
     assert.equalSqrArr(actuals, expecteds, "single column, move none");
 
     /**
-     *   0
-     * 0[x]
-     * 1[ ]
-     * 2[ ]
+     *  A E
+     *  0 
+     * 0x 
+     * 1  x
+     * 2
      */
     squaresMatrix = new SquaresMatrix(1, 3)
                         .insertSquare(buildSquare(0, 0, cssClass));
     squaresMatrix.packColumn(0, 2);
-    expecteds = new SquaresMatrix(1, 3)
-                    .insertSquare(buildSquare(0, 1, cssClass)).getMatrix();
+    expecteds = [[null, null, null]]; 
+    expecteds[0][1] = buildSquare(0, 1, cssClass); 
     actuals = squaresMatrix.getMatrix();
-    assert.equalSqrArr(actuals, expecteds, "single column, move two positions");
+    assert.equalSqrArr(actuals, expecteds, "single column, move one position");
 
     /**
      *   A    E
@@ -339,17 +340,17 @@ test("SquaresMatrix.getRowState", function() {
     var squaresMatrix = new SquaresMatrix(0, 0);
     var expected = tlol.row.empty;
     var actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '0x0');
+    equal(actual, expected, "0x0");
 
     squaresMatrix = new SquaresMatrix(1, 1);
     expected = tlol.row.empty;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '1x1 empty');
+    equal(actual, expected, "1x1 empty");
 
     squaresMatrix = new SquaresMatrix(3, 1);
     expected = tlol.row.empty;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '3x1 empty');
+    equal(actual, expected, "3x1 empty");
 
     var cssClass = tlol.cssClass.mushroom;
 
@@ -358,21 +359,21 @@ test("SquaresMatrix.getRowState", function() {
                         .insertSquare(buildSquare(2, 0, cssClass));
     expected = tlol.row.used;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '[__x]');
+    equal(actual, expected, "[__x]");
 
     /* [_x_] */
     squaresMatrix = new SquaresMatrix(3, 1)
                         .insertSquare(buildSquare(2, 0, cssClass));
     expected = tlol.row.used;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '[_x_]');
+    equal(actual, expected, "[_x_]");
 
     /* [x__] */
     squaresMatrix = new SquaresMatrix(3, 1)
                         .insertSquare(buildSquare(2, 0, cssClass));
     expected = tlol.row.used;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '[x__]');
+    equal(actual, expected, "[x__]");
 
     /* [xxx] */
     squaresMatrix = new SquaresMatrix(3, 1)
@@ -381,7 +382,7 @@ test("SquaresMatrix.getRowState", function() {
                         .insertSquare(buildSquare(2, 0, cssClass));
     expected = tlol.row.full;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '3 columns, full');
+    equal(actual, expected, "3 columns, full");
 
     /**
       * [ ]
@@ -390,11 +391,11 @@ test("SquaresMatrix.getRowState", function() {
     squaresMatrix = new SquaresMatrix(1, 2);
     expected = tlol.row.empty;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '1x2 empty, row 0');
+    equal(actual, expected, "1x2 empty, row 0");
 
     expected = tlol.row.empty;
     actual = squaresMatrix.getRowState(1);
-    equal(actual, expected, '1x2 empty, row 1');
+    equal(actual, expected, "1x2 empty, row 1");
 
     /**
       * [x]
@@ -405,11 +406,11 @@ test("SquaresMatrix.getRowState", function() {
                         .insertSquare(buildSquare(0, 1, cssClass));
     expected = tlol.row.full;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, '1x2 full, row 0');
+    equal(actual, expected, "1x2 full, row 0");
 
     expected = tlol.row.full;
     actual = squaresMatrix.getRowState(1);
-    equal(actual, expected, '1x2 full, row 1');
+    equal(actual, expected, "1x2 full, row 1");
 
     /**
       *   01
@@ -424,18 +425,18 @@ test("SquaresMatrix.getRowState", function() {
                         .insertSquare(buildSquare(1, 2, cssClass));
     expected = tlol.row.used;
     actual = squaresMatrix.getRowState(0);
-    equal(actual, expected, 'first row');
+    equal(actual, expected, "first row");
 
     expected = tlol.row.full;
     actual = squaresMatrix.getRowState(1);
-    equal(actual, expected, 'second row');
+    equal(actual, expected, "second row");
 
     expected = tlol.row.used;
     actual = squaresMatrix.getRowState(2);
-    equal(actual, expected, 'third row');
+    equal(actual, expected, "third row");
 });
 
-test("SquaresMatrix._deleteRow", function(assert) {
+test("SquaresMatrix.deleteRows", function(assert) {
     var buildSquare = tlol.squareFactory.buildSquare;
     var cssClass = tlol.cssClass.mushroom;
 
@@ -451,7 +452,7 @@ test("SquaresMatrix._deleteRow", function(assert) {
     actual = squaresMatrix.getMatrix();
     assert.equalSqrArr(actual, [[null]]);
 
-    squaresMatrix._deleteRow(0);
+    squaresMatrix.deleteRows([0]);
 
     actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
     ok(actual, "0x0 after, available");
@@ -467,7 +468,7 @@ test("SquaresMatrix._deleteRow", function(assert) {
     actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
     ok(!actual, "0x0 before, unavailable");
 
-    squaresMatrix._deleteRow(0);
+    squaresMatrix.deleteRows([0]);
 
     actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
     ok(actual, "0x0 after, available");
@@ -480,7 +481,7 @@ test("SquaresMatrix._deleteRow", function(assert) {
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0]]);
     ok(!actual, "two cols row after, unavailable");
 
-    squaresMatrix._deleteRow(0);
+    squaresMatrix.deleteRows([0]);
 
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0]]);
     ok(actual, "two cols row after, available");
@@ -491,7 +492,7 @@ test("SquaresMatrix._deleteRow", function(assert) {
       */
     squaresMatrix = new SquaresMatrix(1, 2)
                         .insertSquare(buildSquare(0, 1, cssClass));
-    squaresMatrix._deleteRow(1);
+    squaresMatrix.deleteRows([1]);
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [0, 1]]);
     ok(actual);
 
@@ -501,7 +502,7 @@ test("SquaresMatrix._deleteRow", function(assert) {
       */
     squaresMatrix = new SquaresMatrix(1, 2)
                         .insertSquare(buildSquare(0, 0, cssClass));
-    squaresMatrix._deleteRow(0);
+    squaresMatrix.deleteRows([0]);
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [0, 1]]);
     ok(actual);
 
@@ -512,7 +513,7 @@ test("SquaresMatrix._deleteRow", function(assert) {
     squaresMatrix = new SquaresMatrix(2, 2)
                         .insertSquare(buildSquare(0, 1, cssClass))
                         .insertSquare(buildSquare(1, 1, cssClass));
-    squaresMatrix._deleteRow(1);
+    squaresMatrix.deleteRows([1]);
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0],
                                                   [0, 1], [1, 1]]);
     ok(actual);
@@ -524,101 +525,84 @@ test("SquaresMatrix._deleteRow", function(assert) {
     squaresMatrix = new SquaresMatrix(2, 2)
                         .insertSquare(buildSquare(0, 0, cssClass))
                         .insertSquare(buildSquare(1, 0, cssClass));
-    squaresMatrix._deleteRow(0);
+    squaresMatrix.deleteRows([0]);
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0],
                                                   [0, 1], [1, 1]]);
     ok(actual);
 });
 
-test("SquaresMatrix.deleteRows", function(assert) {
+test("SquaresMatrix.findCompletedRows", function(assert) {
     var buildSquare = tlol.squareFactory.buildSquare;
     var cssClass = tlol.cssClass.mushroom;
 
     /**
-      *   A    E
-      *   0    0
-      * 0[ ] 0[ ]
+      *     
+      *   0
+      * 0[ ]
       */
     var squaresMatrix = new SquaresMatrix(1, 1);
 
-
     var actual = squaresMatrix.getMatrix();
     var expected = [[null]];
-    assert.equalSqrArr(actual, expected, '1x1 empty, compare arrays');
+    assert.equalSqrArr(actual, expected, "1x1 empty, compare arrays");
 
     actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
-    ok(actual, '1x1 empty, (0,0) available');
+    ok(actual, "1x1 empty, (0,0) available");
 
-    var deletedRowsCount = squaresMatrix.deleteRows([0]);
-    equal(deletedRowsCount, 0, '1x1 empty, total rows deleted 0');
+    var completedRowsList = squaresMatrix.findCompletedRows(0);
+    deepEqual(completedRowsList, [], "1x1 empty, 0 rows completed");
 
     actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
-    ok(actual, '1x1 empty, (0,0) available');
+    ok(actual, "1x1 empty, (0,0) available");
 
     actual = squaresMatrix.getMatrix();
     expected = [[null]];
-    assert.equalSqrArr(actual, expected, '1x1 empty, compare arrays');
+    assert.equalSqrArr(actual, expected, "1x1 empty, compare arrays");
 
     /**
-      *   A    E
-      *   0    0
-      * 0[x] 0[ ]
+      *   
+      *   0 
+      * 0[x] 
       */
     squaresMatrix = new SquaresMatrix(1, 1)
                         .insertSquare(buildSquare(0, 0, cssClass));
 
     actual = squaresMatrix.getMatrix();
     expected = [[buildSquare(0, 0, cssClass)]];
-    assert.equalSqrArr(actual, expected, '1x1 full, compare arrays');
+    assert.equalSqrArr(actual, expected, "1x1 full, compare arrays");
 
     actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
-    ok(!actual, '1x1 full, (0, 0) unavailable');
+    ok(!actual, "1x1 full, (0, 0) unavailable");
 
-    deletedRowsCount = squaresMatrix.deleteRows([0]);
-    equal(deletedRowsCount, 1, '1x1 full, total rows deleted 1');
-
-    actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
-    ok(actual, '1x1 full, (0, 0) available');
-
-    actual = squaresMatrix.getMatrix();
-    expected = [[null]];
-    assert.equalSqrArr(actual, expected, '1x1 full, compare arrays');
+    completedRowsList = squaresMatrix.findCompletedRows(0);
+    deepEqual(completedRowsList, [0], "1x1 full, row completed 1");
 
     /**
-      *   A    E
-      *   0    0
-      * 0[ ] 0[ ]
-      * 1[x] 1[ ]
+      *      
+      *   0
+      * 0[ ]
+      * 1[x]
       */
     squaresMatrix = new SquaresMatrix(1, 2)
                         .insertSquare(buildSquare(0, 1, cssClass));
 
     actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
-    ok( actual, '1x2 partial (0, 0) available');
+    ok( actual, "1x2 partial (0, 0) available");
     actual = squaresMatrix.arePositionsAvailable([[0, 1]]);
-    ok(!actual, '1x2 partial (0, 1) unavailable');
+    ok(!actual, "1x2 partial (0, 1) unavailable");
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [0, 1]]);
-    ok(!actual, '1x2 partial (0, 0)(0, 1) unavailable');
+    ok(!actual, "1x2 partial (0, 0)(0, 1) unavailable");
     actual = squaresMatrix.arePositionsAvailable([[0, 1], [0, 0]]);
-    ok(!actual, '1x2 partial (0, 1)(0, 0) unavailable');
+    ok(!actual, "1x2 partial (0, 1)(0, 0) unavailable");
 
-    deletedRowsCount = squaresMatrix.deleteRows([1]);
-    equal(deletedRowsCount, 1, '1x2 partial, total rows deleted 1');
-
-    actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
-    ok(actual, '1x2 after (0, 0) available');
-    actual = squaresMatrix.arePositionsAvailable([[0, 1]]);
-    ok(actual, '1x2 after (0, 1) available');
-    actual = squaresMatrix.arePositionsAvailable([[0, 0], [0, 1]]);
-    ok(actual, '1x2 after (0, 0)(0, 1) available all');
-    actual = squaresMatrix.arePositionsAvailable([[0, 1], [0, 0]]);
-    ok(actual, '1x2 after (0, 1)(0, 0) available all');
+    completedRowsList = squaresMatrix.findCompletedRows(1);
+    deepEqual(completedRowsList, [1], "1x2 partial, total rows completed 1");
 
     /**
-      *   A   E
-      *   0   0
-      * 0[x] [ ]
-      * 1[x] [ ]
+      *     
+      *   0 
+      * 0[x]
+      * 1[x]
       */
     squaresMatrix = new SquaresMatrix(1, 2)
                         .insertSquare(buildSquare(0, 0, cssClass))
@@ -630,36 +614,23 @@ test("SquaresMatrix.deleteRows", function(assert) {
     assert.equalSqrArr(actual, expected, "1x2 full, compare squares matrix");
 
     actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
-    ok(!actual, '1x2 full (0, 0) unavailable (top row)');
+    ok(!actual, "1x2 full (0, 0) unavailable (top row)");
     actual = squaresMatrix.arePositionsAvailable([[0, 1]]);
-    ok(!actual, '1x2 full (0, 1) unavailable (bottom row)');
+    ok(!actual, "1x2 full (0, 1) unavailable (bottom row)");
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [0, 1]]);
-    ok(!actual, '1x2 full (0, 0)(0, 1) whole column unavailable');
+    ok(!actual, "1x2 full (0, 0)(0, 1) whole column unavailable");
     actual = squaresMatrix.arePositionsAvailable([[0, 1], [0, 0]]);
-    ok(!actual, '1x2 full (0, 1)(0, 0) whole column unavailable');
+    ok(!actual, "1x2 full (0, 1)(0, 0) whole column unavailable");
 
     /* one row deleted triggers the process of packing and deleting upper rows*/
-    deletedRowsCount = squaresMatrix.deleteRows([1]);
-    equal(deletedRowsCount, 2, '1x2 full, total rows deleted 2');
-
-    actual = squaresMatrix.getMatrix();
-    expected = [[ null, null]];
-    assert.equalSqrArr(actual, expected, "1x2 after, compare squares matrix");
-
-    actual = squaresMatrix.arePositionsAvailable([[0, 0]]);
-    ok(actual, '1x2 after (0, 0) available (top row)');
-    actual = squaresMatrix.arePositionsAvailable([[0, 1]]);
-    ok(actual, '1x2 after (0, 1) available (bottom row)');
-    actual = squaresMatrix.arePositionsAvailable([[0, 0], [0, 1]]);
-    ok(actual, '1x2 after (0, 0)(0, 1) available');
-    actual = squaresMatrix.arePositionsAvailable([[0, 1], [0, 0]]);
-    ok(actual, '1x2 after (0, 1)(0, 0) available');
+    completedRowsList = squaresMatrix.findCompletedRows(1);
+    deepEqual(completedRowsList, [1, 0], "1x2 full, total rows completed 2");
 
     /**   
-      *    A    E
+      *      
       *    01
-      * 0 [xx] [  ]
-      * 1 [xx] [  ]
+      * 0 [xx]
+      * 1 [xx]
       */
     squaresMatrix = new SquaresMatrix(2, 2)
                         .insertSquare(buildSquare(0, 0, cssClass))
@@ -686,36 +657,13 @@ test("SquaresMatrix.deleteRows", function(assert) {
     ok(!actual, "2x2 (1,1) unavailable");
 
     /* one row deleted triggers the process of packing and deleting upper rows*/
-    deletedRowsCount = squaresMatrix.deleteRows([1]);
-    equal(deletedRowsCount, 2, '2x2 total rows deleted 2');
-
-    actual = squaresMatrix.getMatrix();
-    expected = [[ null, null ], [ null, null ]]; 
-    assert.equalSqrArr(actual, expected, 
-                      "2x2 after, compare squares matrix, available all");
-
-    actual = squaresMatrix
-             .arePositionsAvailable([[0, 0]]);
-    ok(actual, "2x2 (0,0) after, available (top row)");
-    actual = squaresMatrix
-             .arePositionsAvailable([[1, 0]]);
-    ok(actual, "2x2 (1,0) after, available (top row)");
-    actual = squaresMatrix
-             .arePositionsAvailable([[0, 1]]);
-    ok(actual, "2x2 (0,1) after, available (bottom row)");
-    actual = squaresMatrix
-             .arePositionsAvailable([[1, 1]]);
-    ok(actual, "2x2 (1,1) after, available (bottom row)");
-
-    actual = squaresMatrix
-             .arePositionsAvailable([[0, 0], [0, 1], [1, 0], [1, 1]]);
-    ok(actual, "2x2 all positions available");
+    completedRowsList = squaresMatrix.findCompletedRows(1);
+    deepEqual(completedRowsList, [1, 0], "2x2 total rows completed 2");
 
     /**
-      *   A    E
-      * 0[x ] [  ]
-      * 1[ x] [x ]
-      * 2[xx] [ x]
+      * 0[x ]
+      * 1[ x]
+      * 2[xx]
       */
     squaresMatrix = new SquaresMatrix(2, 3)
                         .insertSquare(buildSquare(0, 0, cssClass))
@@ -726,26 +674,14 @@ test("SquaresMatrix.deleteRows", function(assert) {
     actual = squaresMatrix.arePositionsAvailable([[1, 0], [0, 1]]);
     ok(actual, "2x3 before, available positions");
 
-    deletedRowsCount = squaresMatrix.deleteRows([2]);
-    equal(deletedRowsCount, 1, '2x3 total rows deleted 1');
-
-    actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0],
-                                                          [1, 1],
-                                                  [0, 2]         ]);
-    ok(actual, "2x3 after, available positions");
-
-    actual = squaresMatrix.arePositionsAvailable([[0, 1]]);
-    ok(!actual, "2x3 after, (0,1) unavailable");
-
-    actual = squaresMatrix.arePositionsAvailable([[1, 2]]);
-    ok(!actual, "2x3 after, (1,2) unavailable");
+    completedRowsList = squaresMatrix.findCompletedRows(2);
+    deepEqual(completedRowsList, [2], "2x3 total rows completed 1");
 
     /**
-      *   A    E
-      * 0[ x] [  ]
-      * 1[xx] [  ]
-      * 2[xx] [ x]
-      * 3[x ] [x ]
+      * 0[ x]
+      * 1[xx]
+      * 2[xx]
+      * 3[x ]
       */
     squaresMatrix = new SquaresMatrix(2, 4)
                         .insertSquare(buildSquare(1, 0, cssClass))
@@ -757,21 +693,35 @@ test("SquaresMatrix.deleteRows", function(assert) {
     actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 3]]);
     ok(actual, "2x4 before, (0,0) (1,3) available");
 
-    /* one row deleted triggers the process of packing and deleting upper rows*/
-    deletedRowsCount = squaresMatrix.deleteRows([2]);
-    equal(deletedRowsCount, 2, "2x4 total rows deleted 2");
+    completedRowsList = squaresMatrix.findCompletedRows(2);
+    deepEqual(completedRowsList, [2, 1], "2x4 total rows completed 2");
 
-    actual = squaresMatrix.arePositionsAvailable([[0, 0], [1, 0],
-                                                  [0, 1], [1, 1],
-                                                  [0, 2],
-                                                          [1, 3]]);
-    ok(actual, "2x4 after, all available");
+    /**
+      *   01
+      * 0[  ]
+      * 1[xx]
+      * 2[x ]
+      * 3[xx]
+      * 4[  ]
+      */
+    squaresMatrix = new SquaresMatrix(2, 5)
+                        .insertSquare(buildSquare(0, 1, cssClass))
+                        .insertSquare(buildSquare(0, 2, cssClass))
+                        .insertSquare(buildSquare(0, 3, cssClass))
+                        .insertSquare(buildSquare(1, 1, cssClass))
+                        .insertSquare(buildSquare(1, 3, cssClass));
 
-    actual = squaresMatrix.arePositionsAvailable([[0, 3]]);
-    ok(!actual, "2x4 after, (0,3) unavailable");
+    completedRowsList = squaresMatrix.findCompletedRows(0);
+    deepEqual(completedRowsList, [], "2x5 0");
 
-    actual = squaresMatrix.arePositionsAvailable([[1, 2]]);
-    ok(!actual, "2x4 after, (1,2) unavailable");
+    completedRowsList = squaresMatrix.findCompletedRows(1);
+    deepEqual(completedRowsList, [1], "2x5 1");
+
+    completedRowsList = squaresMatrix.findCompletedRows(2);
+    deepEqual(completedRowsList, [1], "2x5 2");
+
+    completedRowsList = squaresMatrix.findCompletedRows(3);
+    deepEqual(completedRowsList, [3, 1], "2x5 3");
 });
 
 test("SquaresMatrix.insertTetromino", function(assert) {
@@ -902,6 +852,203 @@ test("SquaresMatrix.insertTetromino", function(assert) {
         ok(ev.name, "TypeError", ev.message);
     }
 
+});
+
+test("SquaresMatrix.getRowsSquares", function(assert) {
+    var buildSquare = tlol.squareFactory.buildSquare;
+    var cssClass = tlol.cssClass.mushroom;
+
+    /**
+      *   0
+      * 0[ ]
+      */
+    var squaresMatrix = new SquaresMatrix(1, 1);
+
+    throws(function() {
+               squaresMatrix.getRowsSquares(0);
+           }, 
+           "1x1 invalid number arg");
+
+    var actual = squaresMatrix.getRowsSquares([-7]);
+    var expected = [];
+    assert.equalSqrArr(actual, expected, "1x1 -7");
+
+    actual = squaresMatrix.getRowsSquares([-7, 0]);
+    expected = [null];
+    assert.equalSqrArr(actual, expected, "1x1 -7, 0");
+
+    actual = squaresMatrix.getRowsSquares([0, -7]);
+    expected = [null];
+    assert.equalSqrArr(actual, expected, "1x1 0, -7");
+
+    actual = squaresMatrix.getRowsSquares([0]);
+    expected = [null];
+    assert.equalSqrArr(actual, expected, "1x1 0");
+
+    actual = squaresMatrix.getRowsSquares([9000]);
+    expected = [];
+    assert.equalSqrArr(actual, expected, "1x1 9000");
+
+    actual = squaresMatrix.getRowsSquares([9000, 0]);
+    expected = [null];
+    assert.equalSqrArr(actual, expected, "1x1 rows 9000, 0");
+
+    actual = squaresMatrix.getRowsSquares([0, 9000]);
+    expected = [null];
+    assert.equalSqrArr(actual, expected, "1x1 0, 9000");
+
+    /**
+      *   012
+      * 0[ x ]
+      * 1[x x]
+      * 2[ x ]
+      */
+    var squaresMatrix = new SquaresMatrix(3, 3)
+                        .insertSquare(buildSquare(0, 1, cssClass))
+                        .insertSquare(buildSquare(1, 0, cssClass))
+                        .insertSquare(buildSquare(1, 2, cssClass))
+                        .insertSquare(buildSquare(2, 1, cssClass));
+
+    var actual = squaresMatrix.getRowsSquares([0]);
+    var expected = [null, 
+                    buildSquare(1, 0, cssClass), 
+                    null];
+    assert.equalSqrArr(actual, expected, "3x3 0");
+
+    actual = squaresMatrix.getRowsSquares([1]);
+    expected = [buildSquare(0, 1, cssClass), 
+                null,
+                buildSquare(2, 1, cssClass)];
+    assert.equalSqrArr(actual, expected, "3x3 1");
+
+    actual = squaresMatrix.getRowsSquares([2]);
+    expected = [null, 
+                buildSquare(1, 2, cssClass), 
+                null];
+    assert.equalSqrArr(actual, expected, "3x3 2");
+
+    actual = squaresMatrix.getRowsSquares([0, 2]);
+    expected = [null, 
+                buildSquare(1, 0, cssClass), 
+                null,
+                null,
+                buildSquare(1, 2, cssClass), 
+                null];
+    assert.equalSqrArr(actual, expected, "3x3 0,1");
+
+    actual = squaresMatrix.getRowsSquares([1, 2, 0]);
+    expected = [
+                buildSquare(0, 1, cssClass), 
+                null, 
+                buildSquare(2, 1, cssClass), 
+                null,
+                buildSquare(1, 2, cssClass), 
+                null,
+                null,
+                buildSquare(1, 0, cssClass), 
+                null];
+    assert.equalSqrArr(actual, expected, "3x3 1, 2, 0");
+});
+
+test("SquaresMatrix.packColumns", function(assert) {
+    var buildSquare = tlol.squareFactory.buildSquare;
+    var cssClass = tlol.cssClass.mushroom;
+
+    /**
+     *  012
+     * 0x x
+     * 1xx
+     * 2  x
+     */
+    squaresMatrix = new SquaresMatrix(3, 3)
+                        .insertSquare(buildSquare(0, 0, cssClass))
+                        .insertSquare(buildSquare(0, 1, cssClass))
+                        .insertSquare(buildSquare(1, 1, cssClass))
+                        .insertSquare(buildSquare(2, 0, cssClass))
+                        .insertSquare(buildSquare(2, 2, cssClass));
+    squaresMatrix.packColumns([0]);
+    expecteds = [[null, null, null], 
+                 [null, null, null], 
+                 [null, null, null]]; 
+    expecteds[0][0] = buildSquare(0, 0, cssClass); 
+    expecteds[0][1] = buildSquare(0, 1, cssClass); 
+    expecteds[1][1] = buildSquare(1, 1, cssClass); 
+    expecteds[2][0] = buildSquare(2, 0, cssClass); 
+    expecteds[2][2] = buildSquare(2, 2, cssClass); 
+    actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "no column was packed");
+
+    /**
+     *  012 012
+     * 0x x x
+     * 1xx  xxx
+     * 2  x   x
+     */
+    squaresMatrix = new SquaresMatrix(3, 3)
+                        .insertSquare(buildSquare(0, 0, cssClass))
+                        .insertSquare(buildSquare(0, 1, cssClass))
+                        .insertSquare(buildSquare(1, 1, cssClass))
+                        .insertSquare(buildSquare(2, 0, cssClass))
+                        .insertSquare(buildSquare(2, 2, cssClass));
+    squaresMatrix.packColumns([1]);
+    expecteds = [[null, null, null], 
+                 [null, null, null], 
+                 [null, null, null]]; 
+    expecteds[0][0] = buildSquare(0, 0, cssClass); 
+    expecteds[0][1] = buildSquare(0, 1, cssClass); 
+    expecteds[1][1] = buildSquare(1, 1, cssClass); 
+    expecteds[2][1] = buildSquare(2, 1, cssClass); 
+    expecteds[2][2] = buildSquare(2, 2, cssClass); 
+    actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "one column was packed, 1");
+
+    /**
+     *  012 012
+     * 0x x   x
+     * 1xx  x
+     * 2  x xxx
+     */
+    squaresMatrix = new SquaresMatrix(3, 3)
+                        .insertSquare(buildSquare(0, 0, cssClass))
+                        .insertSquare(buildSquare(0, 1, cssClass))
+                        .insertSquare(buildSquare(1, 1, cssClass))
+                        .insertSquare(buildSquare(2, 0, cssClass))
+                        .insertSquare(buildSquare(2, 2, cssClass));
+    squaresMatrix.packColumns([2]);
+    expecteds = [[null, null, null], 
+                 [null, null, null], 
+                 [null, null, null]]; 
+    expecteds[0][1] = buildSquare(0, 1, cssClass); 
+    expecteds[0][2] = buildSquare(0, 2, cssClass); 
+    expecteds[1][2] = buildSquare(1, 2, cssClass); 
+    expecteds[2][0] = buildSquare(2, 0, cssClass); 
+    expecteds[2][2] = buildSquare(2, 2, cssClass); 
+    actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "one column was packed, 2");
+
+    /**
+     *  012 012
+     * 0x x 
+     * 1xx  x x
+     * 2  x xxx
+     */
+    squaresMatrix = new SquaresMatrix(3, 3)
+                        .insertSquare(buildSquare(0, 0, cssClass))
+                        .insertSquare(buildSquare(0, 1, cssClass))
+                        .insertSquare(buildSquare(1, 1, cssClass))
+                        .insertSquare(buildSquare(2, 0, cssClass))
+                        .insertSquare(buildSquare(2, 2, cssClass));
+    squaresMatrix.packColumns([1, 2]);
+    expecteds = [[null, null, null], 
+                 [null, null, null], 
+                 [null, null, null]]; 
+    expecteds[0][1] = buildSquare(0, 1, cssClass); 
+    expecteds[0][2] = buildSquare(0, 2, cssClass); 
+    expecteds[1][2] = buildSquare(1, 2, cssClass); 
+    expecteds[2][1] = buildSquare(2, 1, cssClass); 
+    expecteds[2][2] = buildSquare(2, 2, cssClass); 
+    actuals = squaresMatrix.getMatrix();
+    assert.equalSqrArr(actuals, expecteds, "pack all");
 });
 
 /* EOF */

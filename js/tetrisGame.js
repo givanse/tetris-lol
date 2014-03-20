@@ -31,10 +31,10 @@ tlol.tetrisGame = (function() {
         var movementPerformed = boardController.updateBoard(movementDirection);
 
         if (movementPerformed) {
+            /* tetromino descended */
             boardController.drawSquares();
-        } else if(movementDirection === tlol.direction.down) { 
-            /* Collisioned with squares. */
-
+        } else if ( movementDirection === tlol.direction.down ) { 
+            /* tetromino collisioned with the bottom squares */
             var currTetromino = boardController.getCurrentTetromino();
             boardController.insertTetromino(currTetromino);
             var deletedRowsCount = boardController.deleteCompletedRows();
@@ -47,7 +47,7 @@ tlol.tetrisGame = (function() {
 
             /* Check if the game is over. */
             if(isNextTetroValid) {
-                gameInfoController.increaseScore(); /* Keep rolling ;) */
+                gameInfoController.increaseScore(); /* Keep rolling */
             } else {
                 gameOver();
             }
