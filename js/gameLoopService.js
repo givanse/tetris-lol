@@ -18,9 +18,43 @@ tlol.gameLoopService = (function() {
             };
         }
 
-        var interval = 1000 * 1; /* 1 second */
-        return setInterval(callback, interval);
-    };
+        var gameTimer = (function() {                                                      
+            var               gameSpeed = 1000 * 1;                              
+            var            gameSpeedMax = 250 * 1;                               
+            var      gameSpeedIncrement = 50 * 1;                                
+            var targetTimeForMaxSpeed = 1000 * 60 * 7; /* 7 min */
+            var gameSpeedIncrementSpeed = targetTimeForMaxSpeed / 
+                                          ( (gameSpeed - gameSpeedMax) / 
+                                            gameSpeedIncrement );                              
+                                                                                 
+            /* start the game timer */
+            var callbackTimerId = setInterval(callback, gameSpeed);
+
+            /* automate speed increments */
+            var incrementTimerId = setInterval(function() {                      
+                    if (gameSpeed <= gameSpeedMax) {                             
+                        /* stop speed increments */                              
+                        clearInterval(incrementTimerId);                         
+                    } else {                                                     
+                        /* increment speed */                                    
+                        gameSpeed = gameSpeed - gameSpeedIncrement;              
+
+                        /*TODO: review if already elapsed time should be considered*/
+                        clearInterval(callbackTimerId);
+                        callbackTimerId = setInterval(callback, gameSpeed);
+                    }                                                            
+                },                                                               
+                gameSpeedIncrementSpeed);                                        
+                                                                                 
+            var that = {
+                getIntervalId: function() { return callbackTimerId; }
+            };
+
+            return that;                                                         
+        })();
+
+        return gameTimer;
+    }; /* startLoop */
 
     var bindKeyEvents = function() {
         var eventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 

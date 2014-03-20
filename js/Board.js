@@ -89,7 +89,7 @@ Board.prototype.deleteAndPackSquares = function(completedRows, squares) {
         }
     }
     var opacity = 100;
-    var animationSpeed = 12; /* milliseconds */
+    var animationSpeed = tlol.settings.rowFadeOutSpeed;
     var squaresMatrix = this.squaresMatrix;
     var timerId = setInterval(function() {
         if ( opacity > 0 ) {

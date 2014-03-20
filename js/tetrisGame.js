@@ -6,10 +6,10 @@
 
 tlol.tetrisGame = (function() {
 
-    var intervalID = null;/* The ID of the interval used by gameLoopService. */
+    /* Gives access to the ID of the interval used by the gameLoopService. */
+    var gameTimer = null;
     var boardController = null;
     var gameInfoController = null;
-    var gls = null;
     var isGameRunning = true;
     var dom = null;
 
@@ -93,7 +93,7 @@ tlol.tetrisGame = (function() {
         };
 
         tlol.gameLoopService.setGameRunCallback(gameRunCallback); 
-        intervalID = tlol.gameLoopService.start();
+        gameTimer = tlol.gameLoopService.start();
     }; /* resetGame */
 
     /**
@@ -102,11 +102,14 @@ tlol.tetrisGame = (function() {
      * the defaults used when a new game is started.
      */
     var endGame = function() {
-        if ( ! intervalID ) {
+
+        if ( ! gameTimer ) {
             return;
         }
-        clearInterval(intervalID);
-        intervalID = null;
+
+        var intervalId = gameTimer.getIntervalId();
+        clearInterval(intervalId);
+        intervalId = null;
         isGameRunning = false;
     };
 

@@ -12,6 +12,11 @@ var tlol = {
     squareFactory: null,
     util: null,
 
+    settings: {
+        /* milliseconds */
+        rowFadeOutSpeed: 4, 
+    },
+
     browser: {
         browserTest: function(regex) { 
             return regex.test(navigator.userAgent); 
