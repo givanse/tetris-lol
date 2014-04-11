@@ -9,7 +9,7 @@ body {
     padding: 0px;
     font-family: arial, sans-serif;
     color: #003366;
-    background: transparent url('img/background.png') left top repeat;
+    background: transparent url('../img/background.png') left top repeat;
 }
 
 body #wrapper {
@@ -20,12 +20,12 @@ body #wrapper {
 #wrapper #tetrisBoard {
     /* border */
     border-width: 28px 8px 12px 8px;
-    -moz-border-image:    url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
-    -webkit-border-image: url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
-    -o-border-image:      url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
-    -webkit-border-image property: url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    -moz-border-image:    url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    -webkit-border-image: url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    -o-border-image:      url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    -webkit-border-image property: url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
     border-style: solid;
-    border-image:         url('img/tetrisGame.png') 28 8 12 8 repeat repeat;
+    border-image:         url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
     
     width: 625px;
     background-color: black;
@@ -38,12 +38,12 @@ div#tetrisBoard div#gameCanvas {
     
     /* border */
     border-width: 14px 7px 42px 7px;
-    -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -o-border-image:      url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -webkit-border-image: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -webkit-border-image property: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -moz-border-image:    url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -o-border-image:      url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -webkit-border-image: url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -webkit-border-image property: url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
     border-style: solid;
-    border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    border-image:         url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
     
     margin: 7px 30px;
     background-color: #02060c;
@@ -72,10 +72,10 @@ div#tetrisBoard div#gameInfo {
     border-color: #003366;
     border-style: solid;
     border-width: 14px 7px 42px 7px;
-    -moz-border-image:    url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -o-border-image:      url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -webkit-border-image: url('img/gameInfo.png') 14 7 42 7 repeat repeat;
-    border-image:         url('img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -moz-border-image:    url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -o-border-image:      url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
+    -webkit-border-image: url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
+    border-image:         url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
     
     color: #fff;
     margin: 7px 0;
@@ -94,10 +94,10 @@ div#gameInfo div.field {
     border-color: #003366;
     border-style: solid;
     border-width: 14px 10px;
-    -moz-border-image:    url('img/field.png') 14 10 repeat repeat;
-    -o-border-image:      url('img/field.png') 14 10 repeat repeat;
-    -webkit-border-image: url('img/field.png') 14 10 repeat repeat;
-    border-image:         url('img/field.png') 14 10 repeat repeat;
+    -moz-border-image:    url('../img/field.png') 14 10 repeat repeat;
+    -o-border-image:      url('../img/field.png') 14 10 repeat repeat;
+    -webkit-border-image: url('../img/field.png') 14 10 repeat repeat;
+    border-image:         url('../img/field.png') 14 10 repeat repeat;
     
     /* tlol.square_size x 5 = 160 */
     /* width specified by each element with its ID */
@@ -140,7 +140,7 @@ div#gameInfo a#newGameButton {
     width: 142px;
     height: 56px;
     padding: 0px 9px; /* (160 - 142) / 2*/
-    background: transparent url('img/play.png') center top no-repeat;
+    background: transparent url('../img/play.png') center top no-repeat;
     
     filter: alpha(opacity = 85); 
     -moz-opacity: 0.85; 
@@ -160,7 +160,7 @@ div#gameInfo a#gitlink {
     position: absolute;
     bottom: 30px;
     
-    background: transparent url('img/octcat.png') left top no-repeat;
+    background: transparent url('../img/octcat.png') left top no-repeat;
     width: 142px;
     height: 32px;
     margin: 0px 9px; /* (160 - 142) / 2*/
@@ -208,7 +208,7 @@ div#gameoverSplash div#image {
     top: 25px;
     height: 100%;
     width: 100%;
-    background: transparent url('img/defeat.png') center top no-repeat;
+    background: transparent url('../img/defeat.png') center top no-repeat;
 }
 
 /* BOARD */
@@ -220,7 +220,7 @@ div#gameoverSplash div#image {
     height: 30px; /* 32 - 2 x border */
     border: 1px solid #02060c;
     border-radius: 4px;
-    background: transparent url('img/sqrBackground.png') center top no-repeat;
+    background: transparent url('../img/sqrBackground.png') center top no-repeat;
     opacity: 1.0;
 }
 
@@ -240,7 +240,7 @@ div#playField div.square[buffer="true"] {
 .SSHP_L {background-color: #ff0000;}
 .MUSHROOM {
     background-color: #62e63e;
-    background: transparent url('img/nox.png') center top no-repeat;
+    background: transparent url('../img/nox.png') center top no-repeat;
 }
 
 /* EOF */

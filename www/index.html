@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- 
+        WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. 
+        See https://issues.apache.org/jira/browse/CB-4323 
+        -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" >
+        <title>Tetris LoL</title>
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+        <div id="tetrisBoard">
+            <div id="gameCanvas">
+                <div id="playField"><!-- Where the game is drawn. --> </div>
+            </div>
+            
+            <div id="gameInfo">
+                <div id="nextTetrominoField" class="field"></div>
+                <br/>
+                <div id="scoreField" class="field"></div>
+                <br/>
+                <a id="newGameButton" onclick="tlol.tetrisGame.startNewGame()"></a>
+                <br/>
+                <a id="gitlink" href="https://github.com/givanse/tetrislol">
+                    &nbsp;&nbsp;&nbsp;&nbsp;tetrislol
+                </a>           
+            </div>
+            
+            <div style="clear: both;"><!-- clear floats --></div>
+            
+            <!-- starts hidden -->
+            <div id="gameoverSplash">
+                <div id="background"></div>
+                <div id="image"></div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="phonegap.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+
+        <script type="text/javascript" src="js/Array.js"></script>
+        <script type="text/javascript" src="js/tlol.js"></script>
+        <script type="text/javascript" src="js/tetrominoFactory.js"></script>
+        <script type="text/javascript" src="js/tetrisGame.js"></script>
+        <script type="text/javascript" src="js/gameLoopService.js"></script>
+        <script type="text/javascript" src="js/Tetromino.js"></script>
+        <script type="text/javascript" src="js/SquaresMatrix.js"></script>
+        <script type="text/javascript" src="js/squareFactory.js"></script>
+        <script type="text/javascript" src="js/GameInfoController.js"></script>
+        <script type="text/javascript" src="js/Board.js"></script>
+        <script type="text/javascript" src="js/util.js"></script>
+
+        <script>
+            /**********************************************************************
+              *
+              * Tetris game start up.
+              *
+              ********************************************************************/
+
+            /* Find the DOM elements used for the game. */
+            var domElements = {
+                /* board */
+                canvas: document.getElementById("gameCanvas"),
+                playField: document.getElementById("playField"),
+                gameInfo: document.getElementById("gameInfo"),
+
+                /* game info */
+                nextTetrominoField: document.getElementById("nextTetrominoField"),
+                scoreField: document.getElementById("scoreField"),
+
+                gameoverSplash: document.getElementById("gameoverSplash")
+            };
+
+            tlol.tetrisGame.setDOM(domElements);
+            tlol.tetrisGame.startNewGame();
+        </script>
+
+    </body>
+</html>
