@@ -14,7 +14,8 @@ tlol.squareFactory = (function() {
         if ( ! tlol.util.isString(cssClass) ) {
             throw {
                 name: 'TypeError',
-                message: 'Square must receive a cssClass that is a valid CSS class name.'
+                message: 'Square must receive a cssClass ' + 
+                         'that is a valid CSS class name.'
             };
         }
 
@@ -23,17 +24,25 @@ tlol.squareFactory = (function() {
 
         var div = document.createElement('div');
         div.className = 'square ' + cssClass;
+        div.style.width = tlol.square_size  + 'px';
+        div.style.height = tlol.square_size + 'px';
+
+        setX(x);
+        setY(y);
 
         function setX(newX) {
             x = newX;
-            /* Update positioning */
-            div.style.left = x * tlol.square_size + 'px';                                     
+
+            var pos = (tlol.square_size + tlol.square_border_w) * x;
+            div.style.left = pos + 'px';
         };
 
         function setY(newY) { 
             y = newY; 
-            /* Update positioning */
-            div.style.top  = y * tlol.square_size + 'px';
+
+            var pos = (tlol.square_size + tlol.square_border_w) * y;
+            div.style.top = pos + 'px';
+
             if (y < 2) {
                 div.setAttribute("buffer", "true");
             } else {
@@ -53,9 +62,6 @@ tlol.squareFactory = (function() {
                    square.getY() === otherSquare.getY() &&
                    square.getDiv().isEqualNode(otherSquare.getDiv());
         };
-
-        setX(x);
-        setY(y);
 
         var square = {
             setX: setX,

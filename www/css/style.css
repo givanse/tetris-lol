@@ -7,35 +7,15 @@ body {
     background: #d7d7d7;
     margin: 0px;
     padding: 0px;
-    font-family: arial, sans-serif;
+    border: 0px;
     color: #003366;
-    background: transparent url('../img/background.png') left top repeat;
+    background-color: #030303;
+    text-align: center;
 }
 
-body #wrapper {
-    margin: 0 auto;    
-    width: 700px;
-}
-
-#wrapper #tetrisBoard {
-    /* border */
-    border-width: 28px 8px 12px 8px;
-    -moz-border-image:    url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
-    -webkit-border-image: url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
-    -o-border-image:      url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
-    -webkit-border-image property: url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
-    border-style: solid;
-    border-image:         url('../img/tetrisGame.png') 28 8 12 8 repeat repeat;
-    
-    width: 625px;
-    background-color: black;
-}
-
-
-div#tetrisBoard div#gameCanvas {
+div#canvasFrame {
     position: relative;
-    float: left;
-    
+
     /* border */
     border-width: 14px 7px 42px 7px;
     -moz-border-image:    url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
@@ -45,157 +25,73 @@ div#tetrisBoard div#gameCanvas {
     border-style: solid;
     border-image:         url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
     
-    margin: 7px 30px;
-    background-color: #02060c;
-    /**
-     * 10 x 20 Squares.
-     * width and height set during game startup (Board.js)
-     */
+    background-color: grey; /* shouldn't be visible */
+    display: inline-block;
 }
 
-div#tetrisBoard div#gameCanvas div#playField {
-    position: absolute;
-     
+div#canvasBackground {
     /**
      * 10 x 20 Squares.
-     * width and height set during game startup (Board.js)
+     * width and height set during game startup (tetrisGame > Board)
      */
+    background-color: #02060c;
+}
+
+/* Where the shapes are drawn. */
+div#canvas {
+    /**
+     * 0 x 0 pixels.
+     */
+    position: absolute;
 }
 
 /* GAME INFO */
 
-div#tetrisBoard div#gameInfo {
-    position: relative;
-    float: left;
-    
-    /* border */
-    border-color: #003366;
-    border-style: solid;
-    border-width: 14px 7px 42px 7px;
-    -moz-border-image:    url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -o-border-image:      url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
-    -webkit-border-image: url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
-    border-image:         url('../img/gameInfo.png') 14 7 42 7 repeat repeat;
-    
-    color: #fff;
-    margin: 7px 0;
-    padding: 0 10px;
-    background-color: #02060c;
-    width: 160px;
-    /**
-     * 10 x 20 Squares.
-     * height set during game startup (Board.js)
-     */
-}
-
-/* Generic field. */
-div#gameInfo div.field {
-    /* border */
-    border-color: #003366;
-    border-style: solid;
-    border-width: 14px 10px;
-    -moz-border-image:    url('../img/field.png') 14 10 repeat repeat;
-    -o-border-image:      url('../img/field.png') 14 10 repeat repeat;
-    -webkit-border-image: url('../img/field.png') 14 10 repeat repeat;
-    border-image:         url('../img/field.png') 14 10 repeat repeat;
-    
-    /* tlol.square_size x 5 = 160 */
-    /* width specified by each element with its ID */
-    height: 160px;
-    background-color: #040d16;
-}
-
-div#gameInfo div#nextTetrominoField {
-    margin-top: 5px;
-
-    width:  140px; /* 160 - border width */
-}
-
-/* It is the one that actually contains the next Tetromino. */
-div#gameInfo div#nextTetrominoField .nextTWrapper {
-  position: relative;
-  width: 0px; height: 0px; /* Will be overriden, GameInfoController.js. */
-  margin: auto;
-  top: 48px; /* tlol.square_size x 1.5 */
-  border: 0px;
-}
-
-div#gameInfo div#scoreField {
-    width: 120px; /* 160 - border width - padding */
-    height: 50px;
-    padding: 0px 9px; /* (160 - 142) / 2*/
-    margin-top: 5px;
-    
-    /* text */
-    color: #fff;
-    font-size: 1.5em;
-    line-height: 50px;
-    text-align: right;
-}
-
-div#gameInfo a#newGameButton {
-    display: block;
-    margin-top: 5px;
-    
-    width: 142px;
-    height: 56px;
-    padding: 0px 9px; /* (160 - 142) / 2*/
-    background: transparent url('../img/play.png') center top no-repeat;
-    
-    filter: alpha(opacity = 85); 
-    -moz-opacity: 0.85; 
-    opacity: 0.85; 
-    -khtml-opacity: 0.85;
-}
-
-div#gameInfo a#newGameButton:hover {
-    filter: none; 
-    -moz-opacity: 1.0; 
-    opacity: 1.0; 
-    -khtml-opacity: 1.0;
-}
-
-div#gameInfo a#gitlink {
-    display: block;
+div#gameInfo {
     position: absolute;
-    bottom: 30px;
-    
-    background: transparent url('../img/octcat.png') left top no-repeat;
-    width: 142px;
-    height: 32px;
-    margin: 0px 9px; /* (160 - 142) / 2*/
-    color: #153e65;
-    text-decoration: none;
-    font-size: 1.6em;
-    letter-spacing: 1.4pt;
-    font-weight: 600;
-    line-height: 35px;
-    
-    filter: alpha(opacity = 70); 
-    -moz-opacity: 0.70; 
-    opacity: 0.70; 
-    -khtml-opacity: 0.70;
+    top: 0px;
+
+    color: #003366;
+    font-size: 500%;
+    font-family: monospace;
+    font-weight: bold;
+    line-height: 50px;
+    text-align: center;
+    z-index: 500;
+    width: 100%;
+    height: 100%;
 }
 
-div#gameInfo a#plink:hover {
-    color: #153e65;
-    filter: none; 
-    -moz-opacity: 1.0; 
-    opacity: 1.0; 
-    -khtml-opacity: 1.0;
+div#gameInfo div#nextTetromino {
+   /** 
+     * 100% / total_rows 
+     * 100% / 20 = 5%
+     * height = Tetromino height 
+     * Tetromino height = 2 * 5% = 10%
+     */
+    height: 10%; 
+}
+
+div#gameInfo div#nextTetromino .square {
+    background: #003366;
+}
+
+div#gameInfo div#score {
+    padding: 32px 7px 0px 7px;
 }
 
 /* GAME OVER */
 
-div#tetrisBoard div#gameoverSplash {
+div#gameoverSplash {
     position: absolute;
     top: 100px;
     margin: 0 auto;
-    width: 625px;                            /* same as #wrapper #tetrisBoard */
+    width: 100%;
     height: 0px;
+    z-index: 2000;
 }
 
-div#gameoverSplash div#background {
+div#gameoverSplash div#alfa_background {
     position: absolute;
     top: 0px;
     height: 125%;
@@ -208,23 +104,31 @@ div#gameoverSplash div#image {
     top: 25px;
     height: 100%;
     width: 100%;
-    background: transparent url('../img/defeat.png') center top no-repeat;
+    text-align: center;
+}
+
+a#newGameButton {
+    display: inline-block;
+    width: 142px;
+    height: 56px;
+    padding: 0px 9px; /* (160 - 142) / 2*/
+    background: transparent url('../img/play.png') center top no-repeat;
 }
 
 /* BOARD */
 
 .square {
     position: absolute;
-    /* tlol.square_size = 32 */
-    width:  30px; /* 32 - 2 x border */
-    height: 30px; /* 32 - 2 x border */
+    /* width:  tlol.square_size - (2 x border) */
+    /* height: tlol.square_size - (2 x border) */
     border: 1px solid #02060c;
     border-radius: 4px;
     background: transparent url('../img/sqrBackground.png') center top no-repeat;
     opacity: 1.0;
+    z-index: 1000;
 }
 
-div#playField div.square[buffer="true"] {
+div#canvas div.square[buffer="true"] {
     display: none;
 }
 

@@ -35,7 +35,7 @@ tlol.tetrominoFactory = (function() {
         buildRandomTetromino: function(width) {
             var tSpec = buildRandomTetrominoSpec();                             
             /* assumes that width is always an even number */                   
-            var x = width / 2; 
+            var x = (width / 2) - 2; 
             var y = 0;                                                                   
             return new Tetromino(x, y, tSpec);
         }

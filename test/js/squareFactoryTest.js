@@ -36,7 +36,7 @@ test("squareFactory - square.setX", function() {
     var actual = square.getX();
     equal(actual, expected, "set x to 16");
 
-    expected = 16 * (31 + 1); /* This corresponds to tlol.square_size */
+    expected = 16 * (31 + 1);/*This corresponds to tlol.dimensions.square_size*/
     actual = parseInt(square.getDiv().style.left);
     equal(actual, expected, "x to pixels 512");
 });
@@ -49,7 +49,7 @@ test("squareFactory - square.setY", function() {
     var actual = square.getY();
     equal(actual, expected, "set y to 16");
 
-    expected = 16 * (31 + 1); /* This corresponds to tlol.square_size */
+    expected = 16 * (31 + 1);/*This corresponds to tlol.dimensions.square_size*/
     actual = parseInt(square.getDiv().style.top);
     equal(actual, expected, "y to pixels 512");
 });

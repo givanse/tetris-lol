@@ -77,7 +77,7 @@ tlol.gameLoopService = (function() {
 
     var bindKeyEvents = function() {
         var eventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 
-                        'keydown' : 'keypress';
+                          'keydown' : 'keypress';
 
         var callback = function(ev) { 
             handleKeyEvent(ev); 

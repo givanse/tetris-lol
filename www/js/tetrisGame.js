@@ -10,7 +10,8 @@ tlol.tetrisGame = (function() {
     var gameTimer = null;
     var boardController = null;
     var gameInfoController = null;
-    var isGameRunning = true;
+    /* The user hasn't lost yet and can perform actions. */
+    var areGameActionsStillPossible = true;
     var dom = null;
 
     /**
@@ -21,7 +22,7 @@ tlol.tetrisGame = (function() {
      */
     var run = function(movementDirection) {
 
-        if ( ! isGameRunning ) {
+        if ( ! areGameActionsStillPossible ) {
             return;
         }
 
@@ -30,69 +31,72 @@ tlol.tetrisGame = (function() {
 
         var movementPerformed = boardController.updateBoard(movementDirection);
 
+        var currTetromino = boardController.getCurrentTetromino();
+
         if (movementPerformed) {
             /* tetromino descended */
             boardController.drawSquares();
         } else if ( movementDirection === tlol.direction.down ) { 
+
             /* tetromino collisioned with the bottom squares */
-            var currTetromino = boardController.getCurrentTetromino();
             boardController.insertTetromino(currTetromino);
             var deletedRowsCount = boardController.deleteCompletedRows();
             gameInfoController.addDeletedRowsScorePoints(deletedRowsCount);
 
-            /* Use the next falling Tetromino. */
+            /* Prepare the next Tetromino. */
             var isNextTetroValid = boardController.useNextTetromino();
-            var newNextTetromino = boardController.getNextTetromino();
-            gameInfoController.drawNextTetromino(newNextTetromino);
+            //var newNextTetromino = boardController.getNextTetromino();
 
             /* Check if the game is over. */
-            if(isNextTetroValid) {
+            if ( isNextTetroValid ) {
                 gameInfoController.increaseScore(); /* Keep rolling */
+
+                gameInfoController.clearNextTetromino();
+                return;
             } else {
                 gameOver();
+                
+                return;
             }
+
         }
+
+        var newNextTetromino = boardController.getNextTetromino();
+        var numRowsDrawDelay = 2;
+        if ( currTetromino.getRows()[0] > numRowsDrawDelay ) {
+            // TODO: on first time do a fade in
+            gameInfoController.drawNextTetromino(newNextTetromino);
+        } else {
+            gameInfoController.clearNextTetromino();
+        }
+
     }; /* run */
 
-    var startNewGame = function() {
+    var startNewGame = function(newDOM, dimensions) {
         endGame();
 
-        if ( ! dom.canvas ||
-             ! dom.playField || 
-             ! dom.gameInfo || 
+        dom = newDOM;
+
+        if ( ! dom ||
+             ! dom.canvasBackground ||
+             ! dom.canvas || 
              ! dom.nextTetrominoField ||
              ! dom.scoreField || 
              ! dom.gameoverSplash ) {
             throw {
                 name: "TypeError",
-                message: "A DOM element is missing. Please use setDOM()."
+                message: "A DOM element is missing."
             };
         }
 
-        isGameRunning = true;
-        /** 
-         * Playfield is 10 cells wide and at least 22 cells tall, where 
-         * rows above 20 are hidden or obstructed by the field frame.
-         */
-        var width = 10;
-        var height = 18; /* top two are logical, added internally */
-        boardController = new Board(dom.canvas, 
-                                     dom.playField, 
-                                     dom.gameInfo, 
-                                     width, 
-                                     height + 2); /*+2 next shape buffer*/
+        areGameActionsStillPossible = true;
+        boardController = new Board(dom.canvasBackground, dom.canvas);
         gameInfoController = new GameInfoController(dom.scoreField, 
-                                                   dom.nextTetrominoField);
-        var nextTetromino = boardController.getNextTetromino();
-        gameInfoController.drawNextTetromino(nextTetromino);
+                                                    dom.nextTetrominoField);
 
-        dom.gameoverSplash.style.height = '0px';
-    
-        var gameRunCallback = function(movementDirection) {
-            run(movementDirection);
-        };
+        dom.gameoverSplash.style.display = 'none';
 
-        tlol.gameLoopService.setGameRunCallback(gameRunCallback); 
+        tlol.gameLoopService.setGameRunCallback( run ); 
         gameTimer = tlol.gameLoopService.startLoop();
     }; /* startNewGame */
 
@@ -106,7 +110,7 @@ tlol.tetrisGame = (function() {
             return;
         }
         gameTimer.stop();
-        isGameRunning = false;
+        areGameActionsStillPossible = false;
     };
 
     /**
@@ -115,15 +119,12 @@ tlol.tetrisGame = (function() {
      */
     var gameOver = function() {
         endGame();
-        dom.gameoverSplash.style.height = '200px';
+        dom.gameoverSplash.style.display = 'block';
     };
 
     /* Public interface */
     var tetrisGame = {
-        startNewGame: startNewGame,
-        setDOM: function(newDOM) {
-            dom = newDOM;
-        }
+        startNewGame: startNewGame
     };
 
     return tetrisGame;

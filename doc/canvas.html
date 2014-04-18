@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Canvas</title>
+
+        <style type="text/css">
+            #canvasFrame {
+                width: 600px;
+                height: 400px;
+                border: black solid 1px;
+                border-width: 14px 7px 42px 7px;
+            }
+            #canvas {
+                position: relative;
+            }
+            .square {
+                position: absolute;
+                border: black solid 50px; /* square_border_w */
+                width: 75px; height: 75px; /* square_size */
+            }
+            .odd { border-color: blue gray white blue;}
+            .even { border-color: green gray white green;}
+        </style>
+
+    </head>
+
+    <body>
+        <div style="margin: auto; max-width: 900px;">
+            <p style="font-size: 1.5em;">
+                square_size: 75x75<br>
+                square_border_w: 50<br>
+            </p>
+
+            <div id="canvasFrame">
+                <div id="canvasBackground"></div>
+                <div id="canvas">
+                    <!-- left = square_size + (2 * square_border_w ) = 75 + (2 * 50) = 175 -->
+                    <div class="square odd"  style="top: 0px; left: 0px;"></div>
+                    <div class="square even" style="top: 0px; left: 175px;"></div>
+                    <div class="square odd"   style="top: 0px; left: 350px;"></div>
+                    <div class="square even" style="top: 200px; left: 0px;"></div>
+                    <div class="square odd"   style="top: 200px; left: 175px;"></div>
+                    <div class="square even" style="top: 200px; left: 350px;"></div>
+                </div>
+            </div>
+
+            <p style="font-size: 1.5em;">
+                canvas: 600 x 760<br>
+            </p>
+        </div>
+    </body>
+</html>

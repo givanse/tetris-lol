@@ -14,6 +14,7 @@ function Tetromino(xOffset, yOffset, tSpec) {
     this.xOffset = (xOffset < 0) ? 0 : xOffset;
     this.yOffset = (yOffset < 0) ? 0 : yOffset;
     this.tSpec = tSpec;
+
     /* Used to select the correct base coordinates from this.tSpec */
     this.rotationIndx = 0; 
 
@@ -156,6 +157,7 @@ Tetromino.prototype.getTetrominoName = function() {
 
 /**
  * return - A list with the numbers of the rows being used by this Tetromino.
+ *          The list is sorted from top to bottom, ex: [0, 1, 2, 3]
  */
 Tetromino.prototype.getRows = function() {
     var rowNums = [];

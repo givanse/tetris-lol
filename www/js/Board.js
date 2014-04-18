@@ -1,40 +1,47 @@
 
-function Board(canvas, playField, gameInfoDiv, widthInSquares, heightInSquares) {
-    widthInSquares = (widthInSquares == undefined) ? 0 : widthInSquares;
-    heightInSquares = (heightInSquares == undefined) ? 0 : heightInSquares;
+function Board(canvasBackground, canvas) {
+    var dimSettings = {
+        /* Based on Tetris guidelines. */
+        total_columns: 10, 
+        total_rows: 20, /* visible rows only */
+        screen_width: tlol.browser.getWidth(), 
+        screen_height: tlol.browser.getHeight(),
+        /* div#canvasFrame border width */
+        border_width: {top: 14, rigth: 7, bottom: 42, left: 7},
+        safety_net_width: 7, /* give room for possible unprecisions */
+        square_border_w: 1
+    };
+    var dimensions = tlol.calculateDimensions(dimSettings);
+
+    /* +2 rows, invisible buffer */
+    dimSettings.total_rows = dimSettings.total_rows + 2;
     
     this.squaresMatrix = tlol.squareFactory
-                             .buildSquaresMatrix(widthInSquares, heightInSquares);
+                             .buildSquaresMatrix(dimSettings.total_columns, 
+                                                 dimSettings.total_rows);
 
-    this.playField = playField;
-    /* set playField dimensions */
-    this.playField.setAttribute("style",
-                         "display: block; width: 0px; height: 0px; top: 0px;");
-    this.width  = widthInSquares  * tlol.square_size;
-    this.height = heightInSquares * tlol.square_size;
-    this.playField.style.width  = this.width  + "px";
-    this.playField.style.height = this.height + "px";
-    this.playField.style.top = - (tlol.square_size * 2) + "px";/* two rows buffer */
-    
-    /* set canvas dimensions */
-    var canvasHeight = ((heightInSquares - 2) * tlol.square_size);
-    canvas.setAttribute("style", "display: block; width: 0px; height: 0px");
-    canvas.style.width  = this.width  + "px";
-    canvas.style.height = canvasHeight + "px";
-    
-    /* set gameInfo height*/
-    gameInfoDiv.setAttribute("style", "height: " + canvasHeight + "px");
+    this.canvas = canvas;
 
-    this.currTetromino = tlol.tetrominoFactory
-                             .buildRandomTetromino(this.squaresMatrix.getWidth()); 
-    this.nextTetromino = tlol.tetrominoFactory
-                             .buildRandomTetromino(this.squaresMatrix.getWidth()); 
+    canvasBackground.setAttribute("style", 
+                                  "width: 0px; height: 0px; top: 0px;");
+    canvasBackground.style.width =  dimensions.canvas_width  + "px";
+    canvasBackground.style.height = dimensions.canvas_height + "px";
+
+    /* take into account the two rows tall, invisible,  buffer */
+    this.canvas.setAttribute("style", "top: 0px;");
+    this.canvas.style.top = "-" + ( (tlol.square_size * 2) + 
+                                    (tlol.square_border_w * 2) ) + "px";
+
+    this.currTetromino = tlol.
+                         tetrominoFactory.
+                         buildRandomTetromino(this.squaresMatrix.getWidth());
+    this.nextTetromino = tlol.
+                         tetrominoFactory.
+                         buildRandomTetromino(this.squaresMatrix.getWidth());
 
     this.generateRandomInitialRows();
     this.drawSquares();
 }
-
-/* Board business logic. */
 
 /**
  *
@@ -111,10 +118,9 @@ Board.prototype.deleteAndPackSquares = function(completedRows, squares) {
  */
 Board.prototype.drawSquares = function() {
     /*TODO: Optimization, remove and append only the squares that have moved. */
-
     /* Clear the canvas. */
-    while(this.playField.hasChildNodes()) {
-        this.playField.removeChild(this.playField.lastChild);
+    while(this.canvas.hasChildNodes()) {
+        this.canvas.removeChild(this.canvas.lastChild);
     }
 
     /* Draw board squares. */
@@ -134,7 +140,7 @@ Board.prototype._drawSquaresArray = function(squaresArray) {
     for (var i = 0; i < squaresArray.length; i++) {
         var square = squaresArray[i];
         if (square) {
-            this.playField.appendChild(square.getDiv());
+            this.canvas.appendChild(square.getDiv());
         }
     }
 }
@@ -182,11 +188,11 @@ Board.prototype.insertTetromino = function(tetromino) {
 }
 
 Board.prototype.getWidth = function() {
-    return parseInt(this.playField.style.width);
+    return parseInt(this.canvas.style.width);
 }
 
 Board.prototype.getHeight = function() {
-    return parseInt(this.playField.style.height);
+    return parseInt(this.canvas.style.height);
 }
 
 Board.prototype.getCurrentTetromino = function() {

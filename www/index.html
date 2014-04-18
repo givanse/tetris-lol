@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
-<html>
     <head>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
@@ -14,45 +12,43 @@
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" >
         <title>Tetris LoL</title>
+
+        <script src="http://192.168.1.112:8080/target/target-script-min.js#tlol"></script>
     </head>
 
     <body>
 
-        <div id="wrapper">
-        <div id="tetrisBoard">
-            <div id="gameCanvas">
-                <div id="playField"><!-- Where the game is drawn. --> </div>
-            </div>
-            
+        <div id="canvasFrame">
+            <div id="canvasBackground"></div>
+            <div id="canvas"> <!-- Where the shapes are drawn. --> </div>
+
             <div id="gameInfo">
-                <div id="nextTetrominoField" class="field"></div>
-                <br/>
-                <div id="scoreField" class="field"></div>
-                <br/>
-                <a id="newGameButton" onclick="tlol.tetrisGame.startNewGame()"></a>
-                <br/>
-                <a id="gitlink" href="https://github.com/givanse/tetrislol">
-                    &nbsp;&nbsp;&nbsp;&nbsp;tetrislol
-                </a>           
+                <div id="nextTetromino"></div>
+                <div id="score"></div>    
             </div>
-            
-            <div style="clear: both;"><!-- clear floats --></div>
-            
-            <!-- starts hidden -->
-            <div id="gameoverSplash">
-                <div id="background"></div>
-                <div id="image"></div>
+        </div>
+        
+        <!-- starts hidden -->
+        <div id="gameoverSplash">
+            <div id="alfa_background"></div>
+            <div id="image">   
+                    <img src="img/defeat.png">
+                    <br>
+                    <a>share</a>
+                    <a id="newGameButton" 
+                       onclick="tlol.tetrisGame.startNewGame(domElements)"></a>
             </div>
         </div>
 
-        <script type="text/javascript" src="phonegap.js"></script>
+        <!--script type="text/javascript" src="phonegap.js"></script-->
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             app.initialize();
         </script>
 
-        <script type="text/javascript" src="js/Array.js"></script>
         <script type="text/javascript" src="js/tlol.js"></script>
+        <script type="text/javascript" src="js/Array.js"></script>
+        <script type="text/javascript" src="js/browser.js"></script>
         <script type="text/javascript" src="js/tetrominoFactory.js"></script>
         <script type="text/javascript" src="js/tetrisGame.js"></script>
         <script type="text/javascript" src="js/gameLoopService.js"></script>
@@ -64,28 +60,25 @@
         <script type="text/javascript" src="js/util.js"></script>
 
         <script>
-            /**********************************************************************
+            /*******************************************************************
               *
               * Tetris game start up.
               *
-              ********************************************************************/
+              *****************************************************************/
 
             /* Find the DOM elements used for the game. */
             var domElements = {
                 /* board */
-                canvas: document.getElementById("gameCanvas"),
-                playField: document.getElementById("playField"),
-                gameInfo: document.getElementById("gameInfo"),
+                canvasBackground: document.getElementById("canvasBackground"),
+                canvas: document.getElementById("canvas"),
 
                 /* game info */
-                nextTetrominoField: document.getElementById("nextTetrominoField"),
-                scoreField: document.getElementById("scoreField"),
+                nextTetrominoField: document.getElementById("nextTetromino"),
+                scoreField: document.getElementById("score"),
 
                 gameoverSplash: document.getElementById("gameoverSplash")
             };
-
-            tlol.tetrisGame.setDOM(domElements);
-            tlol.tetrisGame.startNewGame();
+            tlol.tetrisGame.startNewGame(domElements);
         </script>
 
     </body>

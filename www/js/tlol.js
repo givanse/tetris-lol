@@ -5,46 +5,24 @@
  * that has the same name as the property.
  */
 var tlol = {
-    tetrisGame: null,
-    gameLoopService: null,
-    tetrominoFactory: null,
-    squareFactory: null,
-    util: null,
+    tetrisGame: null,                                        /* tetrisGame.js */
+    gameLoopService: null,                              /* gameLoopService.js */
+    tetrominoFactory: null,                            /* tetrominoFactory.js */
+    squareFactory: null,                                  /* squareFactory.js */
+    util: null,                                                    /* util,js */
+    browser: null,                                              /* browser,js */
+
+    square_size: null,                   /* set at tlol.calculateDimensions() */
+    square_border_w: null,               /* set at tlol.calculateDimensions() */
 
     settings: {
         /* milliseconds */
         rowFadeOutSpeed: 4
     },
 
-    browser: {
-        browserTest: function (regex) {
-            'use strict';
-            return regex.test(navigator.userAgent);
-        },
-        isIE: function () {
-            'use strict';
-            return this.browserTest(/IE/);
-        },
-        isFirefox: function () {
-            'use strict';
-            return this.browserTest(/Firefox/);
-        },
-        isSafari: function () {
-            'use strict';
-            return this.browserTest(/Safari/);
-        }
-    }, /* tlol.browser */
-
     cssClass: {
         mushroom: 'MUSHROOM'
     },
-
-    /**
-     * The size in pixels of one square (div).
-     * This must include every CSS value that affects its size,like:
-     * margin, border, etc.
-     */
-    square_size: 31 + 1, /* Currently: Square width + Square border */
 
     /**
      * http://en.wikipedia.org/wiki/Tetromino
@@ -242,6 +220,83 @@ var tlol = {
         empty: 'ROW_EMPTY',
         full: 'ROW_FULL',
         used: 'ROW_USED'
+    },
+
+    /**
+     * Calculate Canvas and Squares dimensions based on screen size.
+     *
+     * doc/canvas.html
+     * test/js/tlolTest.html
+     */
+    calculateDimensions: function (args) {
+
+        if ( ! args.screen_width  || args.screen_width <= 0 ||
+             ! args.screen_height || args.screen_heigth <= 0) {
+            this.square_size = 0;
+            return {
+                square_size: 0,
+                canvas_width: 0,
+                canvas_height: 0
+            };
+        
+        }
+
+        /* horizontal space */
+        var canvas_width = args.screen_width - 
+                           args.border_width.left - 
+                           args.border_width.rigth -
+                           (2 * args.safety_net_width);
+        var square_borders_space_w = (args.square_border_w * 
+                                     args.total_columns) +
+                                     args.square_border_w;
+        var available_canvas_width = canvas_width - square_borders_space_w; 
+        var px_per_square_w = Math.floor( available_canvas_width / 
+                                          args.total_columns );
+        /* after rounding a few pixels were lost, adjust: */
+        canvas_width = (px_per_square_w * args.total_columns) + 
+                        square_borders_space_w;
+
+        /* vertical space */
+        var canvas_height = args.screen_height - 
+                            args.border_width.top - 
+                            args.border_width.bottom -
+                            (2 * args.safety_net_width);
+        var square_borders_space_h = (args.square_border_w * 
+                                     args.total_rows) +
+                                     args.square_border_w;
+        var available_canvas_height = canvas_height - square_borders_space_h;
+        var px_per_square_h = Math.floor( available_canvas_height / 
+                                          args.total_rows );
+        /* after rounding a few pixels were lost, adjust: */
+        canvas_height = (px_per_square_h * args.total_rows) + 
+                         square_borders_space_h;
+        
+        /* choose the guiding dimension, the one with the smaller square size */
+        var square_size = null;
+        if ( px_per_square_w < px_per_square_h ) {
+            square_size = px_per_square_w;
+
+            /* width guides, height follows */ 
+            canvas_height = (square_size * args.total_rows) + 
+                             square_borders_space_h;
+        } else {
+            square_size = px_per_square_h;
+
+            /* height guides, width follows */
+            canvas_width = (square_size * args.total_columns) + 
+                            square_borders_space_w;
+        }
+
+        var dimensions = {
+            square_size: square_size,
+            canvas_width: canvas_width,
+            canvas_height: canvas_height
+        };
+
+        this.square_size = dimensions.square_size;
+        this.square_border_w = args.square_border_w;
+
+        return dimensions;
     }
 
 }; /* tlol */
