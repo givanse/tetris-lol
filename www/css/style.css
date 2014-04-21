@@ -1,4 +1,9 @@
 
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
 img {
     border: 0px;
 }
@@ -87,16 +92,18 @@ div#gameoverSplash {
     top: 100px;
     margin: 0 auto;
     width: 100%;
-    height: 0px;
     z-index: 2000;
+    display: none;
+    height: 40%;
+    width: 100%;
 }
 
-div#gameoverSplash div#alfa_background {
+div#gameoverSplash div#alfaBackground {
     position: absolute;
     top: 0px;
-    height: 125%;
+    height: 100%;
     width: 100%;
-    background-color: rgba(60, 8, 8, 0.60);
+    background-color: rgba(25, 25, 25, 0.60);
 }
 
 div#gameoverSplash div#image {
