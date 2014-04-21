@@ -20,11 +20,13 @@ tlol.tetrisGame = (function() {
      * the defaults used when a new game is started.
      */
     var endGame = function() {
-        if ( ! gameTimer ) {
-            return;
-        }
-        gameTimer.stop();
         arePlayerActionsStillPossible = false;
+        if ( gameInfoController ) {
+            gameInfoController.clearNextTetromino();
+        }
+        if ( gameTimer ) {
+            gameTimer.stop();
+        }
     };
 
     /**
@@ -63,7 +65,10 @@ tlol.tetrisGame = (function() {
             boardController.drawSquares();
 
             var numRowsDrawDelay = 2;
-            if ( currTetromino.getRows()[0] > numRowsDrawDelay ) {
+            // TODO: farthestTraveled incorrect if the user rotates
+            var farthestTraveled = currTetromino.getRows()[0];
+            if ( farthestTraveled > numRowsDrawDelay ) {
+                // TODO: optimize, dont clear and redraw each time, clear once
                 gameInfoController.clearNextTetromino();
                 gameInfoController.drawNextTetromino(nextTetromino);
             }
@@ -77,8 +82,6 @@ tlol.tetrisGame = (function() {
          */
         if ( ! tMoveSuccessful &&
              movementDirection === tlol.direction.DOWN ) { 
-
-            //gameInfoController.clearNextTetromino();
 
             boardController.insertTetromino(currTetromino);
             gameInfoController.increaseScore(); 
