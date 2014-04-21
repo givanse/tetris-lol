@@ -14,11 +14,8 @@ var tlol = {
 
     square_size: null,                   /* set at tlol.calculateDimensions() */
     square_border_w: null,               /* set at tlol.calculateDimensions() */
-
-    settings: {
-        /* milliseconds */
-        rowFadeOutSpeed: 4
-    },
+    rowFadeOutSpeed: 4,                                      /*  milliseconds */
+    nextTetroFadeSpeed: 4,                                   /*  milliseconds */
 
     cssClass: {
         mushroom: 'MUSHROOM'
@@ -207,19 +204,19 @@ var tlol = {
      * Movement directions.
      */
     direction: {
-        up: 'UP',
-        down: 'DOWN',
-        left: 'LEFT',
-        right: 'RIGHT'
+        UP: 'UP',
+        RIGHT: 'RIGHT',
+        DOWN: 'DOWN',
+        LEFT: 'LEFT'
     },
 
     /**
      * Board's row states.
      */
     row: {
-        empty: 'ROW_EMPTY',
-        full: 'ROW_FULL',
-        used: 'ROW_USED'
+        EMPTY: 'ROW_EMPTY',
+        FULL: 'ROW_FULL',
+        USED: 'ROW_USED'
     },
 
     /**

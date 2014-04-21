@@ -71,35 +71,36 @@ Tetromino.prototype.getNextRotationIndx = function() {
 }
 
 /**
- * Returns the a list of the coordinates that the Tetromino will use if
+ * Returns a list of the coordinates that the Tetromino will use if
  * the received movement direction is applied.
  */
 Tetromino.prototype.getNextPositionCoords = function(movDirection) {
-    var rotIndx = this.rotationIndx;
+    var tmpRotIndx = this.rotationIndx;
     var xOffsetIncrement = null;
     var yOffsetIncrement = null;
 
-    switch(movDirection) {
-        case tlol.direction.up: 
-            /* rotate */
-            rotIndx = this.getNextRotationIndx();
+    switch( movDirection ) {
+        case tlol.direction.UP: /* rotate */
+            tmpRotIndx = this.getNextRotationIndx();
             xOffsetIncrement = 0;
             yOffsetIncrement = 0;
             break;
-        case tlol.direction.down:
+        case tlol.direction.DOWN:
             xOffsetIncrement = 0;
             yOffsetIncrement = 1;
             break;
-        case tlol.direction.right:
+        case tlol.direction.RIGHT:
             xOffsetIncrement = 1;
             yOffsetIncrement = 0;
             break;
-        case tlol.direction.left:
+        case tlol.direction.LEFT:
             xOffsetIncrement = -1;
             yOffsetIncrement = 0;
             break;
     }
-    return this.getOffsetIncrementPosCoords(rotIndx, xOffsetIncrement, yOffsetIncrement);
+    return this.getOffsetIncrementPosCoords(tmpRotIndx, 
+                                            xOffsetIncrement, 
+                                            yOffsetIncrement);
 }
 
 /**
@@ -142,12 +143,12 @@ function(rotIndx, xOffsetIncrement, yOffsetIncrement) {
  */
 Tetromino.prototype.move = function(movDirection) {
     switch(movDirection) {
-        case    tlol.direction.up: 
+        case    tlol.direction.UP: 
             this.rotationIndx = this.getNextRotationIndx(); 
             return;
-        case  tlol.direction.down: this.yOffset += 1;   return;
-        case  tlol.direction.left: this.xOffset -= 1;   return;
-        case tlol.direction.right: this.xOffset += 1;   return;
+        case  tlol.direction.DOWN: this.yOffset += 1;   return;
+        case  tlol.direction.LEFT: this.xOffset -= 1;   return;
+        case tlol.direction.RIGHT: this.xOffset += 1;   return;
     }
 }
 

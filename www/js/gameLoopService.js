@@ -1,19 +1,78 @@
-
 /**
- * Singleton object that provides the game loop service for tetrisGame(.js)
+ * Singleton object that provides the game loop service for tetrisGame(.js) 
  *
- * @gameRunCallback - Is the function that will be called in each iteration of 
- *                    the game loop.
+ * The game loop service provides a timed infinite loop and handles user events,
+ * i.e. keyboard and swipe events.
+ *
  */
-tlol.gameLoopService = (function() {
+tlol.gameLoopService = (function () {
 
-    var callback = null;
+   /* Its the function that will be called in each iteration of the game loop.*/
+    var glsCallback = null;
 
-    var startLoop = function() {
-        if ( ! callback ) {
+    registerKeyboardListener();
+
+    registerSwipeListener();
+
+    /**
+      * Based on platform, register keyboard listeners.
+      */
+    function registerKeyboardListener() {
+
+        var eventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 
+                          'keydown' : 'keypress';
+
+        if (window.addEventListener) {
+            document.addEventListener(eventName, handleKeyEvent, false);
+        } else {
+            document.attachEvent('on' + eventName, handleKeyEvent);
+        }
+
+        function handleKeyEvent(ev) {
+            var keyCode = window.event ? window.event.keyCode : 
+                                         ev ? ev.keyCode : null;
+            var dir = null;
+            switch ( keyCode ) {
+                case 37:
+                    dir = tlol.direction.LEFT; 
+                    break;
+                case 38: 
+                    dir = tlol.direction.UP; 
+                    break;
+                case 39:
+                    dir = tlol.direction.RIGHT; 
+                    break;
+                case 40:
+                    dir = tlol.direction.DOWN; 
+                    break;
+            }
+            if ( dir ) {
+                glsCallback( dir );
+            }
+        }; /* handleKeyEvent */
+
+    }; /* registerKeyboardListener */
+
+    function registerSwipeListener() {
+        
+    };
+
+    function setCallback(gameRunCallback) {
+        if ( tlol.util.isString(glsCallback) ) {
+            throw {
+                name: 'TypeError',
+                message: 'setInterval() can not receive a string of code'
+            };
+        } else {
+            glsCallback = gameRunCallback;
+        }
+    };
+
+    function startLoop() {
+        if ( ! glsCallback ) {
             throw {
                 name: '',
-                message: 'The game run callback has not been set. ' +
+                message: 'The game run glsCallback has not been set. ' +
                          'Please use setGameRunCallback().'
             };
         }
@@ -24,7 +83,7 @@ tlol.gameLoopService = (function() {
             var gameSpeedIncrement = null;                                
             var targetTimeForMaxSpeed = null;
             var gameSpeedIncrementSpeed = null; 
-            var callbackTimerId = null;
+            var glsCallbackTimerId = null;
             var incrementTimerId = null;                      
 
             function startAutomatedGameSpeedIncrements() {
@@ -36,8 +95,8 @@ tlol.gameLoopService = (function() {
                         /* increment speed */                                    
                         gameSpeed = gameSpeed - gameSpeedIncrement;              
                         /*TODO: review if already elapsed time should be considered*/
-                        clearInterval(callbackTimerId);
-                        callbackTimerId = setInterval(callback, gameSpeed);
+                        clearInterval(glsCallbackTimerId);
+                        glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
                     }                                                            
                 },                                                               
                 gameSpeedIncrementSpeed);                                        
@@ -45,7 +104,7 @@ tlol.gameLoopService = (function() {
             }
 
             function stop() {
-                clearInterval(callbackTimerId);
+                clearInterval(glsCallbackTimerId);
                 clearInterval(incrementTimerId);
             }
 
@@ -58,7 +117,7 @@ tlol.gameLoopService = (function() {
                                           ( (gameSpeed - gameSpeedMax) / 
                                             gameSpeedIncrement );                              
                 stop();
-                callbackTimerId = setInterval(callback, gameSpeed);
+                glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
                 startAutomatedGameSpeedIncrements();
             }
 
@@ -74,59 +133,6 @@ tlol.gameLoopService = (function() {
 
         return gameTimer;
     }; /* startLoop */
-
-    var bindKeyEvents = function() {
-        var eventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 
-                          'keydown' : 'keypress';
-
-        var callback = function(ev) { 
-            handleKeyEvent(ev); 
-        };
-
-        if (window.addEventListener) {
-            document.addEventListener(eventName, callback, false);
-        } else {
-            document.attachEvent('on' + eventName, callback);
-        }
-    };
-
-    var handleKeyEvent = function(ev) {
-        var keyCode = window.event ? window.event.keyCode : 
-                                     ev ? ev.keyCode : null;
-        var dir = null;
-        switch(keyCode) {
-            case 37:
-                dir = tlol.direction.left; 
-                break;
-            case 38: 
-                dir = tlol.direction.up; 
-                break;
-            case 39:
-                dir = tlol.direction.right; 
-                break;
-            case 40:
-                dir = tlol.direction.down; 
-                break;
-        }
-
-        if (dir) {
-            callback(dir);
-        }
-    };
-
-    var setCallback = function(gameRunCallback) {
-        if ( tlol.util.isString(callback) ) {
-            throw {
-                name: 'TypeError',
-                message: 'setInterval() can not receive a string of code'
-            };
-        } else {
-            callback = gameRunCallback;
-        }
-    };
-
-    /* init object */
-    bindKeyEvents();
 
     /* Public interface */
     var glsObj = {

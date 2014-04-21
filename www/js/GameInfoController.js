@@ -13,6 +13,8 @@ function GameInfoController(scoreDiv, nextTetrominoDiv) {
 
     this.score = 0;
 
+    this.tetromino = null;
+
     this.scoreDiv.innerHTML = "" + this.score;
 }
 
@@ -31,28 +33,34 @@ GameInfoController.prototype.addDeletedRowsScorePoints = function(deletedRowsCou
     this.scoreDiv.innerHTML = "" + this.score;
 }
 
-GameInfoController.prototype.clearNextTetromino = function(nextTetromino) {
-    while ( this.nextTetrominoDiv.hasChildNodes() ) {
-        var child = this.nextTetrominoDiv.lastChild;
-        this.nextTetrominoDiv.removeChild( child );
-    }
-}
-
-GameInfoController.prototype.drawNextTetromino = function(nextTetromino) {
-    this.clearNextTetromino();
-
-    if (! (nextTetromino instanceof Tetromino) ) {
+GameInfoController.prototype.clearNextTetromino = function() {
+    if ( ! this.tetromino ) {
         return;
     }
 
-    var tetrominoName = nextTetromino.getTetrominoName();
+    var squares = this.tetromino.getSquares(); 
+    //console.log("next tetromino squares: " + squares);
+
+    //for (var i = 0; i < squares.length; i++) {
+    //    squares[i].getDiv().style.backgroundColor = "#004D9B";
+    //}
+
+    var me = this;
+    //tlol.squareFactory.fadeOut(squares, tlol.nextTetroFadeSpeed, function() {
+        while ( me.nextTetrominoDiv.hasChildNodes() ) {
+            var child = me.nextTetrominoDiv.lastChild;
+            me.nextTetrominoDiv.removeChild( child );
+        }
+    //});
+}
+
+GameInfoController.prototype.drawNextTetromino = function(nextTetromino) {
     /* TODO: review magic number, tetrominoFactory.buildRandomTetromino */
-    var baseT = new Tetromino(3, 0, tetrominoName);
-    var squares = baseT.getSquares();
-    var tetroWrapper = this.nextTetrominoDiv;
+    this.tetromino = new Tetromino(3, 0, nextTetromino.getTetrominoName());
+    var squares = this.tetromino.getSquares();
     for (var i = 0; i < squares.length; i++) {
         var square = squares[i];
-        tetroWrapper.appendChild(square.getDiv());
+        this.nextTetrominoDiv.appendChild(square.getDiv());
     }
 }
 

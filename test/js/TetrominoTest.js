@@ -220,7 +220,7 @@ test("Tetromino.getSquares", function(assert) {
     equal(actuals[3].getY(), 87);
 });
 
-test("Tetromino.getNextPositionCoords(tlol.direction.up) - rotate", function() {
+test("Tetromino.getNextPositionCoords(tlol.direction.UP) - rotate", function() {
 
     /**
      *   0 1 2 3 0 1 2 3
@@ -230,7 +230,7 @@ test("Tetromino.getNextPositionCoords(tlol.direction.up) - rotate", function() {
      * 3             x 
      */
     var tetromino = new Tetromino(0, 0, tlol.tSpec.line());
-    var actuals = tetromino.getNextPositionCoords(tlol.direction.up);
+    var actuals = tetromino.getNextPositionCoords(tlol.direction.UP);
     var expecteds = [[2, 0], [2, 1], [2, 2], [2, 3]];
     deepEqual(actuals, expecteds, "tlol.tSpec.line() rotate");
 
@@ -240,7 +240,7 @@ test("Tetromino.getNextPositionCoords(tlol.direction.up) - rotate", function() {
      * 1   d c   c b
      */
     tetromino = new Tetromino(0, 0, tlol.tSpec.square());
-    actuals = tetromino.getNextPositionCoords(tlol.direction.up);
+    actuals = tetromino.getNextPositionCoords(tlol.direction.UP);
     expecteds = [[ 2, 0], [2, 1], [ 1, 1], [1, 0]];
     deepEqual(actuals, expecteds, "tlol.tSpec.square()");
 
@@ -251,7 +251,7 @@ test("Tetromino.getNextPositionCoords(tlol.direction.up) - rotate", function() {
      * 2         x
      */
     tetromino = new Tetromino(0, 0, tlol.tSpec.t());
-    actuals = tetromino.getNextPositionCoords(tlol.direction.up);
+    actuals = tetromino.getNextPositionCoords(tlol.direction.UP);
     expecteds = [[1, 0], [1, 1], [1, 2], [2, 1]];
     deepEqual(actuals, expecteds, "tlol.tSpec.t()");
 
@@ -262,7 +262,7 @@ test("Tetromino.getNextPositionCoords(tlol.direction.up) - rotate", function() {
      * 2         x
      */
     tetromino = new Tetromino(0, 0, tlol.tSpec.s_left());
-    actuals = tetromino.getNextPositionCoords(tlol.direction.up);
+    actuals = tetromino.getNextPositionCoords(tlol.direction.UP);
     expecteds = [[1, 1], [1, 2], [2, 0], [2, 1]];
     deepEqual(actuals, expecteds, "tlol.tSpec.s_left()");
 
@@ -273,7 +273,7 @@ test("Tetromino.getNextPositionCoords(tlol.direction.up) - rotate", function() {
      * 2           x
      */
     tetromino = new Tetromino(0, 0, tlol.tSpec.s_right());
-    actuals = tetromino.getNextPositionCoords(tlol.direction.up);
+    actuals = tetromino.getNextPositionCoords(tlol.direction.UP);
     expecteds = [[1, 0], [1, 1], [2, 1], [2, 2]];
     deepEqual(actuals, expecteds, "tlol.tSpec.s_right()");
 
@@ -284,7 +284,7 @@ test("Tetromino.getNextPositionCoords(tlol.direction.up) - rotate", function() {
      * 2         x
      */
     tetromino = new Tetromino(0, 0, tlol.tSpec.l_right());
-    actuals = tetromino.getNextPositionCoords(tlol.direction.up);
+    actuals = tetromino.getNextPositionCoords(tlol.direction.UP);
     expecteds = [[1, 0], [1, 1], [1, 2], [2, 0]];
     deepEqual(actuals, expecteds, "tlol.tSpec.l_right()");
 
@@ -295,12 +295,12 @@ test("Tetromino.getNextPositionCoords(tlol.direction.up) - rotate", function() {
      * 2         x x
      */
     tetromino = new Tetromino(0, 0, tlol.tSpec.l_left());
-    actuals = tetromino.getNextPositionCoords(tlol.direction.up);
+    actuals = tetromino.getNextPositionCoords(tlol.direction.UP);
     expecteds = [[1, 0], [1, 1], [1, 2], [2, 2]];
     deepEqual(actuals, expecteds, "tlol.tSpec.l_left()");
 });
 
-test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
+test("Tetromino.move(tlol.direction.UP) - rotate", function(assert) {
     var buildSquare = tlol.squareFactory.buildSquare;
 
     var tSpec = tlol.tSpec.s_left();
@@ -312,7 +312,7 @@ test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
      * 2         x
      */         
     var tetromino = new Tetromino(0, 0, tSpec);
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     var actuals = tetromino.getSquares();
     var expecteds = [buildSquare(1, 1, tSpec.getCSSClass()),
                      buildSquare(1, 2, tSpec.getCSSClass()),
@@ -327,7 +327,7 @@ test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
      * 47             x
      */
     tetromino = new Tetromino(33, 45, tSpec);
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getSquares();
     expecteds = [buildSquare(34, 46, tSpec.getCSSClass()),
                  buildSquare(34, 47, tSpec.getCSSClass()),
@@ -346,7 +346,7 @@ test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
      * 3       x
      */     
     tetromino = new Tetromino(0, 0, tSpec);
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getSquares();
     expecteds = [buildSquare(2, 0, tSpec.getCSSClass()),
                  buildSquare(2, 1, tSpec.getCSSClass()),
@@ -362,8 +362,8 @@ test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
      * 3    
      */         
     tetromino = new Tetromino(0, 0, tSpec);
-    tetromino.move(tlol.direction.up);
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getSquares();
     cssClass = tlol.tSpec.line().getCSSClass();
     expecteds = [buildSquare(0, 2, tSpec.getCSSClass()),
@@ -380,10 +380,10 @@ test("Tetromino.move(tlol.direction.up) - rotate", function(assert) {
      * 3   
      */         
     tetromino = new Tetromino(0, 0, tSpec)
-    tetromino.move(tlol.direction.up);
-    tetromino.move(tlol.direction.up);
-    tetromino.move(tlol.direction.up);
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
+    tetromino.move(tlol.direction.UP);
+    tetromino.move(tlol.direction.UP);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getSquares();
     expecteds = [buildSquare(0, 1, tSpec.getCSSClass()),
                  buildSquare(1, 1, tSpec.getCSSClass()),
@@ -452,17 +452,17 @@ test("Tetromino.getRows", function() {
     expecteds = [1];
     deepEqual(actuals, expecteds, "tlol.tSpec.line() [1]");
 
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [0, 1, 2, 3];
     deepEqual(actuals, expecteds, "tlol.tSpec.line() [0, 1, 2, 3]");
 
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [2];
     deepEqual(actuals, expecteds, "tlol.tSpec.line() [2]");
 
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [0, 1, 2, 3];
     deepEqual(actuals, expecteds, "tlol.tSpec.line() [0, 1, 2, 3]");
@@ -475,43 +475,43 @@ test("Tetromino.getRows", function() {
      * 11        
      */
     tetromino = new Tetromino(4, 8, tlol.tSpec.line());
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [8, 9, 10, 11];
     deepEqual(actuals, expecteds, "tlol.tSpec.line() rotated (4, 8)");
     
     tetromino = new Tetromino(0, 0, tlol.tSpec.square());
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [0, 1];
     deepEqual(actuals, expecteds);
     
     tetromino = new Tetromino(0, 0, tlol.tSpec.t());
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [0, 1, 2];
     deepEqual(actuals, expecteds, "tlol.tSpec.t() rotated");
     
     tetromino = new Tetromino(5, 6, tlol.tSpec.s_right());
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [6, 7, 8];
     deepEqual(actuals, expecteds);
     
     tetromino = new Tetromino(7, 8, tlol.tSpec.s_left());
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [8, 9, 10];
     deepEqual(actuals, expecteds);
     
     tetromino = new Tetromino(55, 66, tlol.tSpec.l_right());
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [66, 67, 68];
     deepEqual(actuals, expecteds);
     
     tetromino = new Tetromino(77, 88, tlol.tSpec.l_left());
-    tetromino.move(tlol.direction.up);
+    tetromino.move(tlol.direction.UP);
     actuals = tetromino.getRows();
     expecteds = [88, 89, 90];
     deepEqual(actuals, expecteds);    

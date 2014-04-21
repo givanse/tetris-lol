@@ -9,7 +9,7 @@ tlol.squareFactory = (function() {
      * The value the defines this object is its <div> instance member, it
      * is the value (DOM element) that reflects the state of the object.
      */
-    var newSquare =  function(x, y, cssClass) {
+    function buildSquare(x, y, cssClass) {
 
         if ( ! tlol.util.isString(cssClass) ) {
             throw {
@@ -71,19 +71,52 @@ tlol.squareFactory = (function() {
             getDiv: function() { return div; },
             isEqual: isEqual,
             /* used for debugging */
-            description: (function() { return "("+x+", "+y+") "+cssClass; })() 
+            description: (function () { return "("+x+", "+y+") "+cssClass; })() 
         };
 
         return square;
-    }; /* newSquare */
+    }; /* buildSquare */
+
+    /**
+     * Fades in or out a list of squares.
+     */
+    function fade(isFadeIn, squares, 
+                  startOpacity, targetOpacity, fadeSpeed, callback) {
+
+        function setSqrOpacity(square, opacity) {
+            var div = square.getDiv();
+            div.style.opacity = "alpha(opacity=" + opacity + ")";       /* IE */      
+            div.style.opacity = (opacity / 100);            /* Other browsers */
+        };
+
+        var currentOpacity = startOpacity;
+        var timerId = setInterval(function() {
+            if ( currentOpacity !== targetOpacity ) {
+                isFadeIn ? currentOpacity++ : currentOpacity-- ;
+                for (var i = 0; i < squares.length; i++) {
+                    setSqrOpacity(squares[i], currentOpacity);
+                }
+            } else {
+                clearInterval(timerId);
+                callback();
+            }
+        }, fadeSpeed);
+    };
 
     var that = {
-        buildSquare: newSquare,
-        buildSquaresMatrix: function(widthInSquares, heightInSquares) { 
-            return new SquaresMatrix(widthInSquares, heightInSquares); }
+        buildSquare: buildSquare,
+        buildSquaresMatrix: function (widthInSquares, heightInSquares) { 
+            return new SquaresMatrix(widthInSquares, heightInSquares); 
+        },
+        fadeIn: function (squares, fadeSpeed, callback) {
+            fade(true, squares, 0, 100, fadeSpeed, callback);
+        },
+        fadeOut: function (squares, fadeSpeed, callback) {
+            fade(false, squares, 100, 0, fadeSpeed, callback);
+        }
     };
 
     return that;
-})(); /* Square */
+})(); /* tlol.squareFactory */
 
 /* EOF */

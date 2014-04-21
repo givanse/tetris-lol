@@ -45,7 +45,7 @@ function Board(canvasBackground, canvas) {
 
 /**
  *
- * return - true if the falling shape performed a movement, false otherwise.
+ * return - true if the falling shape completed the movement, false otherwise.
  */
 Board.prototype.updateBoard = function(movDirection) {
     var simulatedPositions = this.currTetromino
@@ -54,62 +54,47 @@ Board.prototype.updateBoard = function(movDirection) {
                               .arePositionsAvailable(simulatedPositions);
     if ( isValidMovement ) {
         this.currTetromino.move(movDirection);
+        return true;
     }
-    return isValidMovement;
+
+    return false;
 }
 
 /** 
- * Find and delete any rows that are complete. 
+ * Find and delete the rows that are complete, if any. 
  *
- * Also, upper squares that are left hanging will fall until they collide 
- * with another square.
+ * Also, upper squares that are left hanging will fall.
  *
  * return - The number of rows that were complete and deleted at the moment of
  *          invocation.
  */
 Board.prototype.deleteCompletedRows = function() {
-    var candidateRows = this.currTetromino.getRows();
 
+    var candidateRows = this.currTetromino.getRows();
     var lowerRowNum = Math.max.apply(Math, candidateRows);
     var completedRows = this.squaresMatrix.findCompletedRows(lowerRowNum);
-    var squares = this.squaresMatrix.getRowsSquares(completedRows);
-    this.deleteAndPackSquares(completedRows, squares);
 
-    var deletedRowsCount = completedRows.length;
-    return deletedRowsCount;
-}
-
-/**
- * squares - An array of Squares.
- */
-Board.prototype.deleteAndPackSquares = function(completedRows, squares) {
-    function animateSquares(opacity) {
-        for(var i = 0; i < squares.length; i++) {
-            var div = squares[i].getDiv();
-            div.style.backgroundColor = "#fff"; 
-
-            /* Change opacity */
-            /* IE */ 
-            div.style.opacity = "alpha(opacity=" + opacity + ")";       
-            /* Other browsers */
-            div.style.opacity = (opacity / 100);            
-        }
+    if ( ! completedRows.length > 0 ) {
+        return 0;
     }
-    var opacity = 100;
-    var animationSpeed = tlol.settings.rowFadeOutSpeed;
+
+    var squares = this.squaresMatrix.getRowsSquares(completedRows);
+
+    for (var i = 0; i < squares.length; i++) {
+       var div = squares[i].getDiv();
+       div.style.backgroundColor = "#fff"; 
+    }
+
     var squaresMatrix = this.squaresMatrix;
-    var timerId = setInterval(function() {
-        if ( opacity > 0 ) {
-            opacity--;
-            animateSquares(opacity);
-        } else {
-            clearInterval(timerId);
-            squaresMatrix.deleteRows(completedRows);
-            completedRows = completedRows.reverse();   /* order top to bottom */
-            squaresMatrix.packColumns(completedRows);
-        }
-    }, animationSpeed);
+    tlol.squareFactory.fadeOut(squares, tlol.rowFadeOutSpeed, function () {
+        squaresMatrix.deleteRows(completedRows);
+        completedRows = completedRows.reverse(); /* order top to bottom */
+        squaresMatrix.packColumns(completedRows);
+    });
+
+    return completedRows.length; /* The number of rows that were deleted. */
 }
+
 
 /* Drawing into the canvas. */
 
@@ -145,8 +130,6 @@ Board.prototype._drawSquaresArray = function(squaresArray) {
     }
 }
 
-/* Generate random pieces. */
-
 Board.prototype.useNextTetromino = function() {
 
     this.currTetromino = this.nextTetromino;
@@ -181,26 +164,24 @@ Board.prototype.generateRandomInitialRows = function() {
     }
 }
 
-/* Setters and Getters. */
-
-Board.prototype.insertTetromino = function(tetromino) {
-    this.squaresMatrix.insertTetromino(tetromino);
-}
-
-Board.prototype.getWidth = function() {
-    return parseInt(this.canvas.style.width);
+Board.prototype.getCurrentTetromino = function() {
+    return this.currTetromino;
 }
 
 Board.prototype.getHeight = function() {
     return parseInt(this.canvas.style.height);
 }
 
-Board.prototype.getCurrentTetromino = function() {
-    return this.currTetromino;
-}
-
 Board.prototype.getNextTetromino = function() {
     return this.nextTetromino;
+}
+
+Board.prototype.getWidth = function() {
+    return parseInt(this.canvas.style.width);
+}
+
+Board.prototype.insertTetromino = function(tetromino) {
+    this.squaresMatrix.insertTetromino(tetromino);
 }
 
 /* EOF */

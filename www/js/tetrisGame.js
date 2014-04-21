@@ -11,71 +11,98 @@ tlol.tetrisGame = (function() {
     var boardController = null;
     var gameInfoController = null;
     /* The user hasn't lost yet and can perform actions. */
-    var areGameActionsStillPossible = true;
+    var arePlayerActionsStillPossible = true;
     var dom = null;
 
     /**
-     * This is where all the magic happens. It is the function executed by the 
+     * Changes the state of the game to finished.
+     * Deal here with any variables or objects that need to be reset or changed to
+     * the defaults used when a new game is started.
+     */
+    var endGame = function() {
+        if ( ! gameTimer ) {
+            return;
+        }
+        gameTimer.stop();
+        arePlayerActionsStillPossible = false;
+    };
+
+    /**
+     * Called when a user loses the game, it updates the state of the game and
+     * updates UI elements as necessary.
+     */
+    var gameOver = function() {
+        endGame();
+        dom.gameoverSplash.style.display = 'block';
+    };
+
+    /**
+     * This is where all the magic happens. It is the function executed as the 
      * callback passed to the gameLoopService object when the game is started in
      * function startNewGame().
      *
      */
-    var run = function(movementDirection) {
+    var run = function (movementDirection) {
 
-        if ( ! areGameActionsStillPossible ) {
+        if ( ! arePlayerActionsStillPossible ) {
             return;
         }
 
-        movementDirection = (movementDirection === undefined) ? 
-                            tlol.direction.down : movementDirection;
+        movementDirection = ( movementDirection === tlol.direction.UP ||
+                              movementDirection === tlol.direction.RIGHT ||
+                              movementDirection === tlol.direction.LEFT ) ? 
+                              movementDirection : tlol.direction.DOWN;
 
-        var movementPerformed = boardController.updateBoard(movementDirection);
+        var tMoveSuccessful = boardController.updateBoard(movementDirection);
 
         var currTetromino = boardController.getCurrentTetromino();
+        var nextTetromino = boardController.getNextTetromino();
 
-        if (movementPerformed) {
-            /* tetromino descended */
+        /* up, right, down, left success */
+        if ( tMoveSuccessful ) {
             boardController.drawSquares();
-        } else if ( movementDirection === tlol.direction.down ) { 
 
-            /* tetromino collisioned with the bottom squares */
+            var numRowsDrawDelay = 2;
+            if ( currTetromino.getRows()[0] > numRowsDrawDelay ) {
+                gameInfoController.clearNextTetromino();
+                gameInfoController.drawNextTetromino(nextTetromino);
+            }
+
+            return;
+        }
+
+        /** 
+         * Couldn't move downward anymore. The falling tetromino 
+         * collisioned with the bottom line / squares.
+         */
+        if ( ! tMoveSuccessful &&
+             movementDirection === tlol.direction.DOWN ) { 
+
+            //gameInfoController.clearNextTetromino();
+
             boardController.insertTetromino(currTetromino);
+            gameInfoController.increaseScore(); 
             var deletedRowsCount = boardController.deleteCompletedRows();
             gameInfoController.addDeletedRowsScorePoints(deletedRowsCount);
 
             /* Prepare the next Tetromino. */
             var isNextTetroValid = boardController.useNextTetromino();
-            //var newNextTetromino = boardController.getNextTetromino();
-
-            /* Check if the game is over. */
-            if ( isNextTetroValid ) {
-                gameInfoController.increaseScore(); /* Keep rolling */
-
-                gameInfoController.clearNextTetromino();
-                return;
-            } else {
+            if ( ! isNextTetroValid ) {         /* Check if the game is over. */
                 gameOver();
-                
                 return;
             }
 
-        }
-
-        var newNextTetromino = boardController.getNextTetromino();
-        var numRowsDrawDelay = 2;
-        if ( currTetromino.getRows()[0] > numRowsDrawDelay ) {
-            // TODO: on first time do a fade in
-            gameInfoController.drawNextTetromino(newNextTetromino);
-        } else {
-            gameInfoController.clearNextTetromino();
+            return;
         }
 
     }; /* run */
 
-    var startNewGame = function(newDOM, dimensions) {
+    var startNewGame = function(newDOM) {
         endGame();
 
-        dom = newDOM;
+        if ( newDOM ) {
+            dom = newDOM;
+        }
 
         if ( ! dom ||
              ! dom.canvasBackground ||
@@ -89,7 +116,7 @@ tlol.tetrisGame = (function() {
             };
         }
 
-        areGameActionsStillPossible = true;
+        arePlayerActionsStillPossible = true;
         boardController = new Board(dom.canvasBackground, dom.canvas);
         gameInfoController = new GameInfoController(dom.scoreField, 
                                                     dom.nextTetrominoField);
@@ -99,28 +126,6 @@ tlol.tetrisGame = (function() {
         tlol.gameLoopService.setGameRunCallback( run ); 
         gameTimer = tlol.gameLoopService.startLoop();
     }; /* startNewGame */
-
-    /**
-     * Changes the state of the game to finished.
-     * Deal here with any variables or objects that need to be reset or changed to
-     * the defaults used when a new game is started.
-     */
-    var endGame = function() {
-        if ( ! gameTimer ) {
-            return;
-        }
-        gameTimer.stop();
-        areGameActionsStillPossible = false;
-    };
-
-    /**
-     * Called when a user loses the game, it updates the state of the game and
-     * updates UI elements as necessary.
-     */
-    var gameOver = function() {
-        endGame();
-        dom.gameoverSplash.style.display = 'block';
-    };
 
     /* Public interface */
     var tetrisGame = {

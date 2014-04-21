@@ -4,8 +4,9 @@
 
 test("tlol", function() {
 
-  strictEqual(tlol.dimensions.square_size, 32, 
-              "tlol.dimensions.square_size is 32 pixels");
+  ok(tlol.square_size === null, "tlol.square_size not set");
+
+  ok(tlol.square_border_w === null, "tlol.square_border_w not set");
 
 });
 

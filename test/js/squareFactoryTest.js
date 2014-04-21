@@ -1,14 +1,22 @@
 
 test("squareFactory - square.getDiv", function() {
+    tlol.square_size = 31;
+    tlol.square_border_w = 1;
+
     var square = tlol.squareFactory
                      .buildSquare(5, 5, tlol.tSpec.s_right().getCSSClass());
     var expected = document.createElement("div");
     expected.className = "square SSHP_R";
+    expected.style.width = "31px";
+    expected.style.height = "31px";
     expected.style.left = "160px";
     expected.style.top = "160px";
     expected.setAttribute("buffer", "false");
     var actual = square.getDiv();
     deepEqual(actual, expected, "div clone");
+
+    tlol.square_size = null;
+    tlol.square_border_w = null;
 
     square = tlol.squareFactory
                  .buildSquare(0, 0, tlol.tSpec.s_right().getCSSClass());
@@ -29,6 +37,9 @@ test("squareFactory - square.getDiv", function() {
 });
 
 test("squareFactory - square.setX", function() {
+    tlol.square_size = 31;
+    tlol.square_border_w = 1;
+
     var square = tlol.squareFactory
                      .buildSquare(-1, -1, tlol.tSpec.t().getCSSClass());
     square.setX(16);
@@ -36,12 +47,19 @@ test("squareFactory - square.setX", function() {
     var actual = square.getX();
     equal(actual, expected, "set x to 16");
 
-    expected = 16 * (31 + 1);/*This corresponds to tlol.dimensions.square_size*/
+    console.log(tlol.square_size);
+    expected = 16 * 32;/* This corresponds to tlol.square_size */
     actual = parseInt(square.getDiv().style.left);
     equal(actual, expected, "x to pixels 512");
+
+    tlol.square_size = null;
+    tlol.square_border_w = null;
 });
 
 test("squareFactory - square.setY", function() {
+    tlol.square_size = 31;
+    tlol.square_border_w = 1;
+
     var square = tlol.squareFactory
                      .buildSquare(-1, -1, tlol.tSpec.t().getCSSClass());
     square.setY(16);
@@ -49,9 +67,12 @@ test("squareFactory - square.setY", function() {
     var actual = square.getY();
     equal(actual, expected, "set y to 16");
 
-    expected = 16 * (31 + 1);/*This corresponds to tlol.dimensions.square_size*/
+    expected = 16 * 32; /* This corresponds to tlol.square_size */
     actual = parseInt(square.getDiv().style.top);
     equal(actual, expected, "y to pixels 512");
+
+    tlol.square_size = null;
+    tlol.square_border_w = null;
 });
 
 test("squareFactory.buildSquare", function() {

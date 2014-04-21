@@ -18,8 +18,10 @@ function SquaresMatrix(columns, rows) {
 /**
  *
  */
-SquaresMatrix.prototype.arePositionsAvailable = function(positions) {
-    if (!positions || !tlol.util.isArray(positions) || positions.length <= 0 ) {
+SquaresMatrix.prototype.arePositionsAvailable = function (positions) {
+    if ( ! positions || 
+         ! tlol.util.isArray( positions ) || 
+         positions.length <= 0 ) {
         return false;
     }
 
@@ -65,7 +67,8 @@ SquaresMatrix.prototype.packColumn = function(xConstant, y) {
 
 /**
   *
-  * return - The state of the row: tlol.row.empty, tlol.row.full or tlol.row.used.
+  * return - The state of the row: 
+             tlol.row.EMPTY, tlol.row.FULL or tlol.row.USED.
   */
 SquaresMatrix.prototype.getRowState = function(y) {
     var squaresCount = 0;
@@ -79,14 +82,14 @@ SquaresMatrix.prototype.getRowState = function(y) {
     }
     
     if (squaresCount === 0) {
-        return tlol.row.empty;
+        return tlol.row.EMPTY;
     }
 
     if (squaresCount === width) {
-        return tlol.row.full;
+        return tlol.row.FULL;
     }
 
-    return tlol.row.used;
+    return tlol.row.USED;
 }
 
 /**
@@ -112,9 +115,9 @@ SquaresMatrix.prototype.findCompletedRows = function(rowNum) {
     for ( ; rowNum >= 0; rowNum--) {
         var rowState = this.getRowState(rowNum);
 
-        if (rowState === tlol.row.full) {
+        if (rowState === tlol.row.FULL) {
             completedRows.push(rowNum);
-        } else if (rowState === tlol.row.empty) {
+        } else if (rowState === tlol.row.EMPTY) {
             break; 
         }
     }
@@ -160,7 +163,7 @@ SquaresMatrix.prototype.insertTetromino = function(tetromino) {
     return this;                       
 }
 
-SquaresMatrix.prototype.insertSquare = function(square) {
+SquaresMatrix.prototype.insertSquare = function (square) {
     var x = square.getX();
     var y = square.getY();
 
@@ -168,7 +171,8 @@ SquaresMatrix.prototype.insertSquare = function(square) {
          y < 0 || y >= this.rows ) {
         throw {
             name: "SquaresMatrixIndexError",
-            message: "The Square's coordinates are out of bounds."
+            message: "The Square's coordinates are out of bounds:" +
+                     "(" + x + ", " + y + ")"
         };
     }
 

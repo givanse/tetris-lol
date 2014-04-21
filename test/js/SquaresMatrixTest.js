@@ -338,17 +338,17 @@ test("SquaresMatrix.getRowState", function() {
     var buildSquare = tlol.squareFactory.buildSquare;
 
     var squaresMatrix = new SquaresMatrix(0, 0);
-    var expected = tlol.row.empty;
+    var expected = tlol.row.EMPTY;
     var actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "0x0");
 
     squaresMatrix = new SquaresMatrix(1, 1);
-    expected = tlol.row.empty;
+    expected = tlol.row.EMPTY;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "1x1 empty");
 
     squaresMatrix = new SquaresMatrix(3, 1);
-    expected = tlol.row.empty;
+    expected = tlol.row.EMPTY;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "3x1 empty");
 
@@ -357,21 +357,21 @@ test("SquaresMatrix.getRowState", function() {
     /* [__x] */
     squaresMatrix = new SquaresMatrix(3, 1)
                         .insertSquare(buildSquare(2, 0, cssClass));
-    expected = tlol.row.used;
+    expected = tlol.row.USED;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "[__x]");
 
     /* [_x_] */
     squaresMatrix = new SquaresMatrix(3, 1)
                         .insertSquare(buildSquare(2, 0, cssClass));
-    expected = tlol.row.used;
+    expected = tlol.row.USED;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "[_x_]");
 
     /* [x__] */
     squaresMatrix = new SquaresMatrix(3, 1)
                         .insertSquare(buildSquare(2, 0, cssClass));
-    expected = tlol.row.used;
+    expected = tlol.row.USED;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "[x__]");
 
@@ -380,7 +380,7 @@ test("SquaresMatrix.getRowState", function() {
                         .insertSquare(buildSquare(0, 0, cssClass))
                         .insertSquare(buildSquare(1, 0, cssClass))
                         .insertSquare(buildSquare(2, 0, cssClass));
-    expected = tlol.row.full;
+    expected = tlol.row.FULL;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "3 columns, full");
 
@@ -389,11 +389,11 @@ test("SquaresMatrix.getRowState", function() {
       * [ ]
       */
     squaresMatrix = new SquaresMatrix(1, 2);
-    expected = tlol.row.empty;
+    expected = tlol.row.EMPTY;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "1x2 empty, row 0");
 
-    expected = tlol.row.empty;
+    expected = tlol.row.EMPTY;
     actual = squaresMatrix.getRowState(1);
     equal(actual, expected, "1x2 empty, row 1");
 
@@ -404,11 +404,11 @@ test("SquaresMatrix.getRowState", function() {
     squaresMatrix = new SquaresMatrix(1, 2)
                         .insertSquare(buildSquare(0, 0, cssClass))
                         .insertSquare(buildSquare(0, 1, cssClass));
-    expected = tlol.row.full;
+    expected = tlol.row.FULL;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "1x2 full, row 0");
 
-    expected = tlol.row.full;
+    expected = tlol.row.FULL;
     actual = squaresMatrix.getRowState(1);
     equal(actual, expected, "1x2 full, row 1");
 
@@ -423,15 +423,15 @@ test("SquaresMatrix.getRowState", function() {
                         .insertSquare(buildSquare(0, 1, cssClass))
                         .insertSquare(buildSquare(1, 1, cssClass))
                         .insertSquare(buildSquare(1, 2, cssClass));
-    expected = tlol.row.used;
+    expected = tlol.row.USED;
     actual = squaresMatrix.getRowState(0);
     equal(actual, expected, "first row");
 
-    expected = tlol.row.full;
+    expected = tlol.row.FULL;
     actual = squaresMatrix.getRowState(1);
     equal(actual, expected, "second row");
 
-    expected = tlol.row.used;
+    expected = tlol.row.USED;
     actual = squaresMatrix.getRowState(2);
     equal(actual, expected, "third row");
 });
