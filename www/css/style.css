@@ -16,6 +16,17 @@ body {
     color: #003366;
     background-color: #030303;
     text-align: center;
+    font-family: monospace;
+}
+
+div#bootSplash {
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    background-color: #003366;
+    text-align: center;
+    font-size: 7em;
+    padding-top: 33%;
 }
 
 div#canvasFrame {
@@ -57,8 +68,7 @@ div#gameInfo {
     top: 0px;
 
     color: #003366;
-    font-size: 500%;
-    font-family: monospace;
+    font-size: 5em;
     font-weight: bold;
     line-height: 50px;
     text-align: center;
@@ -89,36 +99,24 @@ div#gameInfo div#score {
 
 div#gameoverSplash {
     position: absolute;
-    top: 100px;
-    margin: 0 auto;
+    top: 20%;
+    height: 40%;
     width: 100%;
     z-index: 2000;
     display: none;
-    height: 40%;
-    width: 100%;
+    background-color: rgba(22, 22, 93, 0.60);
 }
 
-div#gameoverSplash div#alfaBackground {
-    position: absolute;
-    top: 0px;
-    height: 100%;
+div#defeatImage {
     width: 100%;
-    background-color: rgba(25, 25, 25, 0.60);
+    height: 70%;
+    margin-top: 3%;
+    background: transparent url('../img/defeat.png') center top no-repeat;
 }
 
-div#gameoverSplash div#image {
-    position: absolute;
-    top: 25px;
-    height: 100%;
+div#newGameButton {
     width: 100%;
-    text-align: center;
-}
-
-a#newGameButton {
-    display: inline-block;
-    width: 142px;
-    height: 56px;
-    padding: 0px 9px; /* (160 - 142) / 2*/
+    height: 30%;
     background: transparent url('../img/play.png') center top no-repeat;
 }
 

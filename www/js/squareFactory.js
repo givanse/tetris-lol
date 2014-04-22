@@ -83,18 +83,19 @@ tlol.squareFactory = (function() {
     function fade(isFadeIn, squares, 
                   startOpacity, targetOpacity, fadeSpeed, callback) {
 
-        function setSqrOpacity(square, opacity) {
-            var div = square.getDiv();
-            div.style.opacity = "alpha(opacity=" + opacity + ")";       /* IE */      
-            div.style.opacity = (opacity / 100);            /* Other browsers */
-        };
+        function setElementOpacity(element, opacity) {
+            element.style.opacity = "alpha(opacity=" + opacity + ")";   /* IE */      
+            element.style.opacity = (opacity / 100);        /* Other browsers */
+        }
 
-        var currentOpacity = startOpacity;
+        var opacity = startOpacity;
         var timerId = setInterval(function() {
-            if ( currentOpacity !== targetOpacity ) {
-                isFadeIn ? currentOpacity++ : currentOpacity-- ;
+            if ( opacity !== targetOpacity ) {
+                isFadeIn ? opacity++ : opacity-- ;
+
                 for (var i = 0; i < squares.length; i++) {
-                    setSqrOpacity(squares[i], currentOpacity);
+                    var div = squares[i].getDiv();
+                    setElementOpacity(div, opacity);
                 }
             } else {
                 clearInterval(timerId);

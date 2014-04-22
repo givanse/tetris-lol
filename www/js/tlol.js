@@ -9,8 +9,9 @@ var tlol = {
     gameLoopService: null,                              /* gameLoopService.js */
     tetrominoFactory: null,                            /* tetrominoFactory.js */
     squareFactory: null,                                  /* squareFactory.js */
-    util: null,                                                    /* util,js */
-    browser: null,                                              /* browser,js */
+    util: null,                                                    /* util.js */
+    browser: null,                                              /* browser.js */
+    ui: null,                                                        /* ui.js */
 
     square_size: null,                   /* set at tlol.calculateDimensions() */
     square_border_w: null,               /* set at tlol.calculateDimensions() */
