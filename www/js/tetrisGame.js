@@ -7,7 +7,7 @@
 tlol.tetrisGame = (function() {
 
     /* Gives access to the ID of the interval used by the gameLoopService. */
-    var gameTimer = null;
+    var loopService = null;
     var boardController = null;
     var gameInfoController = null;
     /* The user hasn't lost yet and can perform actions. */
@@ -24,8 +24,8 @@ tlol.tetrisGame = (function() {
         if ( gameInfoController ) {
             gameInfoController.clearNextTetromino();
         }
-        if ( gameTimer ) {
-            gameTimer.stop();
+        if ( loopService ) {
+            loopService.stop();
         }
     };
 
@@ -127,7 +127,7 @@ tlol.tetrisGame = (function() {
         dom.gameoverSplash.style.display = 'none';
 
         tlol.gameLoopService.setGameRunCallback( run ); 
-        gameTimer = tlol.gameLoopService.startLoop();
+        loopService = tlol.gameLoopService.startLoop();
     }; /* startNewGame */
 
     /* Public interface */

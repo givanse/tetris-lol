@@ -10,27 +10,28 @@ tlol.gameLoopService = (function () {
    /* Its the function that will be called in each iteration of the game loop.*/
     var glsCallback = null;
 
-    registerKeyboardListener();
-
-    registerSwipeListener();
+    registerEventsListeners();
 
     /**
       * Based on platform, register keyboard listeners.
       */
-    function registerKeyboardListener() {
+    function registerEventsListeners() {
 
-        var eventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 
-                          'keydown' : 'keypress';
+        var keyEventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 
+                           'keydown' : 'keypress';
 
-        if (window.addEventListener) {
-            document.addEventListener(eventName, handleKeyEvent, false);
-        } else {
-            document.attachEvent('on' + eventName, handleKeyEvent);
+        if ( window.addEventListener ) { 
+            document.addEventListener(keyEventName, handleKeyEvent, false);
+        } else { /* IE */
+            document.attachEvent('on' + keyEventName, handleKeyEvent);
         }
 
-        function handleKeyEvent(ev) {
+        document.addEventListener('touchstart', handleTouchStart, false);
+        document.addEventListener('touchmove', handleTouchMove, false);
+
+        function handleKeyEvent(evt) {
             var keyCode = window.event ? window.event.keyCode : 
-                                         ev ? ev.keyCode : null;
+                                         evt ? evt.keyCode : null;
             var dir = null;
             switch ( keyCode ) {
                 case 37:
@@ -46,16 +47,38 @@ tlol.gameLoopService = (function () {
                     dir = tlol.direction.DOWN; 
                     break;
             }
-            if ( dir ) {
-                glsCallback( dir );
-            }
+            glsCallback( dir );
         }; /* handleKeyEvent */
 
-    }; /* registerKeyboardListener */
+        var xDown = null;
+        var yDown = null;
 
-    function registerSwipeListener() {
-        
-    };
+        function handleTouchStart(evt) {
+            xDown = evt.touches[0].clientX;
+            yDown = evt.touches[0].clientY;
+        }; /* handleTouchStart */
+
+        function handleTouchMove(evt) {
+            var xUp = evt.touches[0].clientX;
+            var yUp = evt.touches[0].clientY;
+            //console.log(xDown + ", " + yDown + " -> " +
+            //            xUp + ", " + yUp);
+            var xDiff = xDown - xUp; 
+            var yDiff = yDown - yUp; 
+
+            var movDir = null;
+            if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/* most significant */
+                movDir = xDiff > 0 ? tlol.direction.LEFT :
+                                     tlol.direction.RIGHT;
+            } else {
+                movDir = yDiff > 0 ? tlol.direction.UP :
+                                     tlol.direction.DOWN;
+    
+            }
+            glsCallback( movDir );
+        }; /* handleTouchEnd */
+
+    }; /* registerEventsListeners */
 
     function setCallback(gameRunCallback) {
         if ( tlol.util.isString(glsCallback) ) {
@@ -77,12 +100,12 @@ tlol.gameLoopService = (function () {
             };
         }
 
-        var gameTimer = (function() {                                                      
+        var loopService = (function() {
             var gameSpeed = null;                              
             var gameSpeedMax = null;                               
-            var gameSpeedIncrement = null;                                
+            var speedIncrement = null;                                
             var targetTimeForMaxSpeed = null;
-            var gameSpeedIncrementSpeed = null; 
+            var incrementSpeedSpeed = null; 
             var glsCallbackTimerId = null;
             var incrementTimerId = null;                      
 
@@ -93,48 +116,52 @@ tlol.gameLoopService = (function () {
                         clearInterval(incrementTimerId);                         
                     } else {                                                     
                         /* increment speed */                                    
-                        gameSpeed = gameSpeed - gameSpeedIncrement;              
+                        gameSpeed = gameSpeed - speedIncrement;              
+                        console.log(gameSpeed + "/" + gameSpeedMax);
                         /*TODO: review if already elapsed time should be considered*/
                         clearInterval(glsCallbackTimerId);
                         glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
                     }                                                            
                 },                                                               
-                gameSpeedIncrementSpeed);                                        
-
+                incrementSpeedSpeedInterval);                                        
             }
 
+            /* Stop everything */
             function stop() {
                 clearInterval(glsCallbackTimerId);
                 clearInterval(incrementTimerId);
             }
 
-            function resetValues() {
-                              gameSpeed = 1000 * 1;                              
-                           gameSpeedMax = 250 * 1;                               
-                     gameSpeedIncrement = 50 * 1;                                
-                  targetTimeForMaxSpeed = 1000 * 60 * 7; /* 7 min */
-                gameSpeedIncrementSpeed = targetTimeForMaxSpeed / 
-                                          ( (gameSpeed - gameSpeedMax) / 
-                                            gameSpeedIncrement );                              
+            function restart() {
+                             gameSpeed = 1000;            /* 1 row per second */                              
+                          gameSpeedMax = 250;              /* 1/4 of a second */                       
+                        speedIncrement = 50;                  /* 50 ms faster */                           
+                 targetTimeForMaxSpeed = 1000 * 60 * 3;/* 3 min for max speed */
+
+                var totalIncrements = ( (gameSpeed - gameSpeedMax) / 
+                                        speedIncrement );
+                incrementSpeedSpeedInterval = targetTimeForMaxSpeed / 
+                                              totalIncrements; 
+
                 stop();
                 glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
                 startAutomatedGameSpeedIncrements();
             }
 
-            var that = {
-                resetValues: resetValues,
+            var loopObj = {
+                restart: restart,
                 stop: stop
             };
 
-            return that;                                                         
-        })();
+            return loopObj;                                                         
+        })(); /* loopService */
 
-        gameTimer.resetValues();
+        loopService.restart();       /* start the service before returning it */
 
-        return gameTimer;
+        return loopService;
     }; /* startLoop */
 
-    /* Public interface */
+    /* Public interface for tlol.gameLoopService */
     var glsObj = {
         startLoop: startLoop,
         setGameRunCallback: setCallback 
