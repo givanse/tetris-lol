@@ -91,7 +91,7 @@ tlol.gameLoopService = (function () {
         }
     };
 
-    function startLoop() {
+    function getLoopHandle() {
         if ( ! glsCallback ) {
             throw {
                 name: '',
@@ -149,21 +149,21 @@ tlol.gameLoopService = (function () {
             }
 
             var loopObj = {
-                restart: restart,
+                start: restart,
                 stop: stop
             };
 
             return loopObj;                                                         
         })(); /* loopService */
 
-        loopService.restart();       /* start the service before returning it */
+        //loopService.restart();       /* start the service before returning it */
 
         return loopService;
-    }; /* startLoop */
+    }; /* getLoopHandle */
 
     /* Public interface for tlol.gameLoopService */
     var glsObj = {
-        startLoop: startLoop,
+        getLoopHandle: getLoopHandle,
         setGameRunCallback: setCallback 
     };
 

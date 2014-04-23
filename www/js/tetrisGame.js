@@ -30,18 +30,9 @@ tlol.tetrisGame = (function() {
     };
 
     /**
-     * Called when a user loses the game, it updates the state of the game and
-     * updates UI elements as necessary.
-     */
-    var gameOver = function() {
-        endGame();
-        dom.gameoverSplash.style.display = 'block';
-    };
-
-    /**
      * This is where all the magic happens. It is the function executed as the 
      * callback passed to the gameLoopService object when the game is started in
-     * function startNewGame().
+     * function initialize().
      *
      */
     var run = function (movementDirection) {
@@ -91,7 +82,8 @@ tlol.tetrisGame = (function() {
             /* Prepare the next Tetromino. */
             var isNextTetroValid = boardController.useNextTetromino();
             if ( ! isNextTetroValid ) {         /* Check if the game is over. */
-                gameOver();
+                endGame();
+                dom.gameoverSplash.style.display = 'block';
                 return;
             }
 
@@ -100,7 +92,7 @@ tlol.tetrisGame = (function() {
 
     }; /* run */
 
-    var startNewGame = function(newDOM) {
+    var initialize = function(newDOM) {
         endGame();
 
         if ( newDOM ) {
@@ -127,12 +119,19 @@ tlol.tetrisGame = (function() {
         dom.gameoverSplash.style.display = 'none';
 
         tlol.gameLoopService.setGameRunCallback( run ); 
-        loopService = tlol.gameLoopService.startLoop();
-    }; /* startNewGame */
+        loopService = tlol.gameLoopService.getLoopHandle();
+    }; /* initialize */
 
     /* Public interface */
     var tetrisGame = {
-        startNewGame: startNewGame
+        initialize: initialize,
+        start: function () { 
+            loopService.start(); 
+        },
+        restart: function () {
+            initialize();
+            loopService.start(); 
+        }
     };
 
     return tetrisGame;

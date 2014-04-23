@@ -23,12 +23,43 @@ div#bootSplash {
     width: 100%;
     height: 100%;
     color: #ffffff;
-    background-color: #003366;
+    background-color: #1f1f1f;
     text-align: center;
     font-size: 7em;
-    padding-top: 33%;
+    padding-top: 100px;
 }
 
+@media (min-width: 310px) {
+    div#bootSplash div#logo img#logo {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 310px) {
+    div#bootSplash div#logo img#logo {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+
+div#bootSplash div#loadIndicatorWrapper {
+    width: 180px; /* 300px x 0.60 */
+    height: 11px;
+    margin: auto;
+    border: #ff6600 solid 2px;
+    border-radius: 7px;
+}
+
+div#bootSplash div#loadIndicator {
+    background-color: #ff6600;
+    width: 0px;
+    height: 11px;
+    border-radius: 4px;
+}
+
+/* Canvas */
 div#canvasFrame {
     position: relative;
 
@@ -63,12 +94,11 @@ div#canvas {
 
 /* GAME INFO */
 
-div#gameInfo {
+div#canvasFrame div#gameInfo {
     position: absolute;
     top: 0px;
 
     color: #003366;
-    font-size: 5em;
     font-weight: bold;
     line-height: 50px;
     text-align: center;
@@ -87,6 +117,25 @@ div#gameInfo div#nextTetromino {
     height: 10%; 
 }
 
+
+@media (min-height: 480px) {
+    div#canvasFrame div#gameInfo {
+        font-size: 45px;
+    }
+}
+
+@media (min-height: 640px) {
+    div#canvasFrame div#gameInfo {
+        font-size: 70px;
+    }
+}
+
+@media (min-height: 800px) {
+    div#canvasFrame div#gameInfo {
+        font-size: 90px;
+    }
+}
+
 div#gameInfo div#nextTetromino .square {
     background: #003366;
 }
@@ -99,25 +148,41 @@ div#gameInfo div#score {
 
 div#gameoverSplash {
     position: absolute;
-    top: 20%;
-    height: 40%;
+    top: 100px;
     width: 100%;
     z-index: 2000;
     display: none;
-    background-color: rgba(22, 22, 93, 0.60);
+    background-color: rgba(31, 31, 31, 0.60);
+}
+
+@media (min-width: 510px) {
+    div#defeatImage img#defeat {
+        width: 500px;
+        height: 200px;
+    }
+    div#newGameButton img#newgame{
+        width: 142px;
+        height: 56px;
+    }
+}
+
+@media (max-width: 510px) {
+    div#defeatImage img#defeat {
+        width: 310px;
+        height: 124px; /* ( ( 310 * 100 / 500 ) * 200 ) / 100 */
+    }
+    div#newGameButton img#newgame{
+        width: 100px;
+        height: 39px; /* ( ( 100 * 100 / 142 ) * 56 ) / 100 */
+    }
 }
 
 div#defeatImage {
-    width: 100%;
-    height: 70%;
-    margin-top: 3%;
-    background: transparent url('../img/defeat.png') center top no-repeat;
+    margin: 20px 0px 50px 0px;
 }
 
 div#newGameButton {
-    width: 100%;
-    height: 30%;
-    background: transparent url('../img/play.png') center top no-repeat;
+    margin: 0px 0px 60px 0px;
 }
 
 /* BOARD */
@@ -129,6 +194,7 @@ div#newGameButton {
     border: 1px solid #02060c;
     border-radius: 4px;
     background: transparent url('../img/sqrBackground.png') center top no-repeat;
+    background-size: 100%;
     opacity: 1.0;
     z-index: 1000;
 }
@@ -148,8 +214,8 @@ div#canvas div.square[buffer="true"] {
 .SSHP_R {background-color: #00ff00;}
 .SSHP_L {background-color: #ff0000;}
 .MUSHROOM {
-    background-color: #62e63e;
     background: transparent url('../img/nox.png') center top no-repeat;
+    background-size: 100%;
 }
 
 /* EOF */

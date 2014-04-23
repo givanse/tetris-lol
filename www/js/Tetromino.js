@@ -46,9 +46,9 @@ Tetromino.prototype.updateSquares = function(baseCoordinates) {
 Tetromino.prototype.buildSquares = function() {
 
     var noxiousTrapPosition = null;
-    if (this.tSpec === tlol.tSpec.square()) {
-        noxiousTrapPosition = 0;
-    }
+    //if (this.tSpec === tlol.tSpec.square()) {
+    //    noxiousTrapPosition = 0;
+    //}
 
     var squares = [];
     var baseCoords = this.tSpec.getBaseCoords(this.rotationIndx);

@@ -79,6 +79,10 @@ tlol.squareFactory = (function() {
 
     /**
      * Fades in or out a list of squares.
+     *
+     * TODO: refactor
+     * Almost the same as in tlol.ui.fadeIn/Out, but in here we avoid creating
+     * a new setInterval() for each element.
      */
     function fade(isFadeIn, squares, 
                   startOpacity, targetOpacity, fadeSpeed, callback) {

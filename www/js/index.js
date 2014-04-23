@@ -34,18 +34,33 @@ var app = {
             gameoverSplash: document.getElementById("gameoverSplash")
         };
 
-        var splashDuration = 700;
-        var splashFadeOutSpeed = 4;
-        window.setTimeout(function () {
-            var bootSplash = document.getElementById("bootSplash");
+        tlol.tetrisGame.initialize(domElements);
 
-            tlol.ui.fadeOut(bootSplash, splashFadeOutSpeed, function () {
+        var loadIndicator = document.getElementById("loadIndicator");
+        var splashDuration = 1000;
+        var loadIndicatorWidth = 0;
+        var loadIndicatorWidthInc = 1;
+        var loadIndicatorWidthMax = 180; /* 300px * 0.60 */
+
+        var loadIndicatorTotalUpdates = loadIndicatorWidthMax / 
+                                        loadIndicatorWidthInc;
+        var loadIndicatorUpdateSpeed = splashDuration / 
+                                       loadIndicatorTotalUpdates;
+        var loadIntervalId = setInterval(function() {
+            if ( loadIndicatorWidth === loadIndicatorWidthMax ) {
+                clearInterval(loadIntervalId); 
+                /* remove splash screen */
+                var bootSplash = document.getElementById("bootSplash");
                 bootSplash.parentNode.removeChild( bootSplash );
-            });
+                /* start the game */
+                tlol.tetrisGame.start();
+            } else {
+                loadIndicatorWidth += loadIndicatorWidthInc;
+                loadIndicator.style.width = loadIndicatorWidth + "px";
+            }
+        }, loadIndicatorUpdateSpeed);
 
-            tlol.tetrisGame.startNewGame(domElements);
-        }, splashDuration);
-    }
+    } /* onDeviceReady */
 };
 
 /*EOF*/
