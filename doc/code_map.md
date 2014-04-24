@@ -5,4 +5,5 @@
           * SquaresMatrix.js 
           * Tetromino.js
              * squareFactory.js
+                * Square 
        * GameInfoController.js
