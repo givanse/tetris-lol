@@ -15,7 +15,7 @@ var tlol = {
 
     square_size: null,                   /* set at tlol.calculateDimensions() */
     square_border_w: null,               /* set at tlol.calculateDimensions() */
-    rowFadeOutSpeed: 4,                                      /*  milliseconds */
+    rowFadeOutSpeed: 2,                                      /*  milliseconds */
     nextTetroFadeSpeed: 4,                                   /*  milliseconds */
 
     cssClass: {

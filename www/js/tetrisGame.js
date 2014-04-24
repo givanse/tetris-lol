@@ -22,7 +22,7 @@ tlol.tetrisGame = (function() {
     var endGame = function() {
         arePlayerActionsStillPossible = false;
         if ( gameInfoController ) {
-            gameInfoController.clearNextTetromino();
+            gameInfoController.removeNextTetromino();
         }
         if ( loopService ) {
             loopService.stop();
@@ -46,22 +46,20 @@ tlol.tetrisGame = (function() {
                               movementDirection === tlol.direction.LEFT ) ? 
                               movementDirection : tlol.direction.DOWN;
 
-        var tMoveSuccessful = boardController.updateBoard(movementDirection);
-
-        var currTetromino = boardController.getCurrentTetromino();
-        var nextTetromino = boardController.getNextTetromino();
+        var tMoveSuccessful = boardController.moveTetromino(movementDirection);
 
         /* up, right, down, left success */
         if ( tMoveSuccessful ) {
-            boardController.drawSquares();
+            var currTetromino = boardController.getCurrentTetromino();
+            var nextTetromino = boardController.getNextTetromino();
 
             var numRowsDrawDelay = 2;
             // TODO: farthestTraveled incorrect if the user rotates
             var farthestTraveled = currTetromino.getRows()[0];
             if ( farthestTraveled > numRowsDrawDelay ) {
                 // TODO: optimize, dont clear and redraw each time, clear once
-                gameInfoController.clearNextTetromino();
-                gameInfoController.drawNextTetromino(nextTetromino);
+                gameInfoController.removeNextTetromino();
+                gameInfoController.appendNextTetromino(nextTetromino);
             }
 
             return;
@@ -74,7 +72,7 @@ tlol.tetrisGame = (function() {
         if ( ! tMoveSuccessful &&
              movementDirection === tlol.direction.DOWN ) { 
 
-            boardController.insertTetromino(currTetromino);
+            boardController.appendFallingTetromino();
             gameInfoController.increaseScore(); 
             var deletedRowsCount = boardController.deleteCompletedRows();
             gameInfoController.addDeletedRowsScorePoints(deletedRowsCount);
@@ -86,7 +84,6 @@ tlol.tetrisGame = (function() {
                 dom.gameoverSplash.style.display = 'block';
                 return;
             }
-
             return;
         }
 

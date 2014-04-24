@@ -47,7 +47,6 @@ test("squareFactory - square.setX", function() {
     var actual = square.getX();
     equal(actual, expected, "set x to 16");
 
-    console.log(tlol.square_size);
     expected = 16 * 32;/* This corresponds to tlol.square_size */
     actual = parseInt(square.getDiv().style.left);
     equal(actual, expected, "x to pixels 512");

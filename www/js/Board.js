@@ -40,20 +40,20 @@ function Board(canvasBackground, canvas) {
                          buildRandomTetromino(this.squaresMatrix.getWidth());
 
     this.generateRandomInitialRows();
-    this.drawSquares();
+    this.appendAllSquares();
 }
 
 /**
  *
  * return - true if the falling shape completed the movement, false otherwise.
  */
-Board.prototype.updateBoard = function(movDirection) {
+Board.prototype.moveTetromino = function (movDirection) {
     var simulatedPositions = this.currTetromino
-                                 .getNextPositionCoords(movDirection);
+                                 .simulatePositions(movDirection);
     var isValidMovement = this.squaresMatrix
                               .arePositionsAvailable(simulatedPositions);
     if ( isValidMovement ) {
-        this.currTetromino.move(movDirection);
+        this.currTetromino.applySimulatedPositions();
         return true;
     }
 
@@ -95,38 +95,32 @@ Board.prototype.deleteCompletedRows = function() {
     return completedRows.length; /* The number of rows that were deleted. */
 }
 
-
-/* Drawing into the canvas. */
-
 /**
  * Draw, append, the squares to the canvas div.
  */
-Board.prototype.drawSquares = function() {
-    /*TODO: Optimization, remove and append only the squares that have moved. */
+Board.prototype.appendAllSquares = function () {
+
     /* Clear the canvas. */
     while(this.canvas.hasChildNodes()) {
         this.canvas.removeChild(this.canvas.lastChild);
     }
 
-    /* Draw board squares. */
+    /* Append board squares. */
     var squares = this.squaresMatrix.getMatrix();
-    for(var col= 0; col < this.squaresMatrix.getWidth(); col++)
-        this._drawSquaresArray(squares[col]);
-
-    /* Draw falling squares. */
-    this._drawSquaresArray(this.currTetromino.getSquares());
-}
-
-Board.prototype._drawSquaresArray = function(squaresArray) {
-    if ( ! tlol.util.isArray(squaresArray) ) {
-        return;
+    for (var col= 0; col < this.squaresMatrix.getWidth(); col++) {
+        this.appendSquaresArray(squares[col]);
     }
 
+    /* Append falling squares. */
+    this.appendSquaresArray( this.currTetromino.getSquares() );
+}
+
+Board.prototype.appendSquaresArray = function (squaresArray) {
     for (var i = 0; i < squaresArray.length; i++) {
-        var square = squaresArray[i];
-        if (square) {
-            this.canvas.appendChild(square.getDiv());
-        }
+       var square = squaresArray[i];
+       if (square) {
+           this.canvas.appendChild(square.getDiv());
+       }
     }
 }
 
@@ -135,6 +129,9 @@ Board.prototype.useNextTetromino = function() {
     this.currTetromino = this.nextTetromino;
     this.nextTetromino = tlol.tetrominoFactory
                              .buildRandomTetromino(this.squaresMatrix.getWidth()); 
+
+    /* Append falling squares. */
+    this.appendSquaresArray( this.currTetromino.getSquares() );
 
     /* Check if the tetromino can be shown on the board. */
     var newTetroPositions = this.currTetromino.getPositions();
@@ -180,8 +177,8 @@ Board.prototype.getWidth = function() {
     return parseInt(this.canvas.style.width);
 }
 
-Board.prototype.insertTetromino = function(tetromino) {
-    this.squaresMatrix.insertTetromino(tetromino);
+Board.prototype.appendFallingTetromino = function () {
+    this.squaresMatrix.insertTetromino( this.getCurrentTetromino() );
 }
 
 /* EOF */

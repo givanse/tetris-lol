@@ -66,12 +66,14 @@ tlol.squareFactory = (function() {
         var square = {
             setX: setX,
             setY: setY,
-            getX: function() { return x; },
-            getY: function() { return y; },
+            getX: function() { return x; }, /* The column value */
+            getY: function() { return y; }, /* The row value */
             getDiv: function() { return div; },
             isEqual: isEqual,
             /* used for debugging */
-            description: (function () { return "("+x+", "+y+") "+cssClass; })() 
+            description: (function () { 
+                return "("+x+", "+y+") "+cssClass; 
+            })() 
         };
 
         return square;

@@ -2,7 +2,7 @@
  *
  */
 
-function Tetromino(xOffset, yOffset, tSpec) {
+function Tetromino(x, y, tSpec) {
 
     if (! tSpec || tSpec === undefined) {
         throw {
@@ -11,44 +11,29 @@ function Tetromino(xOffset, yOffset, tSpec) {
         };
     }
 
-    this.xOffset = (xOffset < 0) ? 0 : xOffset;
-    this.yOffset = (yOffset < 0) ? 0 : yOffset;
+    this.x = (x < 0) ? 0 : x;
+    this.y = (y < 0) ? 0 : y;
     this.tSpec = tSpec;
 
     /* Used to select the correct base coordinates from this.tSpec */
     this.rotationIndx = 0; 
 
-    this.squares = this.getSquares();
+    this.squares = this.buildSquares(x, y);
+
+    this.simMovDirection = null;
+    this.simulatedPositions = null;
 }
 
 Tetromino.prototype.getSquares = function() {
-    /* Guarantee the most up to date coordinates for the squares. */
-    if (this.squares) {
-        this.updateSquares(this.tSpec.getBaseCoords(this.rotationIndx));
-    } else {
-        this.squares = this.buildSquares();
-    }
     return this.squares;
 }
 
-Tetromino.prototype.updateSquares = function(baseCoordinates) {
-    for(var i = 0; i < this.squares.length; i++) {
-        var baseCoordsPair = baseCoordinates[i];
-        var x = baseCoordsPair[0] + this.xOffset;
-        var y = baseCoordsPair[1] + this.yOffset;
-
-        var square = this.squares[i];
-        square.setX(x);
-        square.setY(y);
-    }
-}
-
-Tetromino.prototype.buildSquares = function() {
+Tetromino.prototype.buildSquares = function(x, y) {
 
     var noxiousTrapPosition = null;
-    //if (this.tSpec === tlol.tSpec.square()) {
-    //    noxiousTrapPosition = 0;
-    //}
+    if (this.tSpec === tlol.tSpec.square()) {
+        noxiousTrapPosition = 0;
+    }
 
     var squares = [];
     var baseCoords = this.tSpec.getBaseCoords(this.rotationIndx);
@@ -58,9 +43,9 @@ Tetromino.prototype.buildSquares = function() {
                                                      this.tSpec.getCSSClass();
 
         var baseCoordsPair = baseCoords[i];
-        var x = baseCoordsPair[0] + this.xOffset;
-        var y = baseCoordsPair[1] + this.yOffset;
-        squares[i] = tlol.squareFactory.buildSquare(x, y, cssClass);
+        var xSqr = baseCoordsPair[0] + x;
+        var ySqr = baseCoordsPair[1] + y;
+        squares[i] = tlol.squareFactory.buildSquare(xSqr, ySqr, cssClass);
     }
 
     return squares;
@@ -74,81 +59,80 @@ Tetromino.prototype.getNextRotationIndx = function() {
  * Returns a list of the coordinates that the Tetromino will use if
  * the received movement direction is applied.
  */
-Tetromino.prototype.getNextPositionCoords = function(movDirection) {
-    var tmpRotIndx = this.rotationIndx;
-    var xOffsetIncrement = null;
-    var yOffsetIncrement = null;
+Tetromino.prototype.simulatePositions = function (movDirection) {
 
-    switch( movDirection ) {
-        case tlol.direction.UP: /* rotate */
-            tmpRotIndx = this.getNextRotationIndx();
-            xOffsetIncrement = 0;
-            yOffsetIncrement = 0;
-            break;
-        case tlol.direction.DOWN:
-            xOffsetIncrement = 0;
-            yOffsetIncrement = 1;
-            break;
-        case tlol.direction.RIGHT:
-            xOffsetIncrement = 1;
-            yOffsetIncrement = 0;
-            break;
-        case tlol.direction.LEFT:
-            xOffsetIncrement = -1;
-            yOffsetIncrement = 0;
-            break;
+    this.simMovDirection = movDirection;
+    var newPosCoords = [];
+
+    if ( movDirection === tlol.direction.UP ) {
+        /* Simulate rotation */
+        var tmpRotIndx = this.getNextRotationIndx();
+        var baseCoords = this.tSpec.getBaseCoords(tmpRotIndx);
+
+        for (var i = 0; i < baseCoords.length; i++) {
+            var square = this.squares[i];
+
+            var baseCoordsPair = baseCoords[i];
+            var nextX = baseCoordsPair[0] + this.x;
+            var nextY = baseCoordsPair[1] + this.y;
+
+            newPosCoords[i] = [nextX, nextY];
+        }
+    } else {
+        /* Simulate slide */
+        var xIncrement = 0;
+        var yIncrement = 0;
+        switch( movDirection ) {
+            case tlol.direction.DOWN:
+                yIncrement = 1; break;
+            case tlol.direction.RIGHT:
+                xIncrement = 1; break;
+            case tlol.direction.LEFT:
+                xIncrement = -1; break;
+        }
+
+        for (var i = 0; i < this.squares.length; i++) {
+            var square = this.squares[i];
+            var nextX = square.getX() + xIncrement;
+            var nextY = square.getY() + yIncrement;
+            newPosCoords[i] = [nextX, nextY];
+        }
     }
-    return this.getOffsetIncrementPosCoords(tmpRotIndx, 
-                                            xOffsetIncrement, 
-                                            yOffsetIncrement);
+    this.simulatedPositions = newPosCoords;
+    return this.simulatedPositions;
 }
 
 /**
  * return - The positions of the Squares that conform this Tetromino.
  */
 Tetromino.prototype.getPositions = function() {
-    return this.getOffsetIncrementPosCoords(this.rotationIndx, 0, 0);
-}
-
-/**
- *
- * return - The positions of the Squares that belong to this Tetromino with
- *          an offset added to each of them.
- */
-Tetromino.prototype.getOffsetIncrementPosCoords = 
-function(rotIndx, xOffsetIncrement, yOffsetIncrement) {
-
-    xOffsetIncrement = (xOffsetIncrement === undefined) ? 0 : xOffsetIncrement;
-    yOffsetIncrement = (yOffsetIncrement === undefined) ? 0 : yOffsetIncrement;
-
-    var baseCoordinates = this.tSpec.getBaseCoords(rotIndx);
-
-    var newPosCoords = [];
-    for(var i = 0; i < baseCoordinates.length; i++) {
-        var coordsPair = baseCoordinates[i];
-
-        var x = coordsPair[0];
-        var y = coordsPair[1];
-
-        var nextX = x + this.xOffset + xOffsetIncrement;
-        var nextY = y + this.yOffset + yOffsetIncrement;
-
-        newPosCoords[i] = [nextX, nextY];
+    var coordinates = [];
+    for (var i = 0; i < this.squares.length; i++) {
+        var square = this.squares[i];
+        coordinates.push( [ square.getX(), square.getY() ] );
     }
-    return newPosCoords;
+    return coordinates;
 }
 
 /**
- * Apply the received movement direction.
+ * Move by applying the received positions.
  */
-Tetromino.prototype.move = function(movDirection) {
-    switch(movDirection) {
-        case    tlol.direction.UP: 
-            this.rotationIndx = this.getNextRotationIndx(); 
-            return;
-        case  tlol.direction.DOWN: this.yOffset += 1;   return;
-        case  tlol.direction.LEFT: this.xOffset -= 1;   return;
-        case tlol.direction.RIGHT: this.xOffset += 1;   return;
+Tetromino.prototype.applySimulatedPositions = function () {
+    switch ( this.simMovDirection ) {
+        case tlol.direction.UP:
+            this.rotationIndx = this.getNextRotationIndx(); break;
+        case tlol.direction.DOWN:
+            this.y += 1; break;
+        case tlol.direction.RIGHT:
+            this.x += 1; break;
+        case tlol.direction.LEFT:
+            this.x += -1; break;
+    }
+    for (var i = 0; i < this.simulatedPositions.length; i++) {
+        var square = this.squares[i];
+        var pos = this.simulatedPositions[i];
+        square.setX( pos[0] );
+        square.setY( pos[1] );
     }
 }
 

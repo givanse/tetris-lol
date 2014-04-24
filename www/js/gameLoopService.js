@@ -134,7 +134,7 @@ tlol.gameLoopService = (function () {
 
             function restart() {
                              gameSpeed = 1000;            /* 1 row per second */                              
-                          gameSpeedMax = 250;              /* 1/4 of a second */                       
+                          gameSpeedMax = 300;              /* 1/4 of a second */                       
                         speedIncrement = 50;                  /* 50 ms faster */                           
                  targetTimeForMaxSpeed = 1000 * 60 * 3;/* 3 min for max speed */
 

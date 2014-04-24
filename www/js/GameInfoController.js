@@ -33,13 +33,12 @@ GameInfoController.prototype.addDeletedRowsScorePoints = function(deletedRowsCou
     this.scoreDiv.innerHTML = "" + this.score;
 }
 
-GameInfoController.prototype.clearNextTetromino = function() {
+GameInfoController.prototype.removeNextTetromino = function() {
     if ( ! this.tetromino ) {
         return;
     }
 
     var squares = this.tetromino.getSquares(); 
-    //console.log("next tetromino squares: " + squares);
 
     //for (var i = 0; i < squares.length; i++) {
     //    squares[i].getDiv().style.backgroundColor = "#004D9B";
@@ -54,7 +53,7 @@ GameInfoController.prototype.clearNextTetromino = function() {
     //});
 }
 
-GameInfoController.prototype.drawNextTetromino = function(nextTetromino) {
+GameInfoController.prototype.appendNextTetromino = function(nextTetromino) {
     /* TODO: review magic number, tetrominoFactory.buildRandomTetromino */
     this.tetromino = new Tetromino(3, 0, nextTetromino.getTetrominoName());
     var squares = this.tetromino.getSquares();

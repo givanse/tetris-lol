@@ -136,10 +136,6 @@ div#gameInfo div#nextTetromino {
     }
 }
 
-div#gameInfo div#nextTetromino .square {
-    background: #003366;
-}
-
 div#gameInfo div#score {
     padding: 32px 7px 0px 7px;
 }
@@ -197,6 +193,13 @@ div#newGameButton {
     background-size: 100%;
     opacity: 1.0;
     z-index: 1000;
+    /* http://aerotwist.com/blog/on-translate3d-and-layer-creation-hacks/ */
+    -webkit-transform: translate3d(0px,0px,0px);
+}
+
+div#gameInfo div#nextTetromino .square {
+    background: #003366;
+    -webkit-transform: translate3d(0px,0px,0px);
 }
 
 div#canvas div.square[buffer="true"] {
