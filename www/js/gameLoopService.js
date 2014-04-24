@@ -7,11 +7,6 @@
  */
 tlol.gameLoopService = (function () {
 
-   /* Its the function that will be called in each iteration of the game loop.*/
-    var glsCallback = null;
-
-    registerEventsListeners();
-
     /**
       * Based on platform, register keyboard listeners.
       */
@@ -91,79 +86,81 @@ tlol.gameLoopService = (function () {
         }
     };
 
-    function getLoopHandle() {
-        if ( ! glsCallback ) {
-            throw {
-                name: '',
-                message: 'The game run glsCallback has not been set. ' +
-                         'Please use setGameRunCallback().'
-            };
+    var loopServiceHandle = (function() {
+        var gameSpeed = null;                              
+        var gameSpeedMax = null;                               
+        var speedIncrement = null;                                
+        var targetTimeForMaxSpeed = null;
+        var incrementSpeedSpeed = null; 
+        var glsCallbackTimerId = null;
+        var incrementTimerId = null;                      
+
+        function startAutomatedGameSpeedIncrements() {
+            incrementTimerId = setInterval(function() {                      
+                if (gameSpeed <= gameSpeedMax) {                             
+                    /* stop speed increments */                              
+                    clearInterval(incrementTimerId);                         
+                } else {                                                     
+                    /* increment speed */                                    
+                    gameSpeed = gameSpeed - speedIncrement;              
+                    console.log(gameSpeed + "/" + gameSpeedMax);
+                    /*TODO: review if already elapsed time should be considered*/
+                    clearInterval(glsCallbackTimerId);
+                    glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
+                }                                                            
+            },                                                               
+            incrementSpeedSpeedInterval);                                        
         }
 
-        var loopService = (function() {
-            var gameSpeed = null;                              
-            var gameSpeedMax = null;                               
-            var speedIncrement = null;                                
-            var targetTimeForMaxSpeed = null;
-            var incrementSpeedSpeed = null; 
-            var glsCallbackTimerId = null;
-            var incrementTimerId = null;                      
+        /* Stop everything */
+        function stop() {
+            clearInterval(glsCallbackTimerId);
+            clearInterval(incrementTimerId);
+        }
 
-            function startAutomatedGameSpeedIncrements() {
-                incrementTimerId = setInterval(function() {                      
-                    if (gameSpeed <= gameSpeedMax) {                             
-                        /* stop speed increments */                              
-                        clearInterval(incrementTimerId);                         
-                    } else {                                                     
-                        /* increment speed */                                    
-                        gameSpeed = gameSpeed - speedIncrement;              
-                        console.log(gameSpeed + "/" + gameSpeedMax);
-                        /*TODO: review if already elapsed time should be considered*/
-                        clearInterval(glsCallbackTimerId);
-                        glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
-                    }                                                            
-                },                                                               
-                incrementSpeedSpeedInterval);                                        
-            }
+        function restart() {
+                         gameSpeed = 1000;            /* 1 row per second */                              
+                      gameSpeedMax = 300;              /* 1/4 of a second */                       
+                    speedIncrement = 50;                  /* 50 ms faster */                           
+             targetTimeForMaxSpeed = 1000 * 60 * 3;/* 3 min for max speed */
 
-            /* Stop everything */
-            function stop() {
-                clearInterval(glsCallbackTimerId);
-                clearInterval(incrementTimerId);
-            }
+            var totalIncrements = ( (gameSpeed - gameSpeedMax) / 
+                                    speedIncrement );
+            incrementSpeedSpeedInterval = targetTimeForMaxSpeed / 
+                                          totalIncrements; 
+            /* halt current service */
+            stop();                               
+            /* schedule infinite loop */
+            glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
+            startAutomatedGameSpeedIncrements();
+        } /* restart */
 
-            function restart() {
-                             gameSpeed = 1000;            /* 1 row per second */                              
-                          gameSpeedMax = 300;              /* 1/4 of a second */                       
-                        speedIncrement = 50;                  /* 50 ms faster */                           
-                 targetTimeForMaxSpeed = 1000 * 60 * 3;/* 3 min for max speed */
+        var loopServiceHandle = {
+            start: restart,
+            stop: stop
+        };
 
-                var totalIncrements = ( (gameSpeed - gameSpeedMax) / 
-                                        speedIncrement );
-                incrementSpeedSpeedInterval = targetTimeForMaxSpeed / 
-                                              totalIncrements; 
+        return loopServiceHandle;                                                         
+    })(); /* var loopServiceHandle */
 
-                stop();
-                glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
-                startAutomatedGameSpeedIncrements();
-            }
+    /* Its the function that will be called in each iteration of the game loop.*/
+    var glsCallback = null;
 
-            var loopObj = {
-                start: restart,
-                stop: stop
-            };
-
-            return loopObj;                                                         
-        })(); /* loopService */
-
-        //loopService.restart();       /* start the service before returning it */
-
-        return loopService;
-    }; /* getLoopHandle */
+    registerEventsListeners();
 
     /* Public interface for tlol.gameLoopService */
     var glsObj = {
-        getLoopHandle: getLoopHandle,
+        getLoopHandle: function () {
+            if ( ! glsCallback ) {
+                throw {
+                    name: 'MissingCallback',
+                    message: 'The game run glsCallback has not been set. ' +
+                             'Please use setGameRunCallback().'
+                };
+            }
+
+            return loopServiceHandle;
+        },
         setGameRunCallback: setCallback 
     };
 
@@ -171,4 +168,4 @@ tlol.gameLoopService = (function () {
 
 })(); /* gameLoopService */
 
-/* EOF */
+/*EOF*/

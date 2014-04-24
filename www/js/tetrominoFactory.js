@@ -32,11 +32,15 @@ tlol.tetrominoFactory = (function() {
 
     var that = {
         buildRandomTetrominoSpec: buildRandomTetrominoSpec, 
-        buildRandomTetromino: function(width) {
+        buildRandomTetromino: function (width) {
             var tSpec = buildRandomTetrominoSpec();                             
             /* assumes that width is always an even number */                   
             var x = (width / 2) - 2; 
-            var y = 0;                                                                   
+            /* TODO: When set to 0, the first Tetromino of every game won't 
+                     be visible until a swipe action is done. 
+                     This behavior was seen in the Android webview, neither
+                     Chrome or Firefox had this issue. */
+            var y = 1;
             return new Tetromino(x, y, tSpec);
         }
     };

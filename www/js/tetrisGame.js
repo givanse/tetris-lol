@@ -34,6 +34,12 @@ tlol.tetrisGame = (function() {
      * callback passed to the gameLoopService object when the game is started in
      * function initialize().
      *
+     * This callback is designed to be called by the gameLoopService without
+     * any arguments (defaults to tlol.direction.DOWN). In the case of user
+     * events it can be called specifying any direction.
+     *
+     * @movementDirection - Optional parameter. It is the movement direction
+     *                      that the falling shape will follow.
      */
     var run = function (movementDirection) {
 

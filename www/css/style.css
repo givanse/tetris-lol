@@ -185,6 +185,8 @@ div#newGameButton {
 
 .square {
     position: absolute;
+    top: 0px;
+    left: 0px;
     /* width:  tlol.square_size - (2 x border) */
     /* height: tlol.square_size - (2 x border) */
     border: 1px solid #02060c;
@@ -217,8 +219,9 @@ div#canvas div.square[buffer="true"] {
 .SSHP_R {background-color: #00ff00;}
 .SSHP_L {background-color: #ff0000;}
 .MUSHROOM {
-    background: transparent url('../img/nox.png') center top no-repeat;
-    background-size: 100%;
+    /*background: transparent url('../img/nox.png') center top no-repeat;
+    background-size: 100%;*/
+    background-color: #c0c0c0;
 }
 
 /* EOF */

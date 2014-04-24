@@ -1,7 +1,6 @@
 /**
  *
  */
-
 function Tetromino(x, y, tSpec) {
 
     if (! tSpec || tSpec === undefined) {
@@ -24,8 +23,26 @@ function Tetromino(x, y, tSpec) {
     this.simulatedPositions = null;
 }
 
-Tetromino.prototype.getSquares = function() {
-    return this.squares;
+/**
+ * Move by applying the received positions.
+ */
+Tetromino.prototype.applySimulatedPositions = function () {
+    switch ( this.simMovDirection ) {
+        case tlol.direction.UP:
+            this.rotationIndx = this.getNextRotationIndx(); break;
+        case tlol.direction.DOWN:
+            this.y += 1; break;
+        case tlol.direction.RIGHT:
+            this.x += 1; break;
+        case tlol.direction.LEFT:
+            this.x += -1; break;
+    }
+    for (var i = 0; i < this.simulatedPositions.length; i++) {
+        var square = this.squares[i];
+        var pos = this.simulatedPositions[i];
+        square.setX( pos[0] );
+        square.setY( pos[1] );
+    }
 }
 
 Tetromino.prototype.buildSquares = function(x, y) {
@@ -53,6 +70,49 @@ Tetromino.prototype.buildSquares = function(x, y) {
 
 Tetromino.prototype.getNextRotationIndx = function() {
     return (this.rotationIndx === 3) ? 0 : this.rotationIndx + 1;
+}
+
+/**
+ * return - The positions of the Squares that conform this Tetromino.
+ */
+Tetromino.prototype.getPositions = function() {
+    var coordinates = [];
+    for (var i = 0; i < this.squares.length; i++) {
+        var square = this.squares[i];
+        coordinates.push( [ square.getX(), square.getY() ] );
+    }
+    return coordinates;
+}
+
+/**
+ * return - A list with the numbers of the rows being used by this Tetromino.
+ *          The list is sorted from top to bottom, ex: [0, 1, 2, 3]
+ */
+Tetromino.prototype.getRows = function() {
+    var rowNums = [];
+    var coordinates = this.getPositions();
+    for (var i = 0; i < coordinates.length; i++) {
+        var position = coordinates[i];
+        var rowNum = position[1];
+
+        /* Don't process duplicates. */
+        if ( rowNums.isDuplicate(rowNum) ) {
+            continue;
+        } else {
+            rowNums.push(rowNum);
+        }
+    }
+    rowNums.sort(function(a, b) { return a - b; });
+
+    return rowNums;
+}
+
+Tetromino.prototype.getSquares = function() {
+    return this.squares;
+}
+
+Tetromino.prototype.getTetrominoName = function() {
+    return this.tSpec;
 }
 
 /**
@@ -100,67 +160,6 @@ Tetromino.prototype.simulatePositions = function (movDirection) {
     }
     this.simulatedPositions = newPosCoords;
     return this.simulatedPositions;
-}
-
-/**
- * return - The positions of the Squares that conform this Tetromino.
- */
-Tetromino.prototype.getPositions = function() {
-    var coordinates = [];
-    for (var i = 0; i < this.squares.length; i++) {
-        var square = this.squares[i];
-        coordinates.push( [ square.getX(), square.getY() ] );
-    }
-    return coordinates;
-}
-
-/**
- * Move by applying the received positions.
- */
-Tetromino.prototype.applySimulatedPositions = function () {
-    switch ( this.simMovDirection ) {
-        case tlol.direction.UP:
-            this.rotationIndx = this.getNextRotationIndx(); break;
-        case tlol.direction.DOWN:
-            this.y += 1; break;
-        case tlol.direction.RIGHT:
-            this.x += 1; break;
-        case tlol.direction.LEFT:
-            this.x += -1; break;
-    }
-    for (var i = 0; i < this.simulatedPositions.length; i++) {
-        var square = this.squares[i];
-        var pos = this.simulatedPositions[i];
-        square.setX( pos[0] );
-        square.setY( pos[1] );
-    }
-}
-
-Tetromino.prototype.getTetrominoName = function() {
-    return this.tSpec;
-}
-
-/**
- * return - A list with the numbers of the rows being used by this Tetromino.
- *          The list is sorted from top to bottom, ex: [0, 1, 2, 3]
- */
-Tetromino.prototype.getRows = function() {
-    var rowNums = [];
-    var coordinates = this.getPositions();
-    for (var i = 0; i < coordinates.length; i++) {
-        var position = coordinates[i];
-        var rowNum = position[1];
-
-        /* Don't process duplicates. */
-        if ( rowNums.isDuplicate(rowNum) ) {
-            continue;
-        } else {
-            rowNums.push(rowNum);
-        }
-    }
-    rowNums.sort(function(a, b) { return a - b; });
-
-    return rowNums;
 }
 
 /* EOF */

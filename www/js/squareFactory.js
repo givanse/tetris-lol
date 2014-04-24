@@ -11,24 +11,18 @@ tlol.squareFactory = (function() {
      */
     function buildSquare(x, y, cssClass) {
 
-        if ( ! tlol.util.isString(cssClass) ) {
-            throw {
-                name: 'TypeError',
-                message: 'Square must receive a cssClass ' + 
-                         'that is a valid CSS class name.'
-            };
-        }
+        function isEqual(otherSquare) {
+            if (!otherSquare ||
+                !otherSquare.hasOwnProperty("getX") ||
+                !otherSquare.hasOwnProperty("getY") ||
+                !otherSquare.hasOwnProperty("getDiv")) {
+                return false;
+            }
 
-        x = (x < 0) ? 0 : x;
-        y = (y < 0) ? 0 : y;
-
-        var div = document.createElement('div');
-        div.className = 'square ' + cssClass;
-        div.style.width = tlol.square_size  + 'px';
-        div.style.height = tlol.square_size + 'px';
-
-        setX(x);
-        setY(y);
+            return square.getX() === otherSquare.getX() &&
+                   square.getY() === otherSquare.getY() &&
+                   square.getDiv().isEqualNode(otherSquare.getDiv());
+        };
 
         function setX(newX) {
             x = newX;
@@ -44,37 +38,34 @@ tlol.squareFactory = (function() {
             div.style.top = pos + 'px';
 
             if (y < 2) {
-                div.setAttribute("buffer", "true");
+                div.setAttribute('buffer', 'true');
             } else {
-                div.setAttribute("buffer", "false");
+                div.setAttribute('buffer', 'false');
             }
         };
     
-        function isEqual(otherSquare) {
-            if (!otherSquare ||
-                !otherSquare.hasOwnProperty("getX") ||
-                !otherSquare.hasOwnProperty("getY") ||
-                !otherSquare.hasOwnProperty("getDiv")) {
-                return false;
-            }
+        /* Init Square */
+        x = (x < 0) ? 0 : x;
+        y = (y < 0) ? 0 : y;
 
-            return square.getX() === otherSquare.getX() &&
-                   square.getY() === otherSquare.getY() &&
-                   square.getDiv().isEqualNode(otherSquare.getDiv());
-        };
+        var div = document.createElement('div');
+        div.className = 'square ' + cssClass;
+        div.style.width = tlol.square_size  + 'px';
+        div.style.height = tlol.square_size + 'px';
 
         var square = {
-            setX: setX,
-            setY: setY,
+            description: (function () { /* used for debugging */ 
+                return "("+x+", "+y+") "+cssClass; 
+            })(),
+            isEqual: isEqual,
+            getDiv: function() { return div; },
             getX: function() { return x; }, /* The column value */
             getY: function() { return y; }, /* The row value */
-            getDiv: function() { return div; },
-            isEqual: isEqual,
-            /* used for debugging */
-            description: (function () { 
-                return "("+x+", "+y+") "+cssClass; 
-            })() 
+            setX: setX,
+            setY: setY
         };
+        square.setX(x);
+        square.setY(y);
 
         return square;
     }; /* buildSquare */

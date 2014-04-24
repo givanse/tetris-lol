@@ -1,4 +1,6 @@
-
+/**
+ *
+ */
 function Board(canvasBackground, canvas) {
     var dimSettings = {
         /* Based on Tetris guidelines. */
@@ -40,24 +42,43 @@ function Board(canvasBackground, canvas) {
                          buildRandomTetromino(this.squaresMatrix.getWidth());
 
     this.generateRandomInitialRows();
-    this.appendAllSquares();
+    this.appendSquaresBoard();
 }
 
 /**
- *
- * return - true if the falling shape completed the movement, false otherwise.
+ * After calling this function, the Tetromino is no longer falling and its
+ * made part of the board.
  */
-Board.prototype.moveTetromino = function (movDirection) {
-    var simulatedPositions = this.currTetromino
-                                 .simulatePositions(movDirection);
-    var isValidMovement = this.squaresMatrix
-                              .arePositionsAvailable(simulatedPositions);
-    if ( isValidMovement ) {
-        this.currTetromino.applySimulatedPositions();
-        return true;
+Board.prototype.appendFallingTetromino = function () {
+    this.squaresMatrix.insertTetromino( this.getCurrentTetromino() );
+}
+
+Board.prototype.appendSquaresArray = function (squaresArray) {
+    for (var i = 0; i < squaresArray.length; i++) {
+       var square = squaresArray[i];
+       if (square) {
+           this.canvas.appendChild(square.getDiv());
+       }
+    }
+}
+
+/**
+ * Draw, append, the squares to the canvas div.
+ */
+Board.prototype.appendSquaresBoard = function () {
+    /* In case of a restart, delete everything. */
+    while ( this.canvas.hasChildNodes() ) {
+        this.canvas.removeChild(this.canvas.lastChild);
     }
 
-    return false;
+    /* Append board squares. */
+    var sqrsMtx = this.squaresMatrix.getMatrix();
+    for (var col = 0; col < this.squaresMatrix.getWidth(); col++) {
+        this.appendSquaresArray( sqrsMtx[col] );
+    }
+
+    /* Append falling squares. */
+    this.appendSquaresArray( this.currTetromino.getSquares() );
 }
 
 /** 
@@ -68,7 +89,7 @@ Board.prototype.moveTetromino = function (movDirection) {
  * return - The number of rows that were complete and deleted at the moment of
  *          invocation.
  */
-Board.prototype.deleteCompletedRows = function() {
+Board.prototype.deleteCompletedRows = function () {
 
     var candidateRows = this.currTetromino.getRows();
     var lowerRowNum = Math.max.apply(Math, candidateRows);
@@ -93,49 +114,6 @@ Board.prototype.deleteCompletedRows = function() {
     });
 
     return completedRows.length; /* The number of rows that were deleted. */
-}
-
-/**
- * Draw, append, the squares to the canvas div.
- */
-Board.prototype.appendAllSquares = function () {
-
-    /* Clear the canvas. */
-    while(this.canvas.hasChildNodes()) {
-        this.canvas.removeChild(this.canvas.lastChild);
-    }
-
-    /* Append board squares. */
-    var squares = this.squaresMatrix.getMatrix();
-    for (var col= 0; col < this.squaresMatrix.getWidth(); col++) {
-        this.appendSquaresArray(squares[col]);
-    }
-
-    /* Append falling squares. */
-    this.appendSquaresArray( this.currTetromino.getSquares() );
-}
-
-Board.prototype.appendSquaresArray = function (squaresArray) {
-    for (var i = 0; i < squaresArray.length; i++) {
-       var square = squaresArray[i];
-       if (square) {
-           this.canvas.appendChild(square.getDiv());
-       }
-    }
-}
-
-Board.prototype.useNextTetromino = function() {
-
-    this.currTetromino = this.nextTetromino;
-    this.nextTetromino = tlol.tetrominoFactory
-                             .buildRandomTetromino(this.squaresMatrix.getWidth()); 
-
-    /* Append falling squares. */
-    this.appendSquaresArray( this.currTetromino.getSquares() );
-
-    /* Check if the tetromino can be shown on the board. */
-    var newTetroPositions = this.currTetromino.getPositions();
-    return this.squaresMatrix.arePositionsAvailable(newTetroPositions);
 }
 
 Board.prototype.generateRandomInitialRows = function() {
@@ -177,8 +155,35 @@ Board.prototype.getWidth = function() {
     return parseInt(this.canvas.style.width);
 }
 
-Board.prototype.appendFallingTetromino = function () {
-    this.squaresMatrix.insertTetromino( this.getCurrentTetromino() );
+/**
+ *
+ * return - true if the falling shape completed the movement, false otherwise.
+ */
+Board.prototype.moveTetromino = function (movDirection) {
+    var simulatedPositions = this.currTetromino
+                                 .simulatePositions(movDirection);
+    var isValidMovement = this.squaresMatrix
+                              .arePositionsAvailable(simulatedPositions);
+    if ( isValidMovement ) {
+        this.currTetromino.applySimulatedPositions();
+        return true;
+    }
+
+    return false;
 }
 
-/* EOF */
+Board.prototype.useNextTetromino = function() {
+
+    this.currTetromino = this.nextTetromino;
+    this.nextTetromino = tlol.tetrominoFactory
+                             .buildRandomTetromino(this.squaresMatrix.getWidth()); 
+
+    /* Append falling squares. */
+    this.appendSquaresArray( this.currTetromino.getSquares() );
+
+    /* Check if the tetromino can be shown on the board. */
+    var newTetroPositions = this.currTetromino.getPositions();
+    return this.squaresMatrix.arePositionsAvailable(newTetroPositions);
+}
+
+/*EOF*/

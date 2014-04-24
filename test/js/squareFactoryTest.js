@@ -75,8 +75,6 @@ test("squareFactory - square.setY", function() {
 });
 
 test("squareFactory.buildSquare", function() {
-    throws(function () { tlol.squareFactory.buildSquare(-1, -1); }, 
-           "Square throws TypeError, invalid cssClass");
 
     var buildSquare = tlol.squareFactory.buildSquare;
     var cssClass = tlol.tSpec.square().getCSSClass();
