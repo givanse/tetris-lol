@@ -99,19 +99,23 @@ Board.prototype.deleteCompletedRows = function () {
         return 0;
     }
 
+    /* Squares selected for deletion. */
     var squares = this.squaresMatrix.getRowsSquares(completedRows);
 
+    /* make them all white */
     for (var i = 0; i < squares.length; i++) {
        var div = squares[i].getDiv();
        div.style.backgroundColor = "#fff"; 
     }
 
+    /* animate, fade out and delete */
     var squaresMatrix = this.squaresMatrix;
-    tlol.squareFactory.fadeOut(squares, tlol.rowFadeOutSpeed, function () {
+    function afterFadeCallback() {
         squaresMatrix.deleteRows(completedRows);
-        completedRows = completedRows.reverse(); /* order top to bottom */
+        completedRows = completedRows.reverse(); /* order rows, top to bottom */
         squaresMatrix.packColumns(completedRows);
-    });
+    }
+    tlol.ui.fadeOutSqrsArr(squares, tlol.rowFadeOutTime, afterFadeCallback);
 
     return completedRows.length; /* The number of rows that were deleted. */
 }

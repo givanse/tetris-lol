@@ -1,4 +1,3 @@
-
 test("squareFactory - square.getDiv", function() {
     tlol.square_size = 31;
     tlol.square_border_w = 1;
@@ -9,8 +8,7 @@ test("squareFactory - square.getDiv", function() {
     expected.className = "square SSHP_R";
     expected.style.width = "31px";
     expected.style.height = "31px";
-    expected.style.left = "160px";
-    expected.style.top = "160px";
+    tlol.ui.translate3d(expected, 160, 160, 0);
     expected.setAttribute("buffer", "false");
     var actual = square.getDiv();
     deepEqual(actual, expected, "div clone");
@@ -36,6 +34,9 @@ test("squareFactory - square.getDiv", function() {
 
 });
 
+/**
+ * This test will pass only in Chrome or Safari. (Webkit)
+ */
 test("squareFactory - square.setX", function() {
     tlol.square_size = 31;
     tlol.square_border_w = 1;
@@ -47,14 +48,17 @@ test("squareFactory - square.setX", function() {
     var actual = square.getX();
     equal(actual, expected, "set x to 16");
 
-    expected = 16 * 32;/* This corresponds to tlol.square_size */
-    actual = parseInt(square.getDiv().style.left);
+    expected = "translate3d(512px, 0px, 0px)"; /* 16 * 32 */
+    actual = square.getDiv().style.WebkitTransform;
     equal(actual, expected, "x to pixels 512");
 
     tlol.square_size = null;
     tlol.square_border_w = null;
 });
 
+/**
+ * This test will pass only in Chrome or Safari.
+ */
 test("squareFactory - square.setY", function() {
     tlol.square_size = 31;
     tlol.square_border_w = 1;
@@ -66,8 +70,8 @@ test("squareFactory - square.setY", function() {
     var actual = square.getY();
     equal(actual, expected, "set y to 16");
 
-    expected = 16 * 32; /* This corresponds to tlol.square_size */
-    actual = parseInt(square.getDiv().style.top);
+    expected = "translate3d(0px, 512px, 0px)"; /* 16 * 32 */
+    actual = square.getDiv().style.WebkitTransform;
     equal(actual, expected, "y to pixels 512");
 
     tlol.square_size = null;

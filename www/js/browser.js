@@ -9,6 +9,28 @@ tlol.browser = {
         return regex.test(navigator.userAgent);
     },
 
+    getHeight: function () {
+        'use strict';
+        /* http://stackoverflow.com/a/11744120/7852 */
+        var w = window,
+            d = document,
+            e = d.documentElement,
+            g = d.getElementsByTagName('body')[0];
+
+        return w.innerHeight|| e.clientHeight|| g.clientHeight; 
+    },
+
+    getWidth: function () {
+        'use strict';
+        /* http://stackoverflow.com/a/11744120/7852 */
+        var w = window,
+            d = document,
+            e = d.documentElement,
+            g = d.getElementsByTagName('body')[0];
+
+        return w.innerWidth || e.clientWidth || g.clientWidth;
+    },
+
     isIE: function () {
         'use strict';
         return this.browserTest(/IE/);
@@ -24,27 +46,6 @@ tlol.browser = {
         return this.browserTest(/Safari/);
     },
 
-    getWidth: function () {
-        'use strict';
-        /* http://stackoverflow.com/a/11744120/7852 */
-        var w = window,
-            d = document,
-            e = d.documentElement,
-            g = d.getElementsByTagName('body')[0];
-
-        return w.innerWidth || e.clientWidth || g.clientWidth;
-    },
-
-    getHeight: function () {
-        'use strict';
-        /* http://stackoverflow.com/a/11744120/7852 */
-        var w = window,
-            d = document,
-            e = d.documentElement,
-            g = d.getElementsByTagName('body')[0];
-
-        return w.innerHeight|| e.clientHeight|| g.clientHeight; 
-    }
 };
 
 /*EOF*/

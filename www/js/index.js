@@ -34,20 +34,22 @@ var app = {
             gameoverSplash: document.getElementById("gameoverSplash")
         };
 
+        /* Init game components */
         tlol.tetrisGame.initialize(domElements);
 
+        /* Animate boot splash */
+        /* TODO: maybe http://stackoverflow.com/questions/7861648 */
         var loadIndicator = document.getElementById("loadIndicator");
         var splashDuration = 1000;
-        var loadIndicatorWidth = 0;
-        var loadIndicatorWidthInc = 1;
-        var loadIndicatorWidthMax = 180; /* 300px * 0.60 */
+        var indicatorWidth = 0;
+        var indicatorWidthInc = 1;
+        var indicatorWidthMax = 180; /* 300px * 0.60 */
+        var indicatorTotalUpdates = indicatorWidthMax / indicatorWidthInc;
+        var indicatorUpdateSpeed = splashDuration / indicatorTotalUpdates;
+        var loadIntervalId = null;
 
-        var loadIndicatorTotalUpdates = loadIndicatorWidthMax / 
-                                        loadIndicatorWidthInc;
-        var loadIndicatorUpdateSpeed = splashDuration / 
-                                       loadIndicatorTotalUpdates;
-        var loadIntervalId = setInterval(function() {
-            if ( loadIndicatorWidth === loadIndicatorWidthMax ) {
+        function updateBootSplash() {
+            if ( indicatorWidth === indicatorWidthMax ) {
                 clearInterval(loadIntervalId); 
                 /* remove splash screen */
                 var bootSplash = document.getElementById("bootSplash");
@@ -55,10 +57,12 @@ var app = {
                 /* start the game */
                 tlol.tetrisGame.start();
             } else {
-                loadIndicatorWidth += loadIndicatorWidthInc;
-                loadIndicator.style.width = loadIndicatorWidth + "px";
+                indicatorWidth += indicatorWidthInc;
+                loadIndicator.style.width = indicatorWidth + "px";
             }
-        }, loadIndicatorUpdateSpeed);
+        }
+
+        loadIntervalId = setInterval(updateBootSplash, indicatorUpdateSpeed);
 
     } /* onDeviceReady */
 };

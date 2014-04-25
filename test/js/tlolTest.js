@@ -4,9 +4,11 @@
 
 test("tlol", function() {
 
-  ok(tlol.square_size === null, "tlol.square_size not set");
+  ok(tlol.square_size === null, 
+     "tlol.square_size not set, val: " + tlol.square_size);
 
-  ok(tlol.square_border_w === null, "tlol.square_border_w not set");
+  ok(tlol.square_border_w === null, 
+     "tlol.square_border_w not set, val: " + tlol.square_border_w);
 
 });
 

@@ -26,16 +26,12 @@ tlol.squareFactory = (function() {
 
         function setX(newX) {
             x = newX;
-
-            var pos = (tlol.square_size + tlol.square_border_w) * x;
-            div.style.left = pos + 'px';
+            translate3d();
         };
 
         function setY(newY) { 
             y = newY; 
-
-            var pos = (tlol.square_size + tlol.square_border_w) * y;
-            div.style.top = pos + 'px';
+            translate3d();
 
             if (y < 2) {
                 div.setAttribute('buffer', 'true');
@@ -43,6 +39,13 @@ tlol.squareFactory = (function() {
                 div.setAttribute('buffer', 'false');
             }
         };
+
+        function translate3d() {
+            var w = tlol.square_size + tlol.square_border_w;
+            var xPx = w * x;
+            var yPx = w * y;
+            tlol.ui.translate3d(div, xPx, yPx, 0);
+        }
     
         /* Init Square */
         x = (x < 0) ? 0 : x;
@@ -70,51 +73,14 @@ tlol.squareFactory = (function() {
         return square;
     }; /* buildSquare */
 
-    /**
-     * Fades in or out a list of squares.
-     *
-     * TODO: refactor
-     * Almost the same as in tlol.ui.fadeIn/Out, but in here we avoid creating
-     * a new setInterval() for each element.
-     */
-    function fade(isFadeIn, squares, 
-                  startOpacity, targetOpacity, fadeSpeed, callback) {
-
-        function setElementOpacity(element, opacity) {
-            element.style.opacity = "alpha(opacity=" + opacity + ")";   /* IE */      
-            element.style.opacity = (opacity / 100);        /* Other browsers */
-        }
-
-        var opacity = startOpacity;
-        var timerId = setInterval(function() {
-            if ( opacity !== targetOpacity ) {
-                isFadeIn ? opacity++ : opacity-- ;
-
-                for (var i = 0; i < squares.length; i++) {
-                    var div = squares[i].getDiv();
-                    setElementOpacity(div, opacity);
-                }
-            } else {
-                clearInterval(timerId);
-                callback();
-            }
-        }, fadeSpeed);
-    };
-
     var that = {
         buildSquare: buildSquare,
         buildSquaresMatrix: function (widthInSquares, heightInSquares) { 
             return new SquaresMatrix(widthInSquares, heightInSquares); 
-        },
-        fadeIn: function (squares, fadeSpeed, callback) {
-            fade(true, squares, 0, 100, fadeSpeed, callback);
-        },
-        fadeOut: function (squares, fadeSpeed, callback) {
-            fade(false, squares, 100, 0, fadeSpeed, callback);
         }
     };
 
     return that;
 })(); /* tlol.squareFactory */
 
-/* EOF */
+/*EOF*/

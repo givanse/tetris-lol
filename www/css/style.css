@@ -193,14 +193,17 @@ div#newGameButton {
     border-radius: 4px;
     background: transparent url('../img/sqrBackground.png') center top no-repeat;
     background-size: 100%;
-    opacity: 1.0;
+    opacity: 1;
     z-index: 1000;
-    /* http://aerotwist.com/blog/on-translate3d-and-layer-creation-hacks/ */
+    transform: translate3d(0px,0px,0px);
+    -moz-transform: translate3d(0px,0px,0px);
     -webkit-transform: translate3d(0px,0px,0px);
 }
 
 div#gameInfo div#nextTetromino .square {
     background: #003366;
+    transform: translate3d(0px,0px,0px);
+    -moz-transform: translate3d(0px,0px,0px);
     -webkit-transform: translate3d(0px,0px,0px);
 }
 

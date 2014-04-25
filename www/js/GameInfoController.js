@@ -38,19 +38,10 @@ GameInfoController.prototype.removeNextTetromino = function() {
         return;
     }
 
-    var squares = this.tetromino.getSquares(); 
-
-    //for (var i = 0; i < squares.length; i++) {
-    //    squares[i].getDiv().style.backgroundColor = "#004D9B";
-    //}
-
-    var me = this;
-    //tlol.squareFactory.fadeOut(squares, tlol.nextTetroFadeSpeed, function() {
-        while ( me.nextTetrominoDiv.hasChildNodes() ) {
-            var child = me.nextTetrominoDiv.lastChild;
-            me.nextTetrominoDiv.removeChild( child );
-        }
-    //});
+    while ( this.nextTetrominoDiv.hasChildNodes() ) {
+        var child = this.nextTetrominoDiv.lastChild;
+        this.nextTetrominoDiv.removeChild( child );
+    }
 }
 
 GameInfoController.prototype.appendNextTetromino = function(nextTetromino) {
