@@ -23,6 +23,7 @@ tlol.gameLoopService = (function () {
 
         document.addEventListener('touchstart', handleTouchStart, false);
         document.addEventListener('touchmove', handleTouchMove, false);
+        //document.addEventListener('touchend', handleTouchEnd, false);
 
         function handleKeyEvent(evt) {
             var keyCode = window.event ? window.event.keyCode : 
@@ -47,32 +48,60 @@ tlol.gameLoopService = (function () {
 
         var xDown = null;
         var yDown = null;
+        var movDir = null;
 
         function handleTouchStart(evt) {
+            //console.log("start");
             xDown = evt.touches[0].clientX;
             yDown = evt.touches[0].clientY;
         }; /* handleTouchStart */
 
         function handleTouchMove(evt) {
+            if ( ! xDown || ! yDown ) {
+                return;
+            }
+            //console.log("move");
             var xUp = evt.touches[0].clientX;
             var yUp = evt.touches[0].clientY;
             //console.log(xDown + ", " + yDown + " -> " +
             //            xUp + ", " + yUp);
             var xDiff = xDown - xUp; 
             var yDiff = yDown - yUp; 
+            var xDiffAbs = Math.abs( xDiff ); 
+            var yDiffAbs = Math.abs( yDiff ); 
+            //var minSwipeLength = 30; /* pixels */
 
-            var movDir = null;
-            if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/* most significant */
+            //var movDir = null;
+            /* use the most significant direction */
+            if ( xDiffAbs > yDiffAbs ) {
+                //if ( xDiffAbs < minSwipeLength ) {
+                    //return; /* ignore small swipe */
+                //}
                 movDir = xDiff > 0 ? tlol.direction.LEFT :
                                      tlol.direction.RIGHT;
             } else {
+                //if ( yDiffAbs < minSwipeLength ) {
+                    //return; /* ignore small swipe */
+                //}
                 movDir = yDiff > 0 ? tlol.direction.UP :
                                      tlol.direction.DOWN;
     
             }
             glsCallback( movDir );
-        }; /* handleTouchEnd */
+            xDown = null;
+            yDown = null;
+            movDir = null;
+        }; /* handleTouchMove */
 
+        function handleTouchEnd(evt) {
+            if ( ! movDir ) {
+                return;
+            }
+            glsCallback( movDir );
+            xDown = null;
+            yDown = null;
+            movDir = null;
+        }
     }; /* registerEventsListeners */
 
     function setCallback(gameRunCallback) {

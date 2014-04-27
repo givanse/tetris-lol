@@ -16,7 +16,7 @@ var tlol = {
     square_size: null,                   /* set at tlol.calculateDimensions() */
     square_border_w: null,               /* set at tlol.calculateDimensions() */
     /* http://mdn.beonex.com/en/DOM/window.setTimeout.html#Minimum_delay_and_timeout_nesting */
-    rowFadeOutTime: 0.25,                                          /* seconds */
+    rowFadeOutTime: 0.5,                                           /* seconds */
     nextTetroFadeSpeed: 4,                                   /*  milliseconds */
 
     cssClass: {
