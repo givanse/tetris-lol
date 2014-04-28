@@ -1,6 +1,6 @@
 test("squareFactory - square.getDiv", function() {
-    tlol.square_size = 31;
-    tlol.square_border_w = 1;
+    tlol.settings.square_size = 31;
+    tlol.settings.square_border_w = 1;
 
     var square = tlol.squareFactory
                      .buildSquare(5, 5, tlol.tSpec.s_right().getCSSClass());
@@ -13,8 +13,8 @@ test("squareFactory - square.getDiv", function() {
     var actual = square.getDiv();
     deepEqual(actual, expected, "div clone");
 
-    tlol.square_size = null;
-    tlol.square_border_w = null;
+    tlol.settings.square_size = null;
+    tlol.settings.square_border_w = null;
 
     square = tlol.squareFactory
                  .buildSquare(0, 0, tlol.tSpec.s_right().getCSSClass());
@@ -38,8 +38,8 @@ test("squareFactory - square.getDiv", function() {
  * This test will pass only in Chrome or Safari. (Webkit)
  */
 test("squareFactory - square.setX", function() {
-    tlol.square_size = 31;
-    tlol.square_border_w = 1;
+    tlol.settings.square_size = 31;
+    tlol.settings.square_border_w = 1;
 
     var square = tlol.squareFactory
                      .buildSquare(-1, -1, tlol.tSpec.t().getCSSClass());
@@ -52,16 +52,16 @@ test("squareFactory - square.setX", function() {
     actual = square.getDiv().style.WebkitTransform;
     equal(actual, expected, "x to pixels 512");
 
-    tlol.square_size = null;
-    tlol.square_border_w = null;
+    tlol.settings.square_size = null;
+    tlol.settings.square_border_w = null;
 });
 
 /**
  * This test will pass only in Chrome or Safari.
  */
 test("squareFactory - square.setY", function() {
-    tlol.square_size = 31;
-    tlol.square_border_w = 1;
+    tlol.settings.square_size = 31;
+    tlol.settings.square_border_w = 1;
 
     var square = tlol.squareFactory
                      .buildSquare(-1, -1, tlol.tSpec.t().getCSSClass());
@@ -74,8 +74,8 @@ test("squareFactory - square.setY", function() {
     actual = square.getDiv().style.WebkitTransform;
     equal(actual, expected, "y to pixels 512");
 
-    tlol.square_size = null;
-    tlol.square_border_w = null;
+    tlol.settings.square_size = null;
+    tlol.settings.square_border_w = null;
 });
 
 test("squareFactory.buildSquare", function() {

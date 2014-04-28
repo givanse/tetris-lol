@@ -4,11 +4,13 @@
 
 test("tlol", function() {
 
-  ok(tlol.square_size === null, 
-     "tlol.square_size not set, val: " + tlol.square_size);
+  ok(tlol.settings.square_size === null, 
+     "tlol.settings.square_size not set, val: " + 
+     tlol.settings.square_size);
 
-  ok(tlol.square_border_w === null, 
-     "tlol.square_border_w not set, val: " + tlol.square_border_w);
+  ok(tlol.settings.square_border_w === null, 
+     "tlol.settings.square_border_w not set, val: " + 
+     tlol.settings.square_border_w);
 
 });
 
@@ -88,15 +90,15 @@ test("tlol tetrominoSpecs", function() {
 });
 
 test("tlol calculateDimensions", function() { 
-    var dimSettings = {
+    var defaultBSettings = tlol.settings.board;
+
+     tlol.settings.board = {
         total_columns: 0,
         total_rows: 0,
-        screen_width: 0, 
-        screen_height: 0,
         border_width: {top: 0, rigth: 0, bottom: 0, left: 0},
         safety_net_width: 0,
         square_border_w: 0};
-    var actuals = tlol.calculateDimensions(dimSettings);
+    var actuals = tlol.calculateDimensions(0, 0);
     var expecteds = {
         //square_size: 0,
         canvas_width: 0, 
@@ -108,15 +110,13 @@ test("tlol calculateDimensions", function() {
         canvas_height: 0};
     deepEqual(actuals, expecteds, "all zero");
 
-    dimSettings = {
+    tlol.settings.board = {
         total_columns: 1,
         total_rows: 1,
-        screen_width: 10, 
-        screen_height: 10,
         border_width: {top: 0, rigth: 0, bottom: 0, left: 0},
         safety_net_width: 0,
         square_border_w: 0};
-    actuals = tlol.calculateDimensions(dimSettings);
+    actuals = tlol.calculateDimensions(10, 10);
     expecteds = {
         square_size: 10,
         canvas_width: 10, 
@@ -124,15 +124,13 @@ test("tlol calculateDimensions", function() {
     deepEqual(actuals, expecteds, 
               "screen 10x10, c. border 0, matrix 1x1, s. border 0, net 0");
 
-    dimSettings = {
+    tlol.settings.board = {
         total_columns: 1,
         total_rows: 1,
-        screen_width: 10, 
-        screen_height: 10,
         border_width: {top: 2, rigth: 2, bottom: 2, left: 2},
         safety_net_width: 0,
         square_border_w: 0};
-    actuals = tlol.calculateDimensions(dimSettings);
+    actuals = tlol.calculateDimensions(10, 10);
     expecteds = {
         square_size: 6,
         canvas_width: 6, 
@@ -140,15 +138,13 @@ test("tlol calculateDimensions", function() {
     deepEqual(actuals, expecteds, 
               "screen 10x10, c. border 2, matrix 1x1, s. border 0, net 0");
 
-    dimSettings = {
+    tlol.settings.board = {
         total_columns: 1,
         total_rows: 1,
-        screen_width: 10, 
-        screen_height: 10,
         border_width: {top: 2, rigth: 2, bottom: 2, left: 2},
         safety_net_width: 0,
         square_border_w: 1};
-    actuals = tlol.calculateDimensions(dimSettings);
+    actuals = tlol.calculateDimensions(10, 10);
     expecteds = {
         square_size: 4,
         canvas_width: 6, 
@@ -156,15 +152,13 @@ test("tlol calculateDimensions", function() {
     deepEqual(actuals, expecteds, 
               "screen 10x10, c. border 2, matrix 1x1, s. border 1, net 0");
 
-    dimSettings = {
+    tlol.settings.board = {
         total_columns: 1,
         total_rows: 1,
-        screen_width: 10, 
-        screen_height: 10,
         border_width: {top: 2, rigth: 2, bottom: 2, left: 2},
         safety_net_width: 1,
         square_border_w: 1};
-    actuals = tlol.calculateDimensions(dimSettings);
+    actuals = tlol.calculateDimensions(10, 10);
     expecteds = {
         square_size: 2,
         canvas_width: 4, 
@@ -172,37 +166,42 @@ test("tlol calculateDimensions", function() {
     deepEqual(actuals, expecteds, 
               "screen 10x10, c. border 2, matrix 1x1, s. border 1, net 1");
 
-    dimSettings = {
+    tlol.settings.board = {
         total_columns: 3,
         total_rows: 2,
-        screen_width: 1000, 
-        screen_height: 2000,
         border_width: {top: 14, rigth: 7, bottom: 42, left: 7},
         safety_net_width: 0,
         square_border_w: 50};
-    actuals = tlol.calculateDimensions(dimSettings);
+    actuals = tlol.calculateDimensions(1000, 2000);
     expecteds = {
         square_size: 262,
         canvas_width: 986, 
         canvas_height: 674};
     deepEqual(actuals, expecteds, 
       "screen 1000x2000, c. border 14,7,42,7, matrix 3x2, s. border 50, net 0");
+    equal(tlol.settings.square_size, 262);
+    equal(tlol.settings.square_border_w, 50);
 
-    dimSettings = {
+    tlol.settings.board = {
         total_columns: 10,
         total_rows: 20,
-        screen_width: 1023, 
-        screen_height: 994,
         border_width: {top: 14, rigth: 7, bottom: 42, left: 7},
         safety_net_width: 14,
         square_border_w: 1};
-    actuals = tlol.calculateDimensions(dimSettings);
+    actuals = tlol.calculateDimensions(1023, 994);
     expecteds = {
         square_size: 44,
         canvas_width: 451, 
         canvas_height: 901};
     deepEqual(actuals, expecteds, 
      "screen 1023x994, c. border 14,7,42,7, matrix 10x20, s. border 1, net 14");
+    equal(tlol.settings.square_size, 44);
+    equal(tlol.settings.square_border_w, 1);
+
+    /* restore default values */
+    tlol.settings.board = defaultBSettings;
+    tlol.settings.square_size = null;
+    tlol.settings.square_border_w = null;
 });
 
 /* EOF */

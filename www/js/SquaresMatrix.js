@@ -221,4 +221,8 @@ SquaresMatrix.prototype.getRowsSquares = function(rowNums) {
     return squares;
 }
 
+SquaresMatrix.prototype.removeSquare = function (x, y) {
+    this.squaresMatrix[x][y] = null;
+}
+
 /* EOF */

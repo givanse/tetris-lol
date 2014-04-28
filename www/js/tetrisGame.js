@@ -78,9 +78,11 @@ tlol.tetrisGame = (function() {
         if ( ! tMoveSuccessful &&
              movementDirection === tlol.direction.DOWN ) { 
 
-            boardController.appendFallingTetromino();
+            boardController.insertFallingTetromino();
             gameInfoController.increaseScore(); 
-            var deletedRowsCount = boardController.deleteCompletedRows();
+            var currTetromino = boardController.getCurrentTetromino();
+            var candidateRows = currTetromino.getRows();
+            var deletedRowsCount = boardController.deleteCompletedRows(candidateRows);
             gameInfoController.addDeletedRowsScorePoints(deletedRowsCount);
 
             /* Prepare the next Tetromino. */
@@ -115,7 +117,11 @@ tlol.tetrisGame = (function() {
         }
 
         arePlayerActionsStillPossible = true;
-        boardController = new Board(dom.canvasBackground, dom.canvas);
+
+        var screen_width = tlol.browser.getWidth();
+        var screen_height = tlol.browser.getHeight();
+        boardController = new Board(dom.canvasBackground, dom.canvas,
+                                    screen_width, screen_height);
         gameInfoController = new GameInfoController(dom.scoreField, 
                                                     dom.nextTetrominoField);
 

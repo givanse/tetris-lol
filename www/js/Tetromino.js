@@ -115,6 +115,14 @@ Tetromino.prototype.getTetrominoName = function() {
     return this.tSpec;
 }
 
+Tetromino.prototype.getX = function() {
+    return this.x;
+}
+
+Tetromino.prototype.getY = function() {
+    return this.y;
+}
+
 /**
  * Returns a list of the coordinates that the Tetromino will use if
  * the received movement direction is applied.

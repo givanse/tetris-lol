@@ -1,56 +1,37 @@
 /**
  *
  */
-function Board(canvasBackground, canvas) {
-    var dimSettings = {
-        /* Based on Tetris guidelines. */
-        total_columns: 10, 
-        total_rows: 20, /* visible rows only */
-        screen_width: tlol.browser.getWidth(), 
-        screen_height: tlol.browser.getHeight(),
-        /* div#canvasFrame border width */
-        border_width: {top: 14, rigth: 7, bottom: 42, left: 7},
-        safety_net_width: 7, /* give room for possible unprecisions */
-        square_border_w: 1
-    };
-    var dimensions = tlol.calculateDimensions(dimSettings);
-
-    /* +2 rows, invisible buffer */
-    dimSettings.total_rows = dimSettings.total_rows + 2;
-    
-    this.squaresMatrix = tlol.squareFactory
-                             .buildSquaresMatrix(dimSettings.total_columns, 
-                                                 dimSettings.total_rows);
+function Board(canvasBackground, canvas, screen_width, screen_height) {
 
     this.canvas = canvas;
+    var dimensions = tlol.calculateDimensions(screen_width, screen_height);
+
+    this.canvas.setAttribute("style", "width: 0px; height: 0px; top: 0px;");
+    this.canvas.style.width =  dimensions.canvas_width  + "px";
+    this.canvas.style.height = dimensions.canvas_height + "px";
+    /* take into account the two rows tall, invisible,  buffer */
+    this.canvas.style.top = "-" + ((tlol.settings.square_size * 2) + 
+                                   (tlol.settings.square_border_w * 2)) + "px";
 
     canvasBackground.setAttribute("style", 
                                   "width: 0px; height: 0px; top: 0px;");
     canvasBackground.style.width =  dimensions.canvas_width  + "px";
     canvasBackground.style.height = dimensions.canvas_height + "px";
 
-    /* take into account the two rows tall, invisible,  buffer */
-    this.canvas.setAttribute("style", "top: 0px;");
-    this.canvas.style.top = "-" + ( (tlol.square_size * 2) + 
-                                    (tlol.square_border_w * 2) ) + "px";
-
+    /* +2 rows, invisible buffer */
+    this.squaresMatrix = tlol.
+                         squareFactory.
+                         buildSquaresMatrix(tlol.settings.board.total_columns, 
+                                            tlol.settings.board.total_rows + 2);
     this.currTetromino = tlol.
                          tetrominoFactory.
-                         buildRandomTetromino(this.squaresMatrix.getWidth());
+                         buildRandomTetromino( this.squaresMatrix.getWidth() );
     this.nextTetromino = tlol.
                          tetrominoFactory.
-                         buildRandomTetromino(this.squaresMatrix.getWidth());
+                         buildRandomTetromino( this.squaresMatrix.getWidth() );
 
     this.generateRandomInitialRows();
     this.appendSquaresBoard();
-}
-
-/**
- * After calling this function, the Tetromino is no longer falling and its
- * made part of the board.
- */
-Board.prototype.appendFallingTetromino = function () {
-    this.squaresMatrix.insertTetromino( this.getCurrentTetromino() );
 }
 
 Board.prototype.appendSquaresArray = function (squaresArray) {
@@ -83,15 +64,16 @@ Board.prototype.appendSquaresBoard = function () {
 
 /** 
  * Find and delete the rows that are complete, if any. 
- *
  * Also, upper squares that are left hanging will fall.
+ *
+ * Note that the whole board will NOT be checked, only the rows where
+ * the current tetromino is.
  *
  * return - The number of rows that were complete and deleted at the moment of
  *          invocation.
  */
-Board.prototype.deleteCompletedRows = function () {
+Board.prototype.deleteCompletedRows = function (candidateRows) {
 
-    var candidateRows = this.currTetromino.getRows();
     var lowerRowNum = Math.max.apply(Math, candidateRows);
     var completedRows = this.squaresMatrix.findCompletedRows(lowerRowNum);
 
@@ -115,31 +97,49 @@ Board.prototype.deleteCompletedRows = function () {
         completedRows = completedRows.reverse(); /* order rows, top to bottom */
         squaresMatrix.packColumns(completedRows);
     }
-    tlol.ui.fadeOutSqrsArr(squares, tlol.rowFadeOutTime, afterFadeCallback);
+    tlol.ui.fadeOutSqrsArr(squares, 
+                           tlol.settings.rowFadeOutTime, 
+                           afterFadeCallback);
 
     return completedRows.length; /* The number of rows that were deleted. */
 }
 
-Board.prototype.generateRandomInitialRows = function() {
-    var numFilledRows = 1;
+Board.prototype.generateRandomInitialRows = function () {
+    'use strict';
+
+    var numFilledRows = tlol.settings.numRowsRandomlyInit;
+    var totalCols = this.squaresMatrix.getWidth();
+    var totalRows = this.squaresMatrix.getHeight();
     
-    var totalSquares = this.squaresMatrix.getWidth() * numFilledRows;
-    var positionsLeftEmpty = totalSquares / 2; /* use only half */
-    var totalSquaresNeeded = totalSquares - positionsLeftEmpty;
+    var totalSquares = totalCols * numFilledRows;
+    var totalSquaresUneeded = totalSquares * 
+                              (1 - tlol.settings.initFillPercentagePerRow);
     
     var xMin = 0;
-    var xMax = this.squaresMatrix.getWidth()  - 1;
+    var xMax = totalCols - 1;
     
-    var yMin = this.squaresMatrix.getHeight() - numFilledRows;
-    var yMax = this.squaresMatrix.getHeight() - 1;
+    var yMin = totalRows - numFilledRows;
+    var yMax = totalRows - 1;
     
-    for(var i = 0; i < totalSquaresNeeded; i++) {
+    /* fill all */
+    for (var i = xMin; i <= xMax; i++) {
+        for (var j = yMin; j <= yMax; j++) {
+            var tSpec = tlol.tetrominoFactory.buildRandomTetrominoSpec();
+            var square = tlol.squareFactory
+                             .buildSquare(i, j, tSpec.getCSSClass());
+            this.squaresMatrix.insertSquare(square);
+        }
+    }
+
+    /* remove uneeded */
+    while ( totalSquaresUneeded > 0 ) {
         var xRnd = Math.floor(Math.random() * ((xMax - xMin) + 1)) + xMin;
         var yRnd = Math.floor(Math.random() * ((yMax - yMin) + 1)) + yMin;
-        var tSpec = tlol.tetrominoFactory.buildRandomTetrominoSpec();
-        var square = tlol.squareFactory
-                         .buildSquare(xRnd, yRnd, tSpec.getCSSClass());
-        this.squaresMatrix.insertSquare(square);
+        var pos = [[xRnd, yRnd]];
+        if ( ! this.squaresMatrix.arePositionsAvailable( pos ) ) {
+            this.squaresMatrix.removeSquare(xRnd, yRnd);
+            totalSquaresUneeded--;
+        }
     }
 }
 
@@ -156,7 +156,16 @@ Board.prototype.getNextTetromino = function() {
 }
 
 Board.prototype.getWidth = function() {
+    console.log(this.canvas.style.width);
     return parseInt(this.canvas.style.width);
+}
+
+/**
+ * After calling this function, the Tetromino is no longer falling and its
+ * made part of the board.
+ */
+Board.prototype.insertFallingTetromino = function () {
+    this.squaresMatrix.insertTetromino( this.getCurrentTetromino() );
 }
 
 /**

@@ -13,11 +13,30 @@ var tlol = {
     browser: null,                                              /* browser.js */
     ui: null,                                                        /* ui.js */
 
-    square_size: null,                   /* set at tlol.calculateDimensions() */
-    square_border_w: null,               /* set at tlol.calculateDimensions() */
-    /* http://mdn.beonex.com/en/DOM/window.setTimeout.html#Minimum_delay_and_timeout_nesting */
-    rowFadeOutTime: 0.5,                                           /* seconds */
-    nextTetroFadeSpeed: 4,                                   /*  milliseconds */
+    settings: {
+        board: {
+            /* Based on Tetris guidelines. */
+            total_columns: 10, 
+            total_rows: 20,
+            /* div#canvasFrame border width */
+            border_width: {top: 14, rigth: 7, bottom: 42, left: 7},
+            safety_net_width: 3, /* give room for possible unprecisions */
+            square_border_w: 1
+        },
+        gameSpeed: 1000,                                  /* 1 row per second */                              
+        gameSpeedMax: 333,                                 /* 1/3 of a second */                       
+        speedIncrement: 30,                                   /* 50 ms faster */                           
+        targetTimeForMaxSpeed: 1000 * 60 * 3,          /* 3 min for max speed */
+
+        rowFadeOutTime: 0.5,                                       /* seconds */
+        splashDuration: 1000,                                           /* ms */
+
+        square_border_w: null,                  /* tlol.calculateDimensions() */
+        square_size: null,                      /* tlol.calculateDimensions() */
+
+        numRowsRandomlyInit: 2,
+        initFillPercentagePerRow: 0.5
+    },
 
     cssClass: {
         mushroom: 'MUSHROOM'
@@ -224,13 +243,14 @@ var tlol = {
     /**
      * Calculate Canvas and Squares dimensions based on screen size.
      *
-     * doc/canvas.html
-     * test/js/tlolTest.html
+     * Documentation:
+     *     doc/canvas.html
+     *     test/js/tlolTest.html
      */
-    calculateDimensions: function (args) {
+    calculateDimensions: function (screen_width, screen_height) {
 
-        if ( ! args.screen_width  || args.screen_width <= 0 ||
-             ! args.screen_height || args.screen_heigth <= 0) {
+        if ( ! screen_width  || screen_width <= 0 ||
+             ! screen_height || screen_height <= 0) {
             this.square_size = 0;
             return {
                 square_size: 0,
@@ -240,34 +260,36 @@ var tlol = {
         
         }
 
+        stt = this.settings.board;
+
         /* horizontal space */
-        var canvas_width = args.screen_width - 
-                           args.border_width.left - 
-                           args.border_width.rigth -
-                           (2 * args.safety_net_width);
-        var square_borders_space_w = (args.square_border_w * 
-                                     args.total_columns) +
-                                     args.square_border_w;
+        var canvas_width = screen_width - 
+                           stt.border_width.left - 
+                           stt.border_width.rigth -
+                           (2 * stt.safety_net_width);
+        var square_borders_space_w = (stt.square_border_w * 
+                                     stt.total_columns) +
+                                     stt.square_border_w;
         var available_canvas_width = canvas_width - square_borders_space_w; 
         var px_per_square_w = Math.floor( available_canvas_width / 
-                                          args.total_columns );
+                                          stt.total_columns );
         /* after rounding a few pixels were lost, adjust: */
-        canvas_width = (px_per_square_w * args.total_columns) + 
+        canvas_width = (px_per_square_w * stt.total_columns) + 
                         square_borders_space_w;
 
         /* vertical space */
-        var canvas_height = args.screen_height - 
-                            args.border_width.top - 
-                            args.border_width.bottom -
-                            (2 * args.safety_net_width);
-        var square_borders_space_h = (args.square_border_w * 
-                                     args.total_rows) +
-                                     args.square_border_w;
+        var canvas_height = screen_height - 
+                            stt.border_width.top - 
+                            stt.border_width.bottom -
+                            (2 * stt.safety_net_width);
+        var square_borders_space_h = (stt.square_border_w * 
+                                     stt.total_rows) +
+                                     stt.square_border_w;
         var available_canvas_height = canvas_height - square_borders_space_h;
         var px_per_square_h = Math.floor( available_canvas_height / 
-                                          args.total_rows );
+                                          stt.total_rows );
         /* after rounding a few pixels were lost, adjust: */
-        canvas_height = (px_per_square_h * args.total_rows) + 
+        canvas_height = (px_per_square_h * stt.total_rows) + 
                          square_borders_space_h;
         
         /* choose the guiding dimension, the one with the smaller square size */
@@ -276,13 +298,13 @@ var tlol = {
             square_size = px_per_square_w;
 
             /* width guides, height follows */ 
-            canvas_height = (square_size * args.total_rows) + 
+            canvas_height = (square_size * stt.total_rows) + 
                              square_borders_space_h;
         } else {
             square_size = px_per_square_h;
 
             /* height guides, width follows */
-            canvas_width = (square_size * args.total_columns) + 
+            canvas_width = (square_size * stt.total_columns) + 
                             square_borders_space_w;
         }
 
@@ -292,11 +314,11 @@ var tlol = {
             canvas_height: canvas_height
         };
 
-        this.square_size = dimensions.square_size;
-        this.square_border_w = args.square_border_w;
+        this.settings.square_size = dimensions.square_size;
+        this.settings.square_border_w = stt.square_border_w;
 
         return dimensions;
-    }
+    } /* calculateDimensions */
 
 }; /* tlol */
 

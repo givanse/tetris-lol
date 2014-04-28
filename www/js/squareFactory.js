@@ -41,7 +41,8 @@ tlol.squareFactory = (function() {
         };
 
         function translate3d() {
-            var w = tlol.square_size + tlol.square_border_w;
+            var w = tlol.settings.square_size +  
+                    tlol.settings.square_border_w;
             var xPx = w * x;
             var yPx = w * y;
             tlol.ui.translate3d(div, xPx, yPx, 0);
@@ -53,8 +54,8 @@ tlol.squareFactory = (function() {
 
         var div = document.createElement('div');
         div.className = 'square ' + cssClass;
-        div.style.width = tlol.square_size  + 'px';
-        div.style.height = tlol.square_size + 'px';
+        div.style.width = tlol.settings.square_size  + 'px';
+        div.style.height = tlol.settings.square_size + 'px';
 
         var square = {
             description: (function () { /* used for debugging */ 

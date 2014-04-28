@@ -40,12 +40,12 @@ var app = {
         /* Animate boot splash */
         /* TODO: maybe http://stackoverflow.com/questions/7861648 */
         var loadIndicator = document.getElementById("loadIndicator");
-        var splashDuration = 1000;
         var indicatorWidth = 0;
         var indicatorWidthInc = 1;
         var indicatorWidthMax = 180; /* 300px * 0.60 */
         var indicatorTotalUpdates = indicatorWidthMax / indicatorWidthInc;
-        var indicatorUpdateSpeed = splashDuration / indicatorTotalUpdates;
+        var indicatorUpdateSpeed = tlol.settings.splashDuration / 
+                                   indicatorTotalUpdates;
         var loadIntervalId = null;
 
         function updateBootSplash() {

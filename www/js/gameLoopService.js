@@ -11,6 +11,7 @@ tlol.gameLoopService = (function () {
       * Based on platform, register keyboard listeners.
       */
     function registerEventsListeners() {
+       "use strict";
 
         var keyEventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 
                            'keydown' : 'keypress';
@@ -57,6 +58,7 @@ tlol.gameLoopService = (function () {
         }; /* handleTouchStart */
 
         function handleTouchMove(evt) {
+
             if ( ! xDown || ! yDown ) {
                 return;
             }
@@ -116,53 +118,48 @@ tlol.gameLoopService = (function () {
     };
 
     var loopServiceHandle = (function() {
-        var gameSpeed = null;                              
-        var gameSpeedMax = null;                               
-        var speedIncrement = null;                                
-        var targetTimeForMaxSpeed = null;
+        "use strict";
+
+        var currGSpeed = null;
+
         var incrementSpeedSpeed = null; 
         var glsCallbackTimerId = null;
         var incrementTimerId = null;                      
 
         function startAutomatedGameSpeedIncrements() {
+            var totalIncrements = ( ( tlol.settings.gameSpeed - 
+                                      tlol.settings.gameSpeedMax ) / 
+                                      tlol.settings.speedIncrement );
+            var incrementsSpeed = tlol.settings.targetTimeForMaxSpeed / 
+                                  totalIncrements; 
             incrementTimerId = setInterval(function() {                      
-                if (gameSpeed <= gameSpeedMax) {                             
+                if ( currGSpeed <= tlol.settings.gameSpeedMax ) {                             
                     /* stop speed increments */                              
                     clearInterval(incrementTimerId);                         
                 } else {                                                     
                     /* increment speed */                                    
-                    gameSpeed = gameSpeed - speedIncrement;              
-                    console.log(gameSpeed + "/" + gameSpeedMax);
-                    /*TODO: review if already elapsed time should be considered*/
+                    currGSpeed = currGSpeed - tlol.settings.speedIncrement;              
+                    console.log(currGSpeed + "/" + tlol.settings.gameSpeedMax);
+                    /*TODO:review if already elapsed time should be considered*/
+                    /* restart the loop service with the new speed */
                     clearInterval(glsCallbackTimerId);
-                    glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
+                    glsCallbackTimerId = setInterval(glsCallback, currGSpeed);
                 }                                                            
-            },                                                               
-            incrementSpeedSpeedInterval);                                        
+            }, incrementsSpeed);                                        
         }
 
-        /* Stop everything */
         function stop() {
             clearInterval(glsCallbackTimerId);
             clearInterval(incrementTimerId);
         }
 
         function restart() {
-                         gameSpeed = 1000;            /* 1 row per second */                              
-                      gameSpeedMax = 300;              /* 1/4 of a second */                       
-                    speedIncrement = 50;                  /* 50 ms faster */                           
-             targetTimeForMaxSpeed = 1000 * 60 * 3;/* 3 min for max speed */
-
-            var totalIncrements = ( (gameSpeed - gameSpeedMax) / 
-                                    speedIncrement );
-            incrementSpeedSpeedInterval = targetTimeForMaxSpeed / 
-                                          totalIncrements; 
-            /* halt current service */
-            stop();                               
+            stop(); /* halt current service */
             /* schedule infinite loop */
-            glsCallbackTimerId = setInterval(glsCallback, gameSpeed);
+            currGSpeed = tlol.settings.gameSpeed; 
+            glsCallbackTimerId = setInterval(glsCallback, currGSpeed);
             startAutomatedGameSpeedIncrements();
-        } /* restart */
+        }
 
         var loopServiceHandle = {
             start: restart,
@@ -172,7 +169,7 @@ tlol.gameLoopService = (function () {
         return loopServiceHandle;                                                         
     })(); /* var loopServiceHandle */
 
-    /* Its the function that will be called in each iteration of the game loop.*/
+    /*Its the function that will be called in each iteration of the game loop.*/
     var glsCallback = null;
 
     registerEventsListeners();
