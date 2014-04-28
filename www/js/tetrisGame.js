@@ -47,9 +47,10 @@ tlol.tetrisGame = (function() {
             return;
         }
 
-        movementDirection = ( movementDirection === tlol.direction.UP ||
+        movementDirection = ( movementDirection === tlol.direction.DROP ||
+                              movementDirection === tlol.direction.LEFT ||
                               movementDirection === tlol.direction.RIGHT ||
-                              movementDirection === tlol.direction.LEFT ) ? 
+                              movementDirection === tlol.direction.UP ) ? 
                               movementDirection : tlol.direction.DOWN;
 
         var tMoveSuccessful = boardController.moveTetromino(movementDirection);

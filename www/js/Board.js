@@ -156,7 +156,6 @@ Board.prototype.getNextTetromino = function() {
 }
 
 Board.prototype.getWidth = function() {
-    console.log(this.canvas.style.width);
     return parseInt(this.canvas.style.width);
 }
 
@@ -173,6 +172,19 @@ Board.prototype.insertFallingTetromino = function () {
  * return - true if the falling shape completed the movement, false otherwise.
  */
 Board.prototype.moveTetromino = function (movDirection) {
+    if ( movDirection === tlol.direction.DROP ) {
+        var me = this;
+        var canMove = true;
+        intervalId = setInterval(function () {
+            if ( canMove ) {
+                canMove = me.moveTetromino( tlol.direction.DOWN );
+            } else {
+                clearInterval(intervalId);
+            }
+        }, tlol.settings.dropSpeedPerMov);
+        return true;
+    }
+
     var simulatedPositions = this.currTetromino
                                  .simulatePositions(movDirection);
     var isValidMovement = this.squaresMatrix

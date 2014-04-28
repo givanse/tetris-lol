@@ -10,7 +10,7 @@ tlol.gameLoopService = (function () {
     /**
       * Based on platform, register keyboard listeners.
       */
-    function registerEventsListeners() {
+    function registerKeyListener() {
        "use strict";
 
         var keyEventName = ( tlol.browser.isSafari() || tlol.browser.isIE() ) ? 
@@ -21,10 +21,6 @@ tlol.gameLoopService = (function () {
         } else { /* IE */
             document.attachEvent('on' + keyEventName, handleKeyEvent);
         }
-
-        document.addEventListener('touchstart', handleTouchStart, false);
-        document.addEventListener('touchmove', handleTouchMove, false);
-        //document.addEventListener('touchend', handleTouchEnd, false);
 
         function handleKeyEvent(evt) {
             var keyCode = window.event ? window.event.keyCode : 
@@ -45,50 +41,56 @@ tlol.gameLoopService = (function () {
                     break;
             }
             glsCallback( dir );
-        }; /* handleKeyEvent */
+        };
+
+    } /* registerKeyListener */
+
+    function registerTouchListener() {
+       "use strict";
+
+        document.addEventListener('touchstart', handleTouchStart, false);
+        document.addEventListener('touchmove', handleTouchMove, false);
+        document.addEventListener('touchend', handleTouchEnd, false);
 
         var xDown = null;
         var yDown = null;
         var movDir = null;
 
+        var lastTouchEnd = null;
+
         function handleTouchStart(evt) {
-            //console.log("start");
             xDown = evt.touches[0].clientX;
             yDown = evt.touches[0].clientY;
-        }; /* handleTouchStart */
+        };
 
         function handleTouchMove(evt) {
+            lastTouchEnd = null;
 
             if ( ! xDown || ! yDown ) {
                 return;
             }
-            //console.log("move");
+
             var xUp = evt.touches[0].clientX;
             var yUp = evt.touches[0].clientY;
-            //console.log(xDown + ", " + yDown + " -> " +
-            //            xUp + ", " + yUp);
+
             var xDiff = xDown - xUp; 
             var yDiff = yDown - yUp; 
+
             var xDiffAbs = Math.abs( xDiff ); 
             var yDiffAbs = Math.abs( yDiff ); 
-            //var minSwipeLength = 30; /* pixels */
 
-            //var movDir = null;
             /* use the most significant direction */
             if ( xDiffAbs > yDiffAbs ) {
-                //if ( xDiffAbs < minSwipeLength ) {
-                    //return; /* ignore small swipe */
-                //}
                 movDir = xDiff > 0 ? tlol.direction.LEFT :
                                      tlol.direction.RIGHT;
             } else {
-                //if ( yDiffAbs < minSwipeLength ) {
-                    //return; /* ignore small swipe */
-                //}
-                movDir = yDiff > 0 ? tlol.direction.UP :
-                                     tlol.direction.DOWN;
-    
+                if ( yDiff > 0 ) {
+                    movDir = tlol.direction.UP;
+                } else {
+                    movDir = tlol.direction.DOWN;
+                }
             }
+
             glsCallback( movDir );
             xDown = null;
             yDown = null;
@@ -96,15 +98,21 @@ tlol.gameLoopService = (function () {
         }; /* handleTouchMove */
 
         function handleTouchEnd(evt) {
-            if ( ! movDir ) {
-                return;
+            var now = new Date().getTime();
+            if ( lastTouchEnd ) {
+
+                var delta = now - lastTouchEnd;
+                if ( delta < tlol.settings.doubleTapTreshold ) {
+                    glsCallback( tlol.direction.DROP );
+                }
+    
+                lastTouchEnd = now;
+            } else {
+                lastTouchEnd = now;
             }
-            glsCallback( movDir );
-            xDown = null;
-            yDown = null;
-            movDir = null;
         }
-    }; /* registerEventsListeners */
+
+    }; /* registerSwipeListener */
 
     function setCallback(gameRunCallback) {
         if ( tlol.util.isString(glsCallback) ) {
@@ -172,7 +180,8 @@ tlol.gameLoopService = (function () {
     /*Its the function that will be called in each iteration of the game loop.*/
     var glsCallback = null;
 
-    registerEventsListeners();
+    registerKeyListener();
+    registerTouchListener();
 
     /* Public interface for tlol.gameLoopService */
     var glsObj = {

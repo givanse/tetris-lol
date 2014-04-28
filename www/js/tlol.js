@@ -23,19 +23,19 @@ var tlol = {
             safety_net_width: 3, /* give room for possible unprecisions */
             square_border_w: 1
         },
+        dropSpeedPerMov: 30,                                            /* ms */
+        doubleTapTreshold: 300,                                         /* ms */
         gameSpeed: 1000,                                  /* 1 row per second */                              
         gameSpeedMax: 333,                                 /* 1/3 of a second */                       
-        speedIncrement: 30,                                   /* 50 ms faster */                           
-        targetTimeForMaxSpeed: 1000 * 60 * 3,          /* 3 min for max speed */
-
-        rowFadeOutTime: 0.5,                                       /* seconds */
+        initFillPercentagePerRow: 0.5,
+        longSwipeLength: 200,                                       /* pixels */
+        numRowsRandomlyInit: 2,
+        rowFadeOutTime: 0.4,                                       /* seconds */
+        speedIncrement: 50,                                   /* 50 ms faster */                           
         splashDuration: 1000,                                           /* ms */
-
         square_border_w: null,                  /* tlol.calculateDimensions() */
         square_size: null,                      /* tlol.calculateDimensions() */
-
-        numRowsRandomlyInit: 2,
-        initFillPercentagePerRow: 0.5
+        targetTimeForMaxSpeed: 1000 * 60 * 3           /* 3 min for max speed */
     },
 
     cssClass: {
@@ -225,10 +225,11 @@ var tlol = {
      * Movement directions.
      */
     direction: {
-        UP: 'UP',
-        RIGHT: 'RIGHT',
         DOWN: 'DOWN',
-        LEFT: 'LEFT'
+        DROP: 'DROP',
+        LEFT: 'LEFT',
+        RIGHT: 'RIGHT',
+        UP: 'UP'
     },
 
     /**
