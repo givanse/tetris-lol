@@ -1,5 +1,9 @@
 #!/bin/bash
 set -e
+
+#phonegap platform update android
+#./create-phonegap-icons.sh www/img/tlol.png
 phonegap run android
+
 exit
 #EOF

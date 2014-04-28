@@ -3,7 +3,7 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.phonegap.helloworld"
+        id        = "se.givan.tetrislol"
         version   = "1.0.0">
 
     <name>Tetris LoL</name>
@@ -12,8 +12,8 @@
         Tetris game, theme based on League of Legends. 
     </description>
 
-    <author href="http://backhoe.github.io/Backhoe/" email="">
-        Backhoe Team
+    <author href="givan.se" email="">
+        Gaston I. Silva E.
     </author>
 
     <!--
