@@ -48,9 +48,36 @@ tlol.gameLoopService = (function () {
     function registerTouchListener() {
        "use strict";
 
-        document.addEventListener('touchstart', handleTouchStart, false);
-        document.addEventListener('touchmove', handleTouchMove, false);
-        document.addEventListener('touchend', handleTouchEnd, false);
+        var options = {
+            behavior: {
+                tapHighlightColor: "rgba(0, 0, 255, 0)"
+            },
+            doubleTapInterval: 300,
+            drag: false,
+            preventDefault: true,
+            swipeVelocityX: 0.233,
+            swipeVelocityY: 0.2
+        };
+        var hammertime = new Hammer(document, options);
+        hammertime.on("swipeup dragup", function (ev){ 
+            glsCallback( tlol.direction.UP );
+        });
+        hammertime.on("swipedown dragdown", function (ev){ 
+            glsCallback( tlol.direction.DOWN );
+        });
+        hammertime.on("swipeleft dragleft", function (ev){ 
+            glsCallback( tlol.direction.LEFT );
+        });
+        hammertime.on("swiperight dragright", function (ev){ 
+            glsCallback( tlol.direction.RIGHT );
+        });
+        hammertime.on("doubletap", function (ev){ 
+            glsCallback( tlol.direction.DROP );
+        });
+
+        //document.addEventListener('touchstart', handleTouchStart, false);
+        //document.addEventListener('touchmove', handleTouchMove, false);
+        //document.addEventListener('touchend', handleTouchEnd, false);
 
         var xDown = null;
         var yDown = null;
@@ -112,7 +139,7 @@ tlol.gameLoopService = (function () {
             }
         }
 
-    }; /* registerSwipeListener */
+    }; /* registerTouchListener */
 
     function setCallback(gameRunCallback) {
         if ( tlol.util.isString(glsCallback) ) {
