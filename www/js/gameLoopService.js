@@ -49,95 +49,28 @@ tlol.gameLoopService = (function () {
        "use strict";
 
         var options = {
-            behavior: {
-                tapHighlightColor: "rgba(0, 0, 255, 0)"
-            },
             doubleTapInterval: 300,
             drag: false,
             preventDefault: true,
-            swipeVelocityX: 0.233,
-            swipeVelocityY: 0.2
+            swipeVelocityX: 0.05,
+            swipeVelocityY: 0.05
         };
         var hammertime = new Hammer(document, options);
         hammertime.on("swipeup dragup", function (ev){ 
             glsCallback( tlol.direction.UP );
         });
-        hammertime.on("swipedown dragdown", function (ev){ 
+        hammertime.on("swipedown", function (ev){ 
             glsCallback( tlol.direction.DOWN );
         });
-        hammertime.on("swipeleft dragleft", function (ev){ 
+        hammertime.on("swipeleft", function (ev){ 
             glsCallback( tlol.direction.LEFT );
         });
-        hammertime.on("swiperight dragright", function (ev){ 
+        hammertime.on("swiperight", function (ev){ 
             glsCallback( tlol.direction.RIGHT );
         });
         hammertime.on("doubletap", function (ev){ 
             glsCallback( tlol.direction.DROP );
         });
-
-        //document.addEventListener('touchstart', handleTouchStart, false);
-        //document.addEventListener('touchmove', handleTouchMove, false);
-        //document.addEventListener('touchend', handleTouchEnd, false);
-
-        var xDown = null;
-        var yDown = null;
-        var movDir = null;
-
-        var lastTouchEnd = null;
-
-        function handleTouchStart(evt) {
-            xDown = evt.touches[0].clientX;
-            yDown = evt.touches[0].clientY;
-        };
-
-        function handleTouchMove(evt) {
-            lastTouchEnd = null;
-
-            if ( ! xDown || ! yDown ) {
-                return;
-            }
-
-            var xUp = evt.touches[0].clientX;
-            var yUp = evt.touches[0].clientY;
-
-            var xDiff = xDown - xUp; 
-            var yDiff = yDown - yUp; 
-
-            var xDiffAbs = Math.abs( xDiff ); 
-            var yDiffAbs = Math.abs( yDiff ); 
-
-            /* use the most significant direction */
-            if ( xDiffAbs > yDiffAbs ) {
-                movDir = xDiff > 0 ? tlol.direction.LEFT :
-                                     tlol.direction.RIGHT;
-            } else {
-                if ( yDiff > 0 ) {
-                    movDir = tlol.direction.UP;
-                } else {
-                    movDir = tlol.direction.DOWN;
-                }
-            }
-
-            glsCallback( movDir );
-            xDown = null;
-            yDown = null;
-            movDir = null;
-        }; /* handleTouchMove */
-
-        function handleTouchEnd(evt) {
-            var now = new Date().getTime();
-            if ( lastTouchEnd ) {
-
-                var delta = now - lastTouchEnd;
-                if ( delta < tlol.settings.doubleTapTreshold ) {
-                    glsCallback( tlol.direction.DROP );
-                }
-    
-                lastTouchEnd = now;
-            } else {
-                lastTouchEnd = now;
-            }
-        }
 
     }; /* registerTouchListener */
 
