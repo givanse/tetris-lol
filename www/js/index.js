@@ -1,25 +1,35 @@
 /**
  *
  */
+
+"use strict";
+
 var app = {
 
-    // Application Constructor
     initialize: function() {
         this.bindEvents();
     },
 
-    // Bind Event Listeners
-    //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
+    bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
 
-    // deviceready Event Handler
-    //
+    bindEventsUI: function () {
+        var newGameButton = document.getElementById("newgame");
+        
+        newGameButton.addEventListener('touchstart', function () {
+            newGameButton.setAttribute("class", "touched");
+        }, false);
+
+        newGameButton.addEventListener('touchend', function () {
+            newGameButton.setAttribute("class", "untouched");
+        }, false);
+    },
+
     // The scope of 'this' is the event.
-    onDeviceReady: function() {
+    onDeviceReady: function () {
 
         /* Find the DOM elements used for the game. */
         var domElements = {
@@ -38,6 +48,7 @@ var app = {
         tlol.tetrisGame.initialize(domElements);
 
         /* Animate boot splash */
+
         /* TODO: maybe http://stackoverflow.com/questions/7861648 */
         var loadIndicator = document.getElementById("loadIndicator");
         var indicatorWidth = 0;
@@ -46,14 +57,16 @@ var app = {
         var indicatorTotalUpdates = indicatorWidthMax / indicatorWidthInc;
         var indicatorUpdateSpeed = tlol.settings.splashDuration / 
                                    indicatorTotalUpdates;
-        var loadIntervalId = null;
+        var loaderIntervalId = null;
 
         function updateBootSplash() {
             if ( indicatorWidth === indicatorWidthMax ) {
-                clearInterval(loadIntervalId); 
+                clearInterval(loaderIntervalId); 
+
                 /* remove splash screen */
                 var bootSplash = document.getElementById("bootSplash");
                 bootSplash.parentNode.removeChild( bootSplash );
+
                 /* start the game */
                 tlol.tetrisGame.start();
             } else {
@@ -62,8 +75,8 @@ var app = {
             }
         }
 
-        loadIntervalId = setInterval(updateBootSplash, indicatorUpdateSpeed);
-
+        loaderIntervalId = setInterval(updateBootSplash, indicatorUpdateSpeed);
+        app.bindEventsUI();
     } /* onDeviceReady */
 };
 

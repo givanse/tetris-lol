@@ -11,7 +11,7 @@ tlol.tetrisGame = (function() {
     var boardController = null;
     var gameInfoController = null;
     /* The user hasn't lost yet and can perform actions. */
-    var arePlayerActionsStillPossible = true;
+    var arePlayerActionsAllowed = true;
     var dom = null;
 
     /**
@@ -20,14 +20,14 @@ tlol.tetrisGame = (function() {
      * the defaults used when a new game is started.
      */
     var endGame = function() {
-        arePlayerActionsStillPossible = false;
+        arePlayerActionsAllowed = false;
         if ( gameInfoController ) {
             gameInfoController.removeNextTetromino();
         }
         if ( loopService ) {
             loopService.stop();
         }
-    };
+    }; /* endGame */
 
     /**
      * This is where all the magic happens. It is the function executed as the 
@@ -43,7 +43,7 @@ tlol.tetrisGame = (function() {
      */
     var run = function (movementDirection) {
 
-        if ( ! arePlayerActionsStillPossible ) {
+        if ( ! arePlayerActionsAllowed ) {
             return;
         }
 
@@ -98,7 +98,7 @@ tlol.tetrisGame = (function() {
 
     }; /* run */
 
-    var initialize = function(newDOM) {
+    var initialize = function (newDOM) {
         endGame();
 
         if ( newDOM ) {
@@ -117,7 +117,7 @@ tlol.tetrisGame = (function() {
             };
         }
 
-        arePlayerActionsStillPossible = true;
+        arePlayerActionsAllowed = true;
 
         var screen_width = tlol.browser.getWidth();
         var screen_height = tlol.browser.getHeight();
@@ -126,8 +126,8 @@ tlol.tetrisGame = (function() {
         gameInfoController = new GameInfoController(dom.scoreField, 
                                                     dom.nextTetrominoField);
 
-        dom.gameoverSplash.style.display = 'none';
-
+        dom.gameoverSplash.style.display = tlol.debug.show_game_over_splash ? 
+                                                                           'block' : 'none';
         tlol.gameLoopService.setGameRunCallback( run ); 
         loopService = tlol.gameLoopService.getLoopHandle();
     }; /* initialize */

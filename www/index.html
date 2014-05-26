@@ -11,7 +11,6 @@
         See https://issues.apache.org/jira/browse/CB-4323 
         -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" >
         <title>Tetris LoL</title>
 
@@ -42,12 +41,14 @@
         
         <!-- starts hidden -->
         <div id="gameoverSplash">
-            <div id="defeatImage">
-                <img id="defeat" src="img/defeat.png" alt="Defeat banner"> 
-            </div>
-            <div id="newGameButton" 
-                 onclick="tlol.tetrisGame.restart()">
-                <img id="newgame" src="img/play.png" alt="Play again"> 
+            <div id="gs-ui">
+                <div id="defeatImage">
+                    <img src="img/defeat.png" alt="Defeat banner"> 
+                </div>
+                <div id="newGameButton" 
+                     onclick="tlol.tetrisGame.restart()">
+                    <img id="newgame" class="untouched" src="img/play.png" alt="Play again"> 
+                </div>
             </div>
         </div>
 

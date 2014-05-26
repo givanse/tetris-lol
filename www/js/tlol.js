@@ -42,6 +42,10 @@ var tlol = {
         mushroom: 'MUSHROOM'
     },
 
+    debug: {
+        show_game_over_splash: false
+    },
+
     /**
      * http://en.wikipedia.org/wiki/Tetromino
      */
