@@ -9,3 +9,7 @@ The objects, tetris shapes, are ```<div>``` elements that are placed inside anot
  * All the tests are in the ```test/``` folder.
  * Install QUnit, you may use the script ```install-qunit.sh```.
  * To run all the unit tests, open the file ```index.html```.
+
+##### Why?
+
+https://givan.se/tetris-lol/
